@@ -1,0 +1,715 @@
+import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart';
+import 'package:jaspr_content/jaspr_content.dart';
+
+import 'hero_scene.dart';
+
+Component _svgIcon(List<Component> children, {String size = '20'}) =>
+    Component.element(
+      tag: 'svg',
+      attributes: {
+        'viewBox': '0 0 $size $size',
+        'fill': 'none',
+        'stroke': 'currentColor',
+        'stroke-width': '1.5',
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        'width': size,
+        'height': size,
+        'aria-hidden': 'true',
+      },
+      children: children,
+    );
+
+Component _p(String d) =>
+    Component.element(tag: 'path', attributes: {'d': d});
+
+class HomeLayout extends PageLayoutBase {
+  const HomeLayout();
+
+  @override
+  String get name => 'home';
+
+  @override
+  Iterable<Component> buildHead(Page page) sync* {
+    yield* super.buildHead(page);
+
+    yield link(href: 'https://fonts.googleapis.com', rel: 'preconnect');
+    yield link(
+      href: 'https://fonts.gstatic.com',
+      rel: 'preconnect',
+      attributes: {'crossorigin': ''},
+    );
+    yield link(
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap',
+      rel: 'stylesheet',
+    );
+
+    yield link(href: '/styles.css', rel: 'stylesheet');
+
+    yield script(src: 'https://cdn.tailwindcss.com');
+
+    yield script(
+      content:
+          'window._heroQueue=[];window.initHeroScene=function(id){window._heroQueue.push(id);};window.disposeHeroScene=function(){};',
+    );
+
+    yield script(
+      attributes: {'type': 'importmap'},
+      content:
+          '{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170/examples/jsm/"}}',
+    );
+    yield script(attributes: {'type': 'module', 'src': '/three_scene.js'});
+
+    yield script(
+      content: r'''
+document.addEventListener('DOMContentLoaded',function(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('revealed');});
+  },{threshold:0.10});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+});
+''',
+    );
+  }
+
+  @override
+  Component buildBody(Page page, Component _) {
+    return div([
+      _Navbar(),
+      _HeroSection(),
+      _StatsBar(),
+      _ConceptsSection(),
+      _UseCasesSectionWrapper(),
+      _ApiSection(),
+      _FooterCta(),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Logo
+// ---------------------------------------------------------------------------
+
+class _LogoIcon extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return Component.element(
+      tag: 'svg',
+      attributes: {
+        'xmlns': 'http://www.w3.org/2000/svg',
+        'viewBox': '0 0 22 22',
+        'fill': 'none',
+        'class': 'navbar-logo-icon',
+        'aria-hidden': 'true',
+      },
+      children: [
+        Component.element(tag: 'rect', attributes: {
+          'x': '2', 'y': '7', 'width': '11', 'height': '11',
+          'rx': '2', 'fill': '#5b8dee', 'fill-opacity': '0.9',
+        }),
+        Component.element(tag: 'rect', attributes: {
+          'x': '9', 'y': '2', 'width': '11', 'height': '11',
+          'rx': '2', 'fill': '#82acf3', 'fill-opacity': '0.8',
+        }),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Search icon (inline SVG)
+// ---------------------------------------------------------------------------
+
+Component _searchIcon() => Component.element(
+      tag: 'svg',
+      attributes: {
+        'width': '14',
+        'height': '14',
+        'viewBox': '0 0 16 16',
+        'fill': 'none',
+        'stroke': 'currentColor',
+        'stroke-width': '1.75',
+        'stroke-linecap': 'round',
+        'aria-hidden': 'true',
+      },
+      children: [
+        Component.element(
+            tag: 'circle', attributes: {'cx': '7', 'cy': '7', 'r': '5'}),
+        Component.element(tag: 'path', attributes: {'d': 'M11 11 L14 14'}),
+      ],
+    );
+
+// ---------------------------------------------------------------------------
+// Navbar
+// ---------------------------------------------------------------------------
+
+class _Navbar extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return nav(classes: 'navbar', [
+      a(classes: 'navbar-brand', href: '/', [
+        _LogoIcon(),
+        span([.text('Render Objects')]),
+      ]),
+      div(classes: 'navbar-divider', []),
+      span(classes: 'navbar-version', [.text('v1.0')]),
+      ul(classes: 'navbar-nav', [
+        li([a(href: '/guides', [.text('Guides')])]),
+        li([a(href: '/use-cases', [.text('Use Cases')])]),
+        li([a(href: '/api', [.text('API')])]),
+      ]),
+      div(classes: 'navbar-search', [
+        _searchIcon(),
+        span(classes: 'navbar-search-text', [.text('Search docs...')]),
+        span(classes: 'navbar-search-kbd', [.text('⌘K')]),
+      ]),
+      div(classes: 'navbar-actions', [
+        a(classes: 'btn-nav btn-nav-ghost', href: '/renderkit',
+            [.text('RenderKit')]),
+        a(classes: 'btn-nav btn-nav-primary', href: '/renderstudio',
+            [.text('RenderStudio')]),
+      ]),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Hero section
+// ---------------------------------------------------------------------------
+
+class _HeroSection extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return section(classes: 'hero-section', [
+      div(id: 'hero-canvas', attributes: {'aria-hidden': 'true'}, []),
+      HeroScene(),
+      div(classes: 'hero-content', [
+        div(classes: 'hero-eyebrow', [
+          div(classes: 'hero-eyebrow-dot', []),
+          .text('Flutter rendering engine'),
+        ]),
+        h1(classes: 'hero-title gradient-text', [
+          .text('Render Objects'),
+        ]),
+        p(classes: 'hero-tagline', [
+          .text(
+              "The foundation of Flutter's visual layer. Master the primitives that paint every pixel on screen."),
+        ]),
+        div(classes: 'hero-ctas', [
+          a(classes: 'btn-primary btn-renderkit', href: '/renderkit', [
+            .text('Explore RenderKit'),
+          ]),
+          a(classes: 'btn-primary btn-renderstudio', href: '/renderstudio', [
+            .text('Try RenderStudio'),
+          ]),
+        ]),
+        _HeroCodePanel(),
+      ]),
+    ]);
+  }
+}
+
+class _HeroCodePanel extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return div(classes: 'hero-code-panel', [
+      div(classes: 'hero-code-header', [
+        div(classes: 'hero-code-dot dot-red', []),
+        div(classes: 'hero-code-dot dot-yellow', []),
+        div(classes: 'hero-code-dot dot-green', []),
+        span(classes: 'hero-code-filename',
+            [.text('my_render_box.dart')]),
+      ]),
+      div(classes: 'hero-code-body', [
+        Component.element(tag: 'pre', children: [
+          Component.element(tag: 'span', attributes: {'class': 'tok-kw'},
+              children: [.text('class ')]),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cls'},
+              children: [.text('MyRenderBox ')]),
+          Component.element(tag: 'span', attributes: {'class': 'tok-kw'},
+              children: [.text('extends ')]),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cls'},
+              children: [.text('RenderBox ')]),
+          .text('{\n  '),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cmt'},
+              children: [.text('// Override to define your layout logic')]),
+          .text('\n  @override\n  '),
+          Component.element(tag: 'span', attributes: {'class': 'tok-typ'},
+              children: [.text('void ')]),
+          Component.element(tag: 'span', attributes: {'class': 'tok-fn'},
+              children: [.text('performLayout')]),
+          .text('() {\n    size = constraints.biggest;\n  }\n\n  '),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cmt'},
+              children: [.text('// Paint to the canvas at the given offset')]),
+          .text('\n  @override\n  '),
+          Component.element(tag: 'span', attributes: {'class': 'tok-typ'},
+              children: [.text('void ')]),
+          Component.element(tag: 'span', attributes: {'class': 'tok-fn'},
+              children: [.text('paint')]),
+          .text('('),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cls'},
+              children: [.text('PaintingContext ')]),
+          .text('ctx, '),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cls'},
+              children: [.text('Offset ')]),
+          .text('offset) {\n    ctx.canvas.drawRect(\n      offset & size,\n      '),
+          Component.element(tag: 'span', attributes: {'class': 'tok-cls'},
+              children: [.text('Paint')]),
+          .text('()..color = color,\n    );\n  }\n}'),
+        ]),
+      ]),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Stats bar
+// ---------------------------------------------------------------------------
+
+class _StatsBar extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return div(classes: 'stats-bar', [
+      _stat('3', 'render object types'),
+      _stat('12', 'api methods'),
+      _stat('40+', 'code examples'),
+      _stat('100%', 'open source'),
+    ]);
+  }
+}
+
+Component _stat(String value, String label) {
+  return div(classes: 'stat-item', [
+    span(classes: 'stat-value', [.text(value)]),
+    span(classes: 'stat-label', [.text(label)]),
+  ]);
+}
+
+// ---------------------------------------------------------------------------
+// Concepts section
+// ---------------------------------------------------------------------------
+
+class _ConceptsSection extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return div(classes: 'section', [
+      div(classes: 'section-label', [.text('Foundation')]),
+      h2(classes: 'section-heading', [
+        .text('Understand the rendering model'),
+      ]),
+      p(classes: 'section-subheading', [
+        .text(
+            'Before building custom render objects, you need to understand the three-phase pipeline Flutter uses to turn component trees into pixels.'),
+      ]),
+      div(classes: 'cards-grid cards-grid-3', [
+        _ConceptCard(
+          icon: _svgIcon([
+            _p('M4 8 L4 4 L8 4'),
+            _p('M12 4 L16 4 L16 8'),
+            _p('M16 12 L16 16 L12 16'),
+            _p('M8 16 L4 16 L4 12'),
+          ]),
+          iconBg: 'rgba(91,141,238,0.10)',
+          iconColor: '#82acf3',
+          title: 'RenderObject',
+          description:
+              'The base class every render object extends. Defines the lifecycle: layout, paint, and hit-testing — and how they compose.',
+          href: '/guides/render-object',
+        ),
+        _ConceptCard(
+          icon: _svgIcon([
+            _p('M4 7 L16 7 L16 14 L4 14 Z'),
+            _p('M4 4.5 L16 4.5'),
+            _p('M6.5 3 L4 4.5 L6.5 6'),
+            _p('M13.5 3 L16 4.5 L13.5 6'),
+          ]),
+          iconBg: 'rgba(91,141,238,0.08)',
+          iconColor: '#a5c4fb',
+          title: 'RenderBox',
+          description:
+              'The most common render object subtype. Uses a 2D box model — width, height, and offsets — to position and paint widgets.',
+          href: '/guides/render-box',
+        ),
+        _ConceptCard(
+          icon: _svgIcon([
+            _p('M3 4 L17 4'),
+            _p('M3 8 L17 8'),
+            _p('M3 12 L13 12'),
+            _p('M10 14 L10 18'),
+            _p('M8 16 L10 18 L12 16'),
+          ]),
+          iconBg: 'rgba(91,141,238,0.06)',
+          iconColor: '#c3d9fc',
+          title: 'RenderSliver',
+          description:
+              'Scrollable render objects that only paint the visible portion of their content, enabling efficient infinite lists.',
+          href: '/guides/render-sliver',
+        ),
+      ]),
+      div(attributes: {'style': 'margin-top:2rem'}, [
+        a(
+            href: '/guides',
+            attributes: {
+              'style':
+                  'color:var(--accent-light);font-size:0.9rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:0.375rem;font-family:"JetBrains Mono",monospace'
+            },
+            [.text('View all guides →')]),
+      ]),
+    ]);
+  }
+}
+
+class _ConceptCard extends StatelessComponent {
+  final Component icon;
+  final String iconBg;
+  final String iconColor;
+  final String title;
+  final String description;
+  final String href;
+
+  _ConceptCard({
+    required this.icon,
+    required this.iconBg,
+    required this.iconColor,
+    required this.title,
+    required this.description,
+    required this.href,
+  });
+
+  @override
+  Component build(BuildContext context) {
+    return a(classes: 'card reveal', href: href, [
+      div(classes: 'card-icon',
+          attributes: {'style': 'background:$iconBg;color:$iconColor'},
+          [icon]),
+      div(classes: 'card-title', [.text(title)]),
+      p(classes: 'card-description', [.text(description)]),
+      span(classes: 'card-link', [.text('Read guide →')]),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Use Cases section
+// ---------------------------------------------------------------------------
+
+class _UseCasesSectionWrapper extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return div(classes: 'use-cases-wrapper', [
+      div(classes: 'section', [
+        div(classes: 'section-label', [.text('Use Cases')]),
+        h2(classes: 'section-heading', [.text('What you can build')]),
+        p(classes: 'section-subheading', [
+          .text(
+              "Custom render objects unlock visual effects and layouts that are impossible with the widget layer alone."),
+        ]),
+        div(classes: 'cards-grid cards-grid-4', [
+          _UseCaseCard(
+              accent: '#82acf3',
+              icon: _svgIcon([
+                _p('M4 2 L16 2 L16 18 L4 18 Z'),
+                _p('M10 6 L10 14'),
+                _p('M7.5 8 L10 6 L12.5 8'),
+                _p('M7.5 12 L10 14 L12.5 12'),
+              ]),
+              title: 'Custom Scrolling',
+              description:
+                  "Build scroll physics and custom viewport layouts that Flutter's built-in slivers don't support.",
+              href: '/use-cases/custom-scrolling'),
+          _UseCaseCard(
+              accent: '#5b8dee',
+              icon: _svgIcon([
+                _p('M10 10 L4 4'),
+                _p('M10 10 L16 4'),
+                _p('M10 10 L18 10'),
+                _p('M10 10 L16 16'),
+                _p('M10 10 L4 16'),
+                _p('M10 10 L2 10'),
+                Component.element(tag: 'circle',
+                    attributes: {'cx': '10', 'cy': '10', 'r': '2'}),
+              ]),
+              title: 'Particle Effects',
+              description:
+                  'Render thousands of animated particles per frame, bypassing the widget tree overhead entirely.',
+              href: '/use-cases/particle-effects'),
+          _UseCaseCard(
+              accent: '#a5c4fb',
+              icon: _svgIcon([
+                _p('M3 17 L17 17'),
+                _p('M3 17 L3 3'),
+                _p('M6 17 L6 11'),
+                _p('M9 17 L9 7'),
+                _p('M12 17 L12 13'),
+                _p('M15 17 L15 5'),
+              ]),
+              title: 'Data Visualization',
+              description:
+                  'Charts, graphs, and heatmaps that render at 60fps with full gesture and hit-test support.',
+              href: '/use-cases/data-visualization'),
+          _UseCaseCard(
+              accent: '#c3d9fc',
+              icon: _svgIcon([
+                _p('M10 2 L18 10 L10 18 L2 10 Z'),
+                _p('M10 5.5 L14.5 10 L10 14.5 L5.5 10 Z'),
+              ]),
+              title: 'Game UI',
+              description:
+                  'Custom clip paths, layered paint operations, and frame-perfect animations for game interfaces.',
+              href: '/use-cases/game-ui'),
+        ]),
+        div(attributes: {'style': 'margin-top:2rem'}, [
+          a(
+              href: '/use-cases',
+              attributes: {
+                'style':
+                    'color:var(--accent-light);font-size:0.9rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:0.375rem;font-family:"JetBrains Mono",monospace'
+              },
+              [.text('View all use cases →')]),
+        ]),
+      ]),
+    ]);
+  }
+}
+
+class _UseCaseCard extends StatelessComponent {
+  final Component icon;
+  final String accent;
+  final String title;
+  final String description;
+  final String href;
+
+  _UseCaseCard({
+    required this.icon,
+    required this.accent,
+    required this.title,
+    required this.description,
+    required this.href,
+  });
+
+  @override
+  Component build(BuildContext context) {
+    return a(classes: 'card reveal', href: href, [
+      div(classes: 'card-icon',
+          attributes: {'style': 'background:${accent}18;color:$accent'},
+          [icon]),
+      div(classes: 'card-title', [.text(title)]),
+      p(classes: 'card-description', [.text(description)]),
+      span(classes: 'card-link',
+          attributes: {'style': 'color:$accent'}, [.text('See example →')]),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// API section
+// ---------------------------------------------------------------------------
+
+class _ApiSection extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return div(classes: 'section', [
+      div(classes: 'section-label', [.text('API Reference')]),
+      h2(classes: 'section-heading', [.text('The methods you implement')]),
+      p(classes: 'section-subheading', [
+        .text(
+            'Every custom render object overrides a small set of well-defined methods. Understanding each one is the key to getting it right.'),
+      ]),
+      div(
+          attributes: {
+            'style': 'display:flex;flex-direction:column;gap:0.75rem'
+          },
+          [
+            _MethodBlock(
+              name: 'performLayout()',
+              accentColor: '#5b8dee',
+              description:
+                  'Calculates the size of this render object and positions all its children. Must set this.size before returning.',
+              returnNote: 'void — called by the framework during the layout phase',
+              href: '/api/perform-layout',
+            ),
+            _MethodBlock(
+              name: 'paint(PaintingContext context, Offset offset)',
+              accentColor: '#82acf3',
+              description:
+                  'Draws the visual representation of this render object onto the composited layer. Called after layout completes.',
+              returnNote:
+                  'void — uses context.canvas for direct drawing operations',
+              href: '/api/paint',
+            ),
+            _MethodBlock(
+              name: 'hitTest(BoxHitTestResult result, {required Offset position})',
+              accentColor: '#a5c4fb',
+              description:
+                  'Determines whether a pointer event at position falls within this render object. Returns true to claim the event.',
+              returnNote:
+                  'bool — true if the hit test is absorbed by this render object',
+              href: '/api/hit-test',
+            ),
+          ]),
+      div(attributes: {'style': 'margin-top:2rem'}, [
+        a(
+            href: '/api',
+            attributes: {
+              'style':
+                  'color:var(--accent-light);font-size:0.9rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:0.375rem;font-family:"JetBrains Mono",monospace'
+            },
+            [.text('View full API reference →')]),
+      ]),
+    ]);
+  }
+}
+
+class _MethodBlock extends StatelessComponent {
+  final String name;
+  final String accentColor;
+  final String description;
+  final String returnNote;
+  final String href;
+
+  const _MethodBlock({
+    required this.name,
+    required this.accentColor,
+    required this.description,
+    required this.returnNote,
+    required this.href,
+  });
+
+  @override
+  Component build(BuildContext context) {
+    return a(
+        classes: 'method-block reveal',
+        href: href,
+        attributes: {
+          'style':
+              'text-decoration:none;display:block;border-left:2px solid $accentColor'
+        },
+        [
+          div(classes: 'method-header', [
+            span(classes: 'method-name', [.text(name)]),
+            span(
+                attributes: {
+                  'style':
+                      'font-size:0.75rem;color:var(--text-muted);margin-left:auto;font-family:"JetBrains Mono",monospace'
+                },
+                [.text('docs →')]),
+          ]),
+          div(classes: 'method-body', [
+            p(classes: 'method-description', [.text(description)]),
+            span(classes: 'method-return', [.text(returnNote)]),
+          ]),
+        ]);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Footer CTA + site footer
+// ---------------------------------------------------------------------------
+
+class _FooterCta extends StatelessComponent {
+  @override
+  Component build(BuildContext context) {
+    return div([
+      div(classes: 'footer-cta-section', [
+        div(classes: 'footer-cta-inner', [
+          div(classes: 'section-label', [.text('Tooling')]),
+          h2(classes: 'section-heading',
+              [.text('Build better render objects')]),
+          p(classes: 'section-subheading', [
+            .text(
+                'Two complementary tools designed specifically for Flutter render object development.'),
+          ]),
+          div(classes: 'footer-products-grid', [
+            _ProductCard(
+              type: 'kit',
+              icon: _svgIcon([
+                _p('M4 4 L8.5 4 L8.5 8.5 L4 8.5 Z'),
+                _p('M11.5 4 L16 4 L16 8.5 L11.5 8.5 Z'),
+                _p('M4 11.5 L8.5 11.5 L8.5 16 L4 16 Z'),
+                _p('M11.5 11.5 L16 11.5 L16 16 L11.5 16 Z'),
+              ]),
+              title: 'RenderKit',
+              description:
+                  'A collection of tools that help you create, test, and verify custom render objects — from AI-powered Flutter skills to automated test suites.',
+              features: const [
+                'AI assistant trained on render object patterns',
+                'Automated test suite for your render objects',
+                'Layout constraint visualizer',
+                'Paint call inspector',
+              ],
+              buttonText: 'Explore RenderKit',
+              buttonHref: '/renderkit',
+            ),
+            _ProductCard(
+              type: 'studio',
+              icon: _svgIcon([
+                _p('M2 10 L5 6 L8 13 L11 4 L14 13 L17 6 L20 10'),
+              ]),
+              title: 'RenderStudio',
+              description:
+                  'A web-based IDE that uses voice dictation and AI to generate production-quality render object code. Describe what you want — get working code.',
+              features: const [
+                'Voice-first code generation',
+                'Instant preview with hot-reload',
+                'Export to any Flutter project',
+                'Integrated documentation',
+              ],
+              buttonText: 'Try RenderStudio',
+              buttonHref: '/renderstudio',
+            ),
+          ]),
+        ]),
+      ]),
+      footer(classes: 'site-footer', [
+        span(classes: 'footer-copy', [.text('© 2025 renderobjects.com')]),
+        div(classes: 'footer-links', [
+          a(href: '/guides', [.text('Guides')]),
+          a(href: '/use-cases', [.text('Use Cases')]),
+          a(href: '/api', [.text('API')]),
+          a(href: '/renderkit', [.text('RenderKit')]),
+          a(href: '/renderstudio', [.text('RenderStudio')]),
+        ]),
+      ]),
+    ]);
+  }
+}
+
+class _ProductCard extends StatelessComponent {
+  final String type;
+  final Component icon;
+  final String title;
+  final String description;
+  final List<String> features;
+  final String buttonText;
+  final String buttonHref;
+
+  _ProductCard({
+    required this.type,
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.features,
+    required this.buttonText,
+    required this.buttonHref,
+  });
+
+  @override
+  Component build(BuildContext context) {
+    return div(classes: 'product-card product-card-$type', [
+      div(classes: 'product-icon product-icon-$type', [icon]),
+      div(classes: 'product-title', [.text(title)]),
+      p(classes: 'product-description', [.text(description)]),
+      ul(classes: 'product-features', [
+        for (final f in features)
+          li([
+            span(classes: 'feature-check feature-check-$type', [.text('✓')]),
+            .text(f),
+          ]),
+      ]),
+      a(classes: 'btn-product btn-product-$type', href: buttonHref, [
+        .text(buttonText),
+      ]),
+    ]);
+  }
+}
