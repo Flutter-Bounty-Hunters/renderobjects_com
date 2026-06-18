@@ -2,7 +2,7 @@
 title: setupParentData()
 description: Implement the setupParentData() method in a custom Render Object.
 layout: api
-order: 15
+order: 19
 ---
 `setupParentData()` is called by the framework whenever a child render object is attached to a parent. Its job is to attach a `ParentData` object to the child — a small data structure that the parent owns and uses to store per-child layout information such as position offsets, flex factors, or grid coordinates.
 
