@@ -25,9 +25,9 @@ const _guides = SidebarSection(
 );
 
 const _useCases = SidebarSection(
-  title: 'Use Cases',
-  dir: 'content/use-cases',
-  urlPrefix: '/use-cases',
+  title: 'Examples',
+  dir: 'content/examples',
+  urlPrefix: '/examples',
 );
 
 const _api = SidebarSection(
@@ -68,8 +68,8 @@ void main() {
           sidebar: const DynamicSidebar(sections: [_guides]),
         ),
         CustomDocsLayout(
-          layoutName: 'use-cases',
-          siteHeader: const SiteNavbar(activePage: 'use-cases'),
+          layoutName: 'examples',
+          siteHeader: const SiteNavbar(activePage: 'examples'),
           sidebar: const DynamicSidebar(sections: [_useCases]),
         ),
         CustomDocsLayout(

@@ -3,7 +3,7 @@ import 'package:jaspr/jaspr.dart';
 
 // ─── Shared site navbar ───────────────────────────────────────────────────────
 //
-// activePage: 'guides' | 'use-cases' | 'api' | 'renderstudio' | 'renderkit'
+// activePage: 'guides' | 'examples' | 'api' | 'renderstudio' | 'renderkit'
 
 class SiteNavbar extends StatelessComponent {
   const SiteNavbar({this.activePage});
@@ -23,8 +23,8 @@ class SiteNavbar extends StatelessComponent {
       div(classes: 'navbar-divider', []),
       ul(classes: 'navbar-nav', [
         li([a(href: '/guides', classes: _navClasses('guides'), [.text('Guides')])]),
-        li([a(href: '/use-cases', classes: _navClasses('use-cases'), [.text('Use Cases')])]),
         li([a(href: '/api', classes: _navClasses('api'), [.text('API')])]),
+        li([a(href: '/examples', classes: _navClasses('examples'), [.text('Examples')])]),
       ]),
       div(classes: 'navbar-search', [
         _searchIcon(),

@@ -313,7 +313,7 @@ class _UseCasesSectionWrapper extends StatelessComponent {
   Component build(BuildContext context) {
     return div(classes: 'use-cases-wrapper', [
       div(classes: 'section', [
-        div(classes: 'section-label', [.text('Use Cases')]),
+        div(classes: 'section-label', [.text('Examples')]),
         h2(classes: 'section-heading', [.text('What you can build')]),
         p(classes: 'section-subheading', [
           .text(
@@ -331,7 +331,7 @@ class _UseCasesSectionWrapper extends StatelessComponent {
               title: 'Custom Scrolling',
               description:
                   "Build scroll physics and custom viewport layouts that Flutter's built-in slivers don't support.",
-              href: '/use-cases/custom-scrolling'),
+              href: '/examples/custom-scrolling'),
           _UseCaseCard(
               accent: '#5b8dee',
               icon: _svgIcon([
@@ -347,7 +347,7 @@ class _UseCasesSectionWrapper extends StatelessComponent {
               title: 'Particle Effects',
               description:
                   'Render thousands of animated particles per frame, bypassing the widget tree overhead entirely.',
-              href: '/use-cases/particle-effects'),
+              href: '/examples/particle-effects'),
           _UseCaseCard(
               accent: '#a5c4fb',
               icon: _svgIcon([
@@ -361,7 +361,7 @@ class _UseCasesSectionWrapper extends StatelessComponent {
               title: 'Data Visualization',
               description:
                   'Charts, graphs, and heatmaps that render at 60fps with full gesture and hit-test support.',
-              href: '/use-cases/data-visualization'),
+              href: '/examples/data-visualization'),
           _UseCaseCard(
               accent: '#c3d9fc',
               icon: _svgIcon([
@@ -371,16 +371,16 @@ class _UseCasesSectionWrapper extends StatelessComponent {
               title: 'Game UI',
               description:
                   'Custom clip paths, layered paint operations, and frame-perfect animations for game interfaces.',
-              href: '/use-cases/game-ui'),
+              href: '/examples/game-ui'),
         ]),
         div(attributes: {'style': 'margin-top:2rem'}, [
           a(
-              href: '/use-cases',
+              href: '/examples',
               attributes: {
                 'style':
                     'color:var(--accent-light);font-size:0.9rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:0.375rem;font-family:"JetBrains Mono",monospace'
               },
-              [.text('View all use cases →')]),
+              [.text('View all examples →')]),
         ]),
       ]),
     ]);
@@ -579,7 +579,7 @@ class _FooterCta extends StatelessComponent {
         span(classes: 'footer-copy', [.text('© 2025 renderobjects.com')]),
         div(classes: 'footer-links', [
           a(href: '/guides', [.text('Guides')]),
-          a(href: '/use-cases', [.text('Use Cases')]),
+          a(href: '/examples', [.text('Examples')]),
           a(href: '/api', [.text('API')]),
           a(href: '/renderkit', [.text('RenderKit')]),
           a(href: '/renderstudio', [.text('RenderStudio')]),
