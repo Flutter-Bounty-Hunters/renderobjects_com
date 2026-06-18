@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
 import 'hero_scene.dart';
+import 'site_navbar.dart';
 
 Component _svgIcon(List<Component> children, {String size = '20'}) =>
     Component.element(
@@ -76,100 +77,13 @@ document.addEventListener('DOMContentLoaded',function(){
   @override
   Component buildBody(Page page, Component _) {
     return div([
-      _Navbar(),
+      const SiteNavbar(),
       _HeroSection(),
       _StatsBar(),
       _ConceptsSection(),
       _UseCasesSectionWrapper(),
       _ApiSection(),
       _FooterCta(),
-    ]);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Logo
-// ---------------------------------------------------------------------------
-
-class _LogoIcon extends StatelessComponent {
-  @override
-  Component build(BuildContext context) {
-    return Component.element(
-      tag: 'svg',
-      attributes: {
-        'xmlns': 'http://www.w3.org/2000/svg',
-        'viewBox': '0 0 22 22',
-        'fill': 'none',
-        'class': 'navbar-logo-icon',
-        'aria-hidden': 'true',
-      },
-      children: [
-        Component.element(tag: 'rect', attributes: {
-          'x': '2', 'y': '7', 'width': '11', 'height': '11',
-          'rx': '2', 'fill': '#5b8dee', 'fill-opacity': '0.9',
-        }),
-        Component.element(tag: 'rect', attributes: {
-          'x': '9', 'y': '2', 'width': '11', 'height': '11',
-          'rx': '2', 'fill': '#82acf3', 'fill-opacity': '0.8',
-        }),
-      ],
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Search icon (inline SVG)
-// ---------------------------------------------------------------------------
-
-Component _searchIcon() => Component.element(
-      tag: 'svg',
-      attributes: {
-        'width': '14',
-        'height': '14',
-        'viewBox': '0 0 16 16',
-        'fill': 'none',
-        'stroke': 'currentColor',
-        'stroke-width': '1.75',
-        'stroke-linecap': 'round',
-        'aria-hidden': 'true',
-      },
-      children: [
-        Component.element(
-            tag: 'circle', attributes: {'cx': '7', 'cy': '7', 'r': '5'}),
-        Component.element(tag: 'path', attributes: {'d': 'M11 11 L14 14'}),
-      ],
-    );
-
-// ---------------------------------------------------------------------------
-// Navbar
-// ---------------------------------------------------------------------------
-
-class _Navbar extends StatelessComponent {
-  @override
-  Component build(BuildContext context) {
-    return nav(classes: 'navbar', [
-      a(classes: 'navbar-brand', href: '/', [
-        _LogoIcon(),
-        span([.text('Render Objects')]),
-      ]),
-      div(classes: 'navbar-divider', []),
-      span(classes: 'navbar-version', [.text('v1.0')]),
-      ul(classes: 'navbar-nav', [
-        li([a(href: '/guides', [.text('Guides')])]),
-        li([a(href: '/use-cases', [.text('Use Cases')])]),
-        li([a(href: '/api', [.text('API')])]),
-      ]),
-      div(classes: 'navbar-search', [
-        _searchIcon(),
-        span(classes: 'navbar-search-text', [.text('Search docs...')]),
-        span(classes: 'navbar-search-kbd', [.text('⌘K')]),
-      ]),
-      div(classes: 'navbar-actions', [
-        a(classes: 'btn-nav btn-nav-ghost', href: '/renderkit',
-            [.text('RenderKit')]),
-        a(classes: 'btn-nav btn-nav-primary', href: '/renderstudio',
-            [.text('RenderStudio')]),
-      ]),
     ]);
   }
 }

@@ -5,7 +5,6 @@ import 'package:jaspr/server.dart';
 
 import 'package:jaspr_content/components/callout.dart';
 import 'package:jaspr_content/components/code_block.dart';
-import 'package:jaspr_content/components/header.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 import 'package:jaspr_content/theme.dart';
 
@@ -13,6 +12,7 @@ import 'components/docs_layout_override.dart';
 import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
 import 'components/render_studio_layout.dart';
+import 'components/site_navbar.dart';
 
 import 'main.server.options.dart';
 
@@ -36,18 +36,6 @@ const _api = SidebarSection(
   urlPrefix: '/api',
 );
 
-// ─── Shared header ─────────────────────────────────────────────────────────
-
-Header _siteHeader() => Header(
-      title: 'Render Objects',
-      logo: '/images/logo.svg',
-      items: [
-        a(classes: 'nav-link', href: '/guides', [Component.text('Guides')]),
-        a(classes: 'nav-link', href: '/use-cases', [Component.text('Use Cases')]),
-        a(classes: 'nav-link', href: '/api', [Component.text('API')]),
-      ],
-    );
-
 // ─── Main ──────────────────────────────────────────────────────────────────
 
 void main() {
@@ -68,7 +56,7 @@ void main() {
       layouts: [
         // Default: full sidebar, used by any page with no layout key (e.g. about).
         CustomDocsLayout(
-          siteHeader: _siteHeader(),
+          siteHeader: const SiteNavbar(),
           sidebar: const DynamicSidebar(sections: [_guides, _useCases, _api]),
         ),
         // Section-specific layouts — matched by the `layout:` frontmatter key.
@@ -76,17 +64,17 @@ void main() {
         // gets a sidebar scoped to that section only.
         CustomDocsLayout(
           layoutName: 'guides',
-          siteHeader: _siteHeader(),
+          siteHeader: const SiteNavbar(activePage: 'guides'),
           sidebar: const DynamicSidebar(sections: [_guides]),
         ),
         CustomDocsLayout(
           layoutName: 'use-cases',
-          siteHeader: _siteHeader(),
+          siteHeader: const SiteNavbar(activePage: 'use-cases'),
           sidebar: const DynamicSidebar(sections: [_useCases]),
         ),
         CustomDocsLayout(
           layoutName: 'api',
-          siteHeader: _siteHeader(),
+          siteHeader: const SiteNavbar(activePage: 'api'),
           sidebar: const DynamicSidebar(sections: [_api]),
         ),
         // HomeLayout is matched by name for pages with `layout: home`.

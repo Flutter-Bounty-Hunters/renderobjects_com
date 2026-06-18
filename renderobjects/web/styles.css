@@ -137,6 +137,9 @@ body {
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.045);
 }
+.navbar-nav a.navbar-nav-active {
+  color: var(--accent-light);
+}
 
 .navbar-search {
   display: flex;

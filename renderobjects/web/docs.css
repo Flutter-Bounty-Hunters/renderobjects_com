@@ -18,10 +18,22 @@ code, kbd, pre, samp,
 
 /* ─── Header ────────────────────────────────────────────────── */
 
+/* .header-container is position:fixed from DocsLayout; the .navbar inside it
+   must be position:relative so it flows normally inside the fixed container. */
+.header-container .navbar {
+  position: relative;
+  /* Container provides the backdrop-filter, so suppress the duplicate. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: transparent;
+  border-bottom: none;
+}
+
 .header-container {
-  background: rgba(10, 10, 10, 0.88) !important;
+  background: rgba(10, 10, 10, 0.88);
   backdrop-filter: saturate(150%) blur(18px);
   -webkit-backdrop-filter: saturate(150%) blur(18px);
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.07));
 }
 
 .header {
