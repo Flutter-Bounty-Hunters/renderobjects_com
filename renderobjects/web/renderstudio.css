@@ -1,0 +1,212 @@
+/* ─── Page shell ────────────────────────────────────────────── */
+
+.rs-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.rs-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 58px;
+}
+
+/* ─── Navbar active state ────────────────────────────────────── */
+
+.rs-navbar-active {
+  box-shadow: 0 0 0 2px rgba(91, 141, 238, 0.4);
+}
+
+/* ─── Chat root ─────────────────────────────────────────────── */
+
+.rs-chat-root {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 1.25rem;
+}
+
+/* ─── Thread (scrollable) ───────────────────────────────────── */
+
+.rs-thread {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.rs-thread::-webkit-scrollbar {
+  width: 4px;
+}
+
+.rs-thread::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+/* ─── Message rows ──────────────────────────────────────────── */
+
+.rs-msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  animation: fade-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.rs-msg-row--bot {
+  flex-direction: row;
+}
+
+.rs-msg-row--user {
+  flex-direction: row-reverse;
+}
+
+/* ─── Bot avatar ─────────────────────────────────────────────── */
+
+.rs-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: rgba(91, 141, 238, 0.12)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22' fill='none'%3E%3Crect x='2' y='7' width='11' height='11' rx='2' fill='%235b8dee' fill-opacity='0.9'/%3E%3Crect x='9' y='2' width='11' height='11' rx='2' fill='%2382acf3' fill-opacity='0.8'/%3E%3C/svg%3E")
+    center / 16px 16px no-repeat;
+  border: 1px solid rgba(91, 141, 238, 0.22);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ─── Bubbles ────────────────────────────────────────────────── */
+
+.rs-bubble {
+  max-width: 80%;
+  padding: 0.6875rem 1rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.rs-bubble--bot {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-top-left-radius: var(--radius-sm);
+}
+
+.rs-bubble--user {
+  background: var(--accent);
+  border: 1px solid rgba(91, 141, 238, 0.3);
+  color: #ffffff;
+  border-top-right-radius: var(--radius-sm);
+}
+
+/* ─── Typing indicator ──────────────────────────────────────── */
+
+.rs-bubble--typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.75rem 1rem;
+  min-width: 58px;
+}
+
+@keyframes rs-dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%            { transform: translateY(-5px); opacity: 1; }
+}
+
+.rs-typing-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  animation: rs-dot-bounce 1.2s infinite ease-in-out;
+}
+
+.rs-typing-dot:nth-child(1) { animation-delay: 0s; }
+.rs-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.rs-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ─── Input area ─────────────────────────────────────────────── */
+
+.rs-input-area {
+  padding: 1rem 0 1.75rem;
+  border-top: 1px solid var(--border);
+  min-height: 80px;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* ─── Option chips ───────────────────────────────────────────── */
+
+.rs-chips {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.rs-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4375rem 0.875rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 450;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.rs-chip:hover {
+  border-color: var(--border-accent);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+/* ─── Generate button ────────────────────────────────────────── */
+
+.rs-generate-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.25rem;
+}
+
+.rs-generate-btn {
+  padding: 0.6875rem 2rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent);
+  border: 1px solid rgba(91, 141, 238, 0.28);
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.rs-generate-btn:hover:not(:disabled) {
+  background: var(--accent-dim);
+  box-shadow: 0 0 24px rgba(91, 141, 238, 0.38);
+  transform: translateY(-1px);
+}
+
+.rs-generate-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

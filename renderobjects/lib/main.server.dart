@@ -12,6 +12,7 @@ import 'package:jaspr_content/theme.dart';
 import 'components/docs_layout_override.dart';
 import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
+import 'components/render_studio_layout.dart';
 
 import 'main.server.options.dart';
 
@@ -90,6 +91,8 @@ void main() {
         ),
         // HomeLayout is matched by name for pages with `layout: home`.
         const HomeLayout(),
+        // RenderStudioLayout is matched by name for pages with `layout: renderstudio`.
+        const RenderStudioLayout(),
       ],
       // All colors set as plain Color (not ThemeColor) so they apply to :root
       // unconditionally — the site never activates data-theme="dark", so light-mode

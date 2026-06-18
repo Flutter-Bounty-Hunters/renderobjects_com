@@ -12,6 +12,8 @@ import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     deferred as _sidebar_toggle_button;
 import 'package:renderobjects/components/hero_scene.dart'
     deferred as _hero_scene;
+import 'package:renderobjects/components/render_studio_chat.dart'
+    deferred as _render_studio_chat;
 
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
@@ -42,6 +44,10 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'hero_scene': ClientLoader(
       (p) => _hero_scene.HeroScene(),
       loader: _hero_scene.loadLibrary,
+    ),
+    'render_studio_chat': ClientLoader(
+      (p) => _render_studio_chat.RenderStudioChat(),
+      loader: _render_studio_chat.loadLibrary,
     ),
   },
 );
