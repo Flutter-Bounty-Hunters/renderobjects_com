@@ -149,10 +149,13 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.3125rem 0.625rem 0.3125rem 0.5rem;
+  font: inherit;
   font-size: 0.8125rem;
   color: var(--text-muted);
   cursor: pointer;
   width: 200px;
+  text-align: left;
+  appearance: none;
   transition: border-color 0.15s, background 0.15s;
   user-select: none;
 }
@@ -801,3 +804,44 @@ body {
 .reveal:nth-child(2) { transition-delay: 0.07s; }
 .reveal:nth-child(3) { transition-delay: 0.14s; }
 .reveal:nth-child(4) { transition-delay: 0.21s; }
+
+/* ─── Search modal (Pagefind) ──────────────────────────────────── */
+
+.search-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10vh 1.5rem 2rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+.search-modal-overlay.search-modal-open { display: flex; }
+body.search-modal-active { overflow: hidden; }
+
+.search-modal {
+  width: 100%;
+  max-width: 640px;
+  max-height: 70vh;
+  overflow: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+}
+
+/* Pagefind UI theme — matches the site's dark palette. */
+#pagefind-search {
+  --pagefind-ui-scale: 0.92;
+  --pagefind-ui-primary: var(--accent-light);
+  --pagefind-ui-text: var(--text-primary);
+  --pagefind-ui-background: var(--bg-surface);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--bg-elevated);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: var(--radius-sm);
+  --pagefind-ui-font: 'Inter', sans-serif;
+}

@@ -24,11 +24,12 @@ class NotFoundLayout extends PageLayoutBase {
       rel: 'stylesheet',
     );
     yield link(href: '/styles.css', rel: 'stylesheet');
+    yield script(src: '/search.js', defer: true);
   }
 
   @override
   Component buildBody(Page page, Component _) {
-    return div(attributes: {'style': 'display:flex;flex-direction:column;min-height:100vh;background:var(--bg-base)'}, [
+    return div(attributes: {'style': 'display:flex;flex-direction:column;min-height:100vh;background:var(--bg-base)', 'data-pagefind-ignore': ''}, [
       const SiteNavbar(),
       div(attributes: {'style': 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 1.5rem;text-align:center'}, [
         p(attributes: {'style': 'font-family:"JetBrains Mono",monospace;font-size:5rem;font-weight:800;color:rgba(255,255,255,0.06);line-height:1;margin:0 0 1.5rem;letter-spacing:-0.04em'}, [

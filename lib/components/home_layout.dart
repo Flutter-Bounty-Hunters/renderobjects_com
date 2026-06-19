@@ -47,6 +47,7 @@ class HomeLayout extends PageLayoutBase {
     );
 
     yield link(href: '/styles.css', rel: 'stylesheet');
+    yield script(src: '/search.js', defer: true);
 
     yield script(
       content:
@@ -553,7 +554,7 @@ class _FooterCta extends StatelessComponent {
           ]),
         ]),
       ]),
-      footer(classes: 'site-footer', [
+      footer(classes: 'site-footer', attributes: {'data-pagefind-ignore': ''}, [
         span(classes: 'footer-copy', [.text('© 2025 renderobjects.com')]),
         div(classes: 'footer-links', [
           a(href: '/guides', [.text('Guides')]),

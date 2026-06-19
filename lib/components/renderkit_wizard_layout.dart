@@ -30,6 +30,7 @@ class RenderKitWizardLayout extends PageLayoutBase {
 
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/renderkit-wizard.css', rel: 'stylesheet');
+    yield script(src: '/search.js', defer: true);
 
     // Auto-scroll .rs-thread to the bottom whenever new message bubbles appear.
     yield script(content: r'''
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   @override
   Component buildBody(Page page, Component _) {
-    return div(classes: 'rs-page', [
+    return div(classes: 'rs-page', attributes: {'data-pagefind-ignore': ''}, [
       const SiteNavbar(activePage: 'renderkit-wizard'),
       div(classes: 'rs-main', [
         const RenderKitChat(),

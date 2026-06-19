@@ -15,7 +15,7 @@ class SiteNavbar extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return nav(classes: 'navbar', [
+    return nav(classes: 'navbar', attributes: {'data-pagefind-ignore': ''}, [
       a(classes: 'navbar-brand', href: '/', [
         _logoIcon(),
         span([.text('Render Objects')]),
@@ -26,11 +26,16 @@ class SiteNavbar extends StatelessComponent {
         li([a(href: '/api', classes: _navClasses('api'), [.text('API')])]),
         li([a(href: '/examples', classes: _navClasses('examples'), [.text('Examples')])]),
       ]),
-      div(classes: 'navbar-search', [
-        _searchIcon(),
-        span(classes: 'navbar-search-text', [.text('Search docs...')]),
-        span(classes: 'navbar-search-kbd', [.text('⌘K')]),
-      ]),
+      button(
+        type: ButtonType.button,
+        classes: 'navbar-search',
+        attributes: {'id': 'site-search-trigger', 'aria-label': 'Search docs'},
+        [
+          _searchIcon(),
+          span(classes: 'navbar-search-text', [.text('Search docs...')]),
+          span(classes: 'navbar-search-kbd', [.text('⌘K')]),
+        ],
+      ),
       div(classes: 'navbar-actions', [
         a(
           classes: activePage == 'renderkit' || activePage == 'renderkit-wizard'

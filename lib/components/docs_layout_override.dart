@@ -199,5 +199,6 @@ class CustomDocsLayout extends DocsLayout {
     );
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/docs.css', rel: 'stylesheet');
+    yield script(src: '/search.js', defer: true);
   }
 }

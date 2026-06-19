@@ -46,6 +46,7 @@ class RenderKitLayout extends PageLayoutBase {
       rel: 'stylesheet',
     );
     yield link(href: '/styles.css', rel: 'stylesheet');
+    yield script(src: '/search.js', defer: true);
   }
 
   @override
