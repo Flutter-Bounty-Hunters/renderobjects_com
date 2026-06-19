@@ -1,5 +1,5 @@
 ---
-title: RenderKit
-description: A Flutter package of production-ready custom render objects.
+title: RenderKit — Build a Render Object
+description: Answer a few questions and generate your Flutter render object skeleton.
 layout: renderkit
 ---

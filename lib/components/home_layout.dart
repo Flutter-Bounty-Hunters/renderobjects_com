@@ -112,9 +112,6 @@ class _HeroSection extends StatelessComponent {
           a(classes: 'btn-primary btn-renderkit', href: '/renderkit', [
             .text('Explore RenderKit'),
           ]),
-          a(classes: 'btn-primary btn-renderstudio', href: '/renderstudio', [
-            .text('Try RenderStudio'),
-          ]),
         ]),
         _HeroCodePanel(),
       ]),
@@ -530,7 +527,7 @@ class _FooterCta extends StatelessComponent {
               [.text('Build better render objects')]),
           p(classes: 'section-subheading', [
             .text(
-                'Two complementary tools designed specifically for Flutter render object development.'),
+                'An AI-powered toolkit designed specifically for Flutter render object development.'),
           ]),
           div(classes: 'footer-products-grid', [
             _ProductCard(
@@ -543,32 +540,15 @@ class _FooterCta extends StatelessComponent {
               ]),
               title: 'RenderKit',
               description:
-                  'A collection of tools that help you create, test, and verify custom render objects — from AI-powered Flutter skills to automated test suites.',
+                  'Describe the render object you need — by voice or text — and RenderKit generates a production-ready skeleton, complete with the tests and inspectors to verify it works.',
               features: const [
-                'AI assistant trained on render object patterns',
+                'Voice-first, AI-guided code generation',
                 'Automated test suite for your render objects',
-                'Layout constraint visualizer',
-                'Paint call inspector',
+                'Layout constraint visualizer and paint call inspector',
+                'Export to any Flutter project',
               ],
               buttonText: 'Explore RenderKit',
               buttonHref: '/renderkit',
-            ),
-            _ProductCard(
-              type: 'studio',
-              icon: _svgIcon([
-                _p('M2 10 L5 6 L8 13 L11 4 L14 13 L17 6 L20 10'),
-              ]),
-              title: 'RenderStudio',
-              description:
-                  'A web-based IDE that uses voice dictation and AI to generate production-quality render object code. Describe what you want — get working code.',
-              features: const [
-                'Voice-first code generation',
-                'Instant preview with hot-reload',
-                'Export to any Flutter project',
-                'Integrated documentation',
-              ],
-              buttonText: 'Try RenderStudio',
-              buttonHref: '/renderstudio',
             ),
           ]),
         ]),
@@ -580,7 +560,6 @@ class _FooterCta extends StatelessComponent {
           a(href: '/examples', [.text('Examples')]),
           a(href: '/api', [.text('API')]),
           a(href: '/renderkit', [.text('RenderKit')]),
-          a(href: '/renderstudio', [.text('RenderStudio')]),
         ]),
       ]),
     ]);

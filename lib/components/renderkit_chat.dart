@@ -31,7 +31,7 @@ const List<({String question, List<String> options})> _kWizardSteps = [
 ];
 
 const _kWelcomeMessage =
-    "Hi! I'm RenderStudio. I'll ask you a few questions to generate a Flutter render object skeleton tailored to your needs.";
+    "Hi! I'm RenderKit. I'll ask you a few questions to generate a Flutter render object skeleton tailored to your needs.";
 
 const _kFinalBotMessage =
     "Perfect! I have everything I need. Click below to generate your render object skeleton.";
@@ -49,14 +49,14 @@ class _ChatMessage {
 // ─── Chat component (@client) ─────────────────────────────────────────────────
 
 @client
-class RenderStudioChat extends StatefulComponent {
-  const RenderStudioChat({super.key});
+class RenderKitChat extends StatefulComponent {
+  const RenderKitChat({super.key});
 
   @override
-  State<RenderStudioChat> createState() => RenderStudioChatState();
+  State<RenderKitChat> createState() => RenderKitChatState();
 }
 
-class RenderStudioChatState extends State<RenderStudioChat> {
+class RenderKitChatState extends State<RenderKitChat> {
   final List<_ChatMessage> _messages = [];
   final List<String> _answers = [];
   int _currentStep = 0;

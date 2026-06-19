@@ -8,7 +8,7 @@ library;
 import 'package:jaspr/client.dart';
 
 import 'components/hero_scene.dart';
-import 'components/render_studio_chat.dart';
+import 'components/renderkit_chat.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.client.options.dart';
@@ -17,9 +17,9 @@ import 'main.client.options.dart';
 // ignore: unused_element
 HeroScene? _ref;
 
-// Ensure RenderStudioChat is compiled into the client bundle.
+// Ensure RenderKitChat is compiled into the client bundle.
 // ignore: unused_element
-RenderStudioChat? _rsRef;
+RenderKitChat? _rsRef;
 
 void main() {
   // Initializes the client environment with the generated default options.

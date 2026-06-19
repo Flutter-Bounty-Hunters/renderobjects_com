@@ -12,8 +12,8 @@ import 'package:jaspr_content/components/code_block.dart' as _code_block;
 import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     as _sidebar_toggle_button;
 import 'package:renderobjects/components/hero_scene.dart' as _hero_scene;
-import 'package:renderobjects/components/render_studio_chat.dart'
-    as _render_studio_chat;
+import 'package:renderobjects/components/renderkit_chat.dart'
+    as _renderkit_chat;
 
 /// Default [ServerOptions] for use with your Jaspr project.
 ///
@@ -43,10 +43,9 @@ ServerOptions get defaultServerOptions => ServerOptions(
           'jaspr_content:sidebar_toggle_button',
         ),
     _hero_scene.HeroScene: ClientTarget<_hero_scene.HeroScene>('hero_scene'),
-    _render_studio_chat.RenderStudioChat:
-        ClientTarget<_render_studio_chat.RenderStudioChat>(
-          'render_studio_chat',
-        ),
+    _renderkit_chat.RenderKitChat: ClientTarget<_renderkit_chat.RenderKitChat>(
+      'renderkit_chat',
+    ),
   },
   styles: () => [..._callout.Callout.styles, ..._code_block.CodeBlock.styles],
 );
