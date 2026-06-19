@@ -1,15 +1,31 @@
-# renderobjects
+# RenderObjects.com
+Articles and guides to help developers create their own `RenderObject`s.
 
-A documentation site built with Jaspr
+## Local Development
 
-## Running the project
+Install the Jaspr CLI:
+```sh
+dart pub global activate jaspr_cli
+```
 
-Run your project using `jaspr serve`.
 
-The development server will be available on `http://localhost:8080`.
+## Build
+```sh
+jaspr build
+```
 
-## Building the project
+Output is written to `build/jaspr/`.
 
-Build your project using `jaspr build`.
+## Serve Locally
+```sh
+jaspr serve
+```
 
-The output will be located inside the `build/jaspr/` directory.
+Available locally at `http://localhost:8080`.
+
+## Deploy to Production
+
+Merging to `main` automatically builds and deploys the site to [renderobjects.com](https://renderobjects.com) via GitHub Actions and GitHub Pages.
+
+To deploy, open a PR against `main` and merge it. The deployment workflow runs on every push to `main`; progress is visible under the repo's **Actions** tab.
+
