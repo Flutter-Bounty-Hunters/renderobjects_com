@@ -498,7 +498,7 @@ body {
 
 /* ─── Cards ─────────────────────────────────────────────────── */
 
-.cards-grid { display: grid; gap: 1px; }
+.cards-grid { display: grid; gap: 1rem; }
 .cards-grid-3 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 .cards-grid-4 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 

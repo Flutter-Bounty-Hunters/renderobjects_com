@@ -1,5 +1,5 @@
 ---
-title: Slotted Child
+title: Slotted Children
 description: Implement a Render Object with slotted children
 layout: guides
 order: 20
