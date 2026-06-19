@@ -15,11 +15,16 @@
     overlay.className = 'search-modal-overlay';
     overlay.innerHTML =
       '<div class="search-modal" role="dialog" aria-modal="true" aria-label="Search">' +
+      '<div class="search-modal-header">' +
+      '<span class="search-modal-title">Search</span>' +
+      '<button type="button" class="search-modal-close" aria-label="Close search">&times;</button>' +
+      '</div>' +
       '<div id="pagefind-search"></div>' +
       '</div>';
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) closeModal();
     });
+    overlay.querySelector('.search-modal-close').addEventListener('click', closeModal);
     document.body.appendChild(overlay);
     return overlay;
   }
