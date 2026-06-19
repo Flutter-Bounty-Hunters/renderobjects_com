@@ -132,6 +132,18 @@ code, kbd, pre, samp,
 .content pre {
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+.content pre::-webkit-scrollbar {
+  height: 4px;
+}
+.content pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+.content pre::-webkit-scrollbar-track {
+  background: transparent;
 }
 .content pre code {
   background: none;

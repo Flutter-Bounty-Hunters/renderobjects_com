@@ -12,6 +12,7 @@ import 'components/docs_layout_override.dart';
 import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
 import 'components/render_studio_layout.dart';
+import 'components/not_found_layout.dart';
 import 'components/renderkit_layout.dart';
 import 'components/site_navbar.dart';
 
@@ -80,6 +81,8 @@ void main() {
         ),
         // HomeLayout is matched by name for pages with `layout: home`.
         const HomeLayout(),
+        // NotFoundLayout is matched by name for pages with `layout: notfound`.
+        const NotFoundLayout(),
         // RenderKitLayout is matched by name for pages with `layout: renderkit`.
         const RenderKitLayout(),
         // RenderStudioLayout is matched by name for pages with `layout: renderstudio`.

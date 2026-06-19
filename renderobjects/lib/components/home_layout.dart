@@ -48,8 +48,6 @@ class HomeLayout extends PageLayoutBase {
 
     yield link(href: '/styles.css', rel: 'stylesheet');
 
-    yield script(src: 'https://cdn.tailwindcss.com');
-
     yield script(
       content:
           'window._heroQueue=[];window.initHeroScene=function(id){window._heroQueue.push(id);};window.disposeHeroScene=function(){};',
@@ -229,7 +227,7 @@ class _ConceptsSection extends StatelessComponent {
           title: 'RenderObject',
           description:
               'The base class every render object extends. Defines the lifecycle: layout, paint, and hit-testing — and how they compose.',
-          href: '/guides/render-object',
+          href: '/guides',
         ),
         _ConceptCard(
           icon: _svgIcon([
@@ -243,7 +241,7 @@ class _ConceptsSection extends StatelessComponent {
           title: 'RenderBox',
           description:
               'The most common render object subtype. Uses a 2D box model — width, height, and offsets — to position and paint widgets.',
-          href: '/guides/render-box',
+          href: '/guides',
         ),
         _ConceptCard(
           icon: _svgIcon([
@@ -258,7 +256,7 @@ class _ConceptsSection extends StatelessComponent {
           title: 'RenderSliver',
           description:
               'Scrollable render objects that only paint the visible portion of their content, enabling efficient infinite lists.',
-          href: '/guides/render-sliver',
+          href: '/guides',
         ),
       ]),
       div(attributes: {'style': 'margin-top:2rem'}, [
@@ -441,7 +439,7 @@ class _ApiSection extends StatelessComponent {
               description:
                   'Calculates the size of this render object and positions all its children. Must set this.size before returning.',
               returnNote: 'void — called by the framework during the layout phase',
-              href: '/api/perform-layout',
+              href: '/api/layout/performLayout',
             ),
             _MethodBlock(
               name: 'paint(PaintingContext context, Offset offset)',
@@ -450,7 +448,7 @@ class _ApiSection extends StatelessComponent {
                   'Draws the visual representation of this render object onto the composited layer. Called after layout completes.',
               returnNote:
                   'void — uses context.canvas for direct drawing operations',
-              href: '/api/paint',
+              href: '/api/paint/paint',
             ),
             _MethodBlock(
               name: 'hitTest(BoxHitTestResult result, {required Offset position})',
@@ -459,7 +457,7 @@ class _ApiSection extends StatelessComponent {
                   'Determines whether a pointer event at position falls within this render object. Returns true to claim the event.',
               returnNote:
                   'bool — true if the hit test is absorbed by this render object',
-              href: '/api/hit-test',
+              href: '/api/hit-testing/hittest',
             ),
           ]),
       div(attributes: {'style': 'margin-top:2rem'}, [

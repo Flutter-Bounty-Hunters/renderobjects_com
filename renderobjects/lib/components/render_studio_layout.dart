@@ -31,8 +31,6 @@ class RenderStudioLayout extends PageLayoutBase {
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/renderstudio.css', rel: 'stylesheet');
 
-    yield script(src: 'https://cdn.tailwindcss.com');
-
     // Auto-scroll .rs-thread to the bottom whenever new message bubbles appear.
     yield script(content: r'''
 document.addEventListener('DOMContentLoaded', function () {
