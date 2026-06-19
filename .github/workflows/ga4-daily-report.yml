@@ -1,0 +1,34 @@
+name: Daily GA4 Report
+
+on:
+  schedule:
+    # 15:00 UTC = 7AM Pacific (PDT). Drifts to 7AM PST during winter DST.
+    - cron: '0 15 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r tool/ga_report/requirements.txt
+
+      - name: Write GA4 service account key
+        run: echo "$GA4_SERVICE_ACCOUNT_JSON" > /tmp/ga4-service-account.json
+        env:
+          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+
+      - name: Run report and send email
+        run: python tool/ga_report/report.py
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/ga4-service-account.json
+          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          REPORT_TO_EMAIL: superdeclarative@gmail.com

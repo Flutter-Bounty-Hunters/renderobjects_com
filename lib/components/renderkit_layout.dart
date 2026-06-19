@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
+import 'analytics.dart';
 import 'site_navbar.dart';
 
 Component _svgIcon(List<Component> children, {String size = '20'}) =>
@@ -47,6 +48,7 @@ class RenderKitLayout extends PageLayoutBase {
     );
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield script(src: '/search.js', defer: true);
+    yield* analyticsHead();
   }
 
   @override

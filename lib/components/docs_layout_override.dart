@@ -5,6 +5,8 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_content/components/sidebar.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
+import 'analytics.dart';
+
 // ─── DynamicSidebar ────────────────────────────────────────────────────────
 
 /// Describes one section (group) in the sidebar.
@@ -200,5 +202,6 @@ class CustomDocsLayout extends DocsLayout {
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/docs.css', rel: 'stylesheet');
     yield script(src: '/search.js', defer: true);
+    yield* analyticsHead();
   }
 }

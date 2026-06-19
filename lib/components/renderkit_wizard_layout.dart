@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
+import 'analytics.dart';
 import 'renderkit_chat.dart';
 import 'site_navbar.dart';
 
@@ -31,6 +32,7 @@ class RenderKitWizardLayout extends PageLayoutBase {
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/renderkit-wizard.css', rel: 'stylesheet');
     yield script(src: '/search.js', defer: true);
+    yield* analyticsHead();
 
     // Auto-scroll .rs-thread to the bottom whenever new message bubbles appear.
     yield script(content: r'''
