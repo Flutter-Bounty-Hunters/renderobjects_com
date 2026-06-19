@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -18,8 +18,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      deploy_sha: ${{ steps.commit_redirects.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: dart-lang/setup-dart@v1
         with:
@@ -31,8 +35,29 @@ jobs:
       - name: Install dependencies
         run: dart pub get
 
+      # Diffs content/ against the last deployed commit (the "deployed" tag)
+      # to catch moved or removed pages. Renames are folded into
+      # redirects.json automatically; unredirected deletions fail the build.
+      - name: Check for broken URLs and update redirects
+        run: dart run tool/redirects.dart check
+
+      - name: Commit updated redirects.json
+        id: commit_redirects
+        run: |
+          if ! git diff --quiet -- redirects.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add redirects.json
+            git commit -m "Update redirects.json for moved content [skip ci]"
+            git push
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Build site
         run: jaspr build
+
+      - name: Generate redirect stub pages
+        run: dart run tool/redirects.dart stubs build/jaspr
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -49,3 +74,17 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Move the "deployed" tag to the commit that was just published, so
+      # the next run's redirect check diffs against what's actually live.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build.outputs.deploy_sha }}
+          fetch-depth: 0
+
+      - name: Move deployed tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f deployed ${{ needs.build.outputs.deploy_sha }}
+          git push origin deployed --force
