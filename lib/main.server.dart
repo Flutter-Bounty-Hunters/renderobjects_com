@@ -13,6 +13,7 @@ import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
 import 'components/not_found_layout.dart';
 import 'components/renderkit_layout.dart';
+import 'components/renderkit_wizard_layout.dart';
 import 'components/site_navbar.dart';
 
 import 'main.server.options.dart';
@@ -82,6 +83,11 @@ void main() {
         const HomeLayout(),
         // NotFoundLayout is matched by name for pages with `layout: notfound`.
         const NotFoundLayout(),
+        // Layout names are matched as a prefix of the page's `layout:` key, so
+        // the more specific 'renderkit-wizard' must be checked before the
+        // shorter 'renderkit' (which would otherwise match it too).
+        // RenderKitWizardLayout is matched by name for pages with `layout: renderkit-wizard`.
+        const RenderKitWizardLayout(),
         // RenderKitLayout is matched by name for pages with `layout: renderkit`.
         const RenderKitLayout(),
       ],

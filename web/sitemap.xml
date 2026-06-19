@@ -7,6 +7,7 @@
   <url><loc>https://renderobjects.com/api</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://renderobjects.com/examples</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://renderobjects.com/renderkit</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://renderobjects.com/renderkit/wizard</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://renderobjects.com/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Guides -->

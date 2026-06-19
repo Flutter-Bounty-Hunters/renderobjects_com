@@ -3,7 +3,7 @@ import 'package:jaspr/jaspr.dart';
 
 // ─── Shared site navbar ───────────────────────────────────────────────────────
 //
-// activePage: 'guides' | 'examples' | 'api' | 'renderkit'
+// activePage: 'guides' | 'examples' | 'api' | 'renderkit' | 'renderkit-wizard'
 
 class SiteNavbar extends StatelessComponent {
   const SiteNavbar({this.activePage});
@@ -33,7 +33,7 @@ class SiteNavbar extends StatelessComponent {
       ]),
       div(classes: 'navbar-actions', [
         a(
-          classes: activePage == 'renderkit'
+          classes: activePage == 'renderkit' || activePage == 'renderkit-wizard'
               ? 'btn-nav btn-nav-primary rs-navbar-active'
               : 'btn-nav btn-nav-primary',
           href: '/renderkit',

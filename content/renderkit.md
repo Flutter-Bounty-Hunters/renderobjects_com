@@ -1,5 +1,5 @@
 ---
-title: RenderKit — Build a Render Object
-description: Answer a few questions and generate your Flutter render object skeleton.
+title: RenderKit
+description: An AI-powered toolkit for building and validating custom Flutter render objects.
 layout: renderkit
 ---
