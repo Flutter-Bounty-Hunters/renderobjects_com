@@ -85,6 +85,23 @@ def format_duration(seconds: float) -> str:
     return f"{minutes}m {secs:02d}s" if minutes else f"{secs}s"
 
 
+def build_footer_links() -> list[str]:
+    ga4_url = (
+        f"https://analytics.google.com/analytics/web/#/p{PROPERTY_ID}/reports/intelligenthome"
+    )
+    return [
+        f"Google Analytics property — {ga4_url}",
+        "GCP project (renderobjects-com-gcp) — "
+        "https://console.cloud.google.com/home/dashboard?project=renderobjects-com-gcp",
+        "GitHub workflow (schedule/run history) — "
+        "https://github.com/Flutter-Bounty-Hunters/renderobjects_com/actions/workflows/ga4-daily-report.yml",
+        "GitHub secrets (credentials used by this report) — "
+        "https://github.com/Flutter-Bounty-Hunters/renderobjects_com/settings/secrets/actions",
+        "Report script source — "
+        "https://github.com/Flutter-Bounty-Hunters/renderobjects_com/blob/main/tool/ga_report/report.py",
+    ]
+
+
 def build_email_body(active_users: dict, top_pages: list[dict]) -> str:
     lines = [
         "RenderObjects.com — Daily Analytics Summary",
@@ -103,6 +120,12 @@ def build_email_body(active_users: dict, top_pages: list[dict]) -> str:
             f"  {i}. {page['path']} — {page['views']} views, "
             f"avg {format_duration(page['avg_duration_seconds'])} on page"
         )
+    lines.append("")
+    lines.append("-" * 60)
+    lines.append("")
+    lines.append("Manage this report:")
+    for link in build_footer_links():
+        lines.append(f"  • {link}")
     return "\n".join(lines)
 
 
