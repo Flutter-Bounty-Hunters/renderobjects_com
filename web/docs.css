@@ -154,6 +154,58 @@ code, kbd, pre, samp,
   font-weight: 500;
 }
 
+/* ─── Selection toolbar ─────────────────────────────────────── */
+
+.selection-toolbar {
+  position: fixed;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.3rem;
+  background: #18181a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.625rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(4px) scale(0.97);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  pointer-events: none;
+}
+.selection-toolbar.selection-toolbar-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.selection-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #d4d4d4;
+  background: transparent;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+.selection-toolbar-btn:hover {
+  color: #ececec;
+  background: rgba(255, 255, 255, 0.08);
+}
+.selection-toolbar-btn svg {
+  flex: none;
+}
+.selection-toolbar-sep {
+  width: 1px;
+  height: 1.1rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* ─── Typography ────────────────────────────────────────────── */
 
 .content h2 { letter-spacing: -0.025em; }
