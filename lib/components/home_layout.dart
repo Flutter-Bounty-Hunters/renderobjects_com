@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:jaspr/dom.dart';
-import 'package:jaspr/jaspr.dart';
+import 'package:jaspr/server.dart';
 import 'package:jaspr_content/jaspr_content.dart';
+import 'package:syntax_highlight_lite/syntax_highlight_lite.dart' hide Color;
 
 import 'analytics.dart';
 import 'favicon.dart';
@@ -124,6 +127,17 @@ class _HeroSection extends StatelessComponent {
   }
 }
 
+// The hero panel's example code lives in this Markdown file (a fenced
+// ```dart block) so it can be edited without touching the layout. It's
+// highlighted at build time with the same highlighter used by the site's
+// other code blocks, so its colors stay consistent with guides/docs.
+const _heroCodeSnippetPath = 'content/_snippets/hero-code.md';
+
+String _extractDartSource(String markdown) {
+  final match = RegExp(r'```dart\n([\s\S]*?)```').firstMatch(markdown);
+  return match?.group(1)?.trimRight() ?? markdown.trim();
+}
+
 class _HeroCodePanel extends StatelessComponent {
   @override
   Component build(BuildContext context) {
@@ -135,41 +149,37 @@ class _HeroCodePanel extends StatelessComponent {
         span(classes: 'hero-code-filename', [.text('my_render_box.dart')]),
       ]),
       div(classes: 'hero-code-body', [
-        Component.element(
-          tag: 'pre',
-          children: [
-            Component.element(tag: 'span', attributes: {'class': 'tok-kw'}, children: [.text('class ')]),
-            Component.element(tag: 'span', attributes: {'class': 'tok-cls'}, children: [.text('MyRenderBox ')]),
-            Component.element(tag: 'span', attributes: {'class': 'tok-kw'}, children: [.text('extends ')]),
-            Component.element(tag: 'span', attributes: {'class': 'tok-cls'}, children: [.text('RenderBox ')]),
-            .text('{\n  '),
-            Component.element(
-              tag: 'span',
-              attributes: {'class': 'tok-cmt'},
-              children: [.text('// Override to define your layout logic')],
-            ),
-            .text('\n  @override\n  '),
-            Component.element(tag: 'span', attributes: {'class': 'tok-typ'}, children: [.text('void ')]),
-            Component.element(tag: 'span', attributes: {'class': 'tok-fn'}, children: [.text('performLayout')]),
-            .text('() {\n    size = constraints.biggest;\n  }\n\n  '),
-            Component.element(
-              tag: 'span',
-              attributes: {'class': 'tok-cmt'},
-              children: [.text('// Paint to the canvas at the given offset')],
-            ),
-            .text('\n  @override\n  '),
-            Component.element(tag: 'span', attributes: {'class': 'tok-typ'}, children: [.text('void ')]),
-            Component.element(tag: 'span', attributes: {'class': 'tok-fn'}, children: [.text('paint')]),
-            .text('('),
-            Component.element(tag: 'span', attributes: {'class': 'tok-cls'}, children: [.text('PaintingContext ')]),
-            .text('ctx, '),
-            Component.element(tag: 'span', attributes: {'class': 'tok-cls'}, children: [.text('Offset ')]),
-            .text('offset) {\n    ctx.canvas.drawRect(\n      offset & size,\n      '),
-            Component.element(tag: 'span', attributes: {'class': 'tok-cls'}, children: [.text('Paint')]),
-            .text('()..color = color,\n    );\n  }\n}'),
-          ],
+        AsyncBuilder(
+          builder: (context) async {
+            final source = _extractDartSource(await File(_heroCodeSnippetPath).readAsString());
+            Highlighter.initialize(['dart']);
+            final highlighter = Highlighter(language: 'dart', theme: await HighlighterTheme.loadDarkTheme());
+            return pre([_buildSpan(highlighter.highlight(source))]);
+          },
         ),
       ]),
+    ]);
+  }
+
+  Component _buildSpan(TextSpan textSpan) {
+    Styles? styles;
+
+    if (textSpan.style case final style?) {
+      styles = Styles(
+        color: Color.value(style.foreground.argb & 0x00FFFFFF),
+        fontWeight: style.bold ? FontWeight.bold : null,
+        fontStyle: style.italic ? FontStyle.italic : null,
+        textDecoration: style.underline ? TextDecoration(line: TextDecorationLine.underline) : null,
+      );
+    }
+
+    if (styles == null && textSpan.children.isEmpty) {
+      return Component.text(textSpan.text ?? '');
+    }
+
+    return span(styles: styles, [
+      if (textSpan.text != null) Component.text(textSpan.text!),
+      for (final t in textSpan.children) _buildSpan(t),
     ]);
   }
 }
