@@ -42,8 +42,16 @@ const _api = SidebarSection(
 
 // ─── Main ──────────────────────────────────────────────────────────────────
 
+// Lets images, videos, and audio live right next to the guide/API doc/example
+// markdown files that reference them (e.g. `content/guides/diagram.png`
+// referenced from `content/guides/layout.md` as `![diagram](./diagram.png)`),
+// instead of requiring every asset to be flattened into `web/images/`.
+final _contentAssets = AssetManager(directory: 'content');
+
 void main() {
   Jaspr.initializeApp(options: defaultServerOptions);
+
+  ServerApp.addMiddleware(_contentAssets.middleware);
 
   runApp(
     ContentApp(
@@ -53,6 +61,7 @@ void main() {
         HeadingAnchorsExtension(),
         TableOfContentsExtension(),
         AuthorAttributionExtension(),
+        _contentAssets.pageExtension,
       ],
       components: [
         Callout(),
