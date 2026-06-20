@@ -6,6 +6,7 @@ import 'package:jaspr_content/jaspr_content.dart';
 import 'package:syntax_highlight_lite/syntax_highlight_lite.dart' hide Color;
 
 import 'analytics.dart';
+import 'author_attribution.dart';
 import 'favicon.dart';
 import 'hero_scene.dart';
 import 'site_footer.dart';
@@ -53,6 +54,9 @@ class HomeLayout extends PageLayoutBase {
     );
 
     yield link(href: '/styles.css', rel: 'stylesheet');
+    // Needed for the AuthorAttribution component embedded in the hero, which
+    // is otherwise only styled on docs.css-linked guide/API/example pages.
+    yield link(href: '/docs.css', rel: 'stylesheet');
     yield script(src: '/search.js', defer: true);
     yield* analyticsHead();
 
@@ -122,6 +126,7 @@ class _HeroSection extends StatelessComponent {
           ),
         ]),
         _HeroCodePanel(),
+        const AuthorAttribution(),
       ]),
     ]);
   }

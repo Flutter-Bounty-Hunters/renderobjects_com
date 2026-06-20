@@ -382,6 +382,17 @@ body {
 
 .hero-code-body pre { white-space: pre; }
 
+/* Author callout in the hero gets extra breathing room below the code panel
+   and is narrower than the .author-attribution default, to match the
+   hero's tighter centered column instead of spanning the full content width. */
+.hero-content .author-attribution {
+  margin-top: 3.5rem;
+  margin-bottom: 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .tok-kw   { color: #c792ea; }
 .tok-cls  { color: #82aaff; }
 .tok-fn   { color: var(--accent-light); }
