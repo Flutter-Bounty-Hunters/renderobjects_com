@@ -549,6 +549,20 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.125rem;
+  overflow: hidden;
+}
+.card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Image-backed icons (e.g. a render-object screenshot) span the full card
+   width instead of the small fixed icon box, since they're illustrative
+   rather than a glyph. */
+.card-icon-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
 }
 
 .card-title {

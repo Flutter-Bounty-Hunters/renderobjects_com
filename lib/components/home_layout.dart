@@ -331,12 +331,7 @@ class _UseCasesSectionWrapper extends StatelessComponent {
         div(classes: 'cards-grid cards-grid-3', [
           _UseCaseCard(
             accent: '#82acf3',
-            icon: _svgIcon([
-              _p('M4 2 L16 2 L16 18 L4 18 Z'),
-              _p('M10 6 L10 14'),
-              _p('M7.5 8 L10 6 L12.5 8'),
-              _p('M7.5 12 L10 14 L12.5 12'),
-            ]),
+            iconImagePath: 'examples/nest-thermostat_paint.png',
             title: 'Nest Thermostat',
             description:
                 "A render object that looks similar to a Nest thermostat. A child-less render object with a complicating painting and paint-aware hit detection.",
@@ -392,24 +387,30 @@ class _UseCasesSectionWrapper extends StatelessComponent {
 }
 
 class _UseCaseCard extends StatelessComponent {
-  final Component icon;
+  final Component? icon;
+  final String? iconImagePath;
   final String accent;
   final String title;
   final String description;
   final String href;
 
   _UseCaseCard({
-    required this.icon,
+    this.icon,
+    this.iconImagePath,
     required this.accent,
     required this.title,
     required this.description,
     required this.href,
-  });
+  }) : assert((icon == null) != (iconImagePath == null), 'Provide exactly one of icon or iconImagePath');
 
   @override
   Component build(BuildContext context) {
+    final iconContent = iconImagePath != null
+        ? img(src: context.resolveAsset(iconImagePath!), alt: title)
+        : icon!;
+    final iconClasses = iconImagePath != null ? 'card-icon card-icon-image' : 'card-icon';
     return a(classes: 'card reveal', href: href, [
-      div(classes: 'card-icon', attributes: {'style': 'background:${accent}18;color:$accent'}, [icon]),
+      div(classes: iconClasses, attributes: {'style': 'background:${accent}18;color:$accent'}, [iconContent]),
       div(classes: 'card-title', [.text(title)]),
       p(classes: 'card-description', [.text(description)]),
       span(classes: 'card-link', attributes: {'style': 'color:$accent'}, [.text('See example →')]),

@@ -63,7 +63,7 @@ void main() {
       // would otherwise try (and fail) to parse binary files as page content.
       loaders: [FilesystemLoader('content', filterExtensions: {'.md'})],
       configResolver: PageConfig.all(
-        dataLoaders: [FilesystemDataLoader('content/_data')],
+        dataLoaders: [FilesystemDataLoader('content/_data'), _contentAssets.dataLoader],
         templateEngine: MustacheTemplateEngine(),
         parsers: [MarkdownParser()],
         extensions: [
