@@ -11,6 +11,8 @@ import 'package:jaspr_content/components/callout.dart' as _callout;
 import 'package:jaspr_content/components/code_block.dart' as _code_block;
 import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     as _sidebar_toggle_button;
+import 'package:renderobjects/components/embedded_thermostat.dart'
+    as _embedded_thermostat;
 import 'package:renderobjects/components/hero_scene.dart' as _hero_scene;
 import 'package:renderobjects/components/renderkit_chat.dart'
     as _renderkit_chat;
@@ -42,10 +44,18 @@ ServerOptions get defaultServerOptions => ServerOptions(
         ClientTarget<_sidebar_toggle_button.SidebarToggleButton>(
           'jaspr_content:sidebar_toggle_button',
         ),
+    _embedded_thermostat.EmbeddedThermostat:
+        ClientTarget<_embedded_thermostat.EmbeddedThermostat>(
+          'embedded_thermostat',
+        ),
     _hero_scene.HeroScene: ClientTarget<_hero_scene.HeroScene>('hero_scene'),
     _renderkit_chat.RenderKitChat: ClientTarget<_renderkit_chat.RenderKitChat>(
       'renderkit_chat',
     ),
   },
-  styles: () => [..._callout.Callout.styles, ..._code_block.CodeBlock.styles],
+  styles: () => [
+    ..._callout.Callout.styles,
+    ..._code_block.CodeBlock.styles,
+    ..._embedded_thermostat.EmbeddedThermostat.styles,
+  ],
 );

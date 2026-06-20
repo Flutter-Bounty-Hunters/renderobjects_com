@@ -10,6 +10,7 @@ import 'package:jaspr_content/theme.dart';
 
 import 'components/author_attribution_extension.dart';
 import 'components/docs_layout_override.dart';
+import 'components/embedded_thermostat.dart';
 import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
 import 'components/not_found_layout.dart';
@@ -66,6 +67,10 @@ void main() {
       components: [
         Callout(),
         CodeBlock(),
+        CustomComponent(
+          pattern: RegExp(r'EmbeddedThermostat'),
+          builder: (name, attributes, child) => const EmbeddedThermostat(),
+        ),
       ],
       layouts: [
         // Default: full sidebar, used by any page with no layout key (e.g. about).

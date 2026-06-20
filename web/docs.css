@@ -219,6 +219,14 @@ code, kbd, pre, samp,
   margin-right: auto;
 }
 
+/* Embedded Flutter apps (FlutterEmbedView, marked with the shared
+   `flutter-embed` class) are centered in the content column the same way
+   images are, regardless of which component renders them. */
+.content .flutter-embed {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ─── Typography ────────────────────────────────────────────── */
 
 .content h2 { letter-spacing: -0.025em; }

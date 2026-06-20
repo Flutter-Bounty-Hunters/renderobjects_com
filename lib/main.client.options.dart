@@ -10,6 +10,8 @@ import 'package:jaspr_content/components/_internal/code_block_copy_button.dart'
     deferred as _code_block_copy_button;
 import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     deferred as _sidebar_toggle_button;
+import 'package:renderobjects/components/embedded_thermostat.dart'
+    deferred as _embedded_thermostat;
 import 'package:renderobjects/components/hero_scene.dart'
     deferred as _hero_scene;
 import 'package:renderobjects/components/renderkit_chat.dart'
@@ -40,6 +42,10 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'jaspr_content:sidebar_toggle_button': ClientLoader(
       (p) => _sidebar_toggle_button.SidebarToggleButton(),
       loader: _sidebar_toggle_button.loadLibrary,
+    ),
+    'embedded_thermostat': ClientLoader(
+      (p) => _embedded_thermostat.EmbeddedThermostat(),
+      loader: _embedded_thermostat.loadLibrary,
     ),
     'hero_scene': ClientLoader(
       (p) => _hero_scene.HeroScene(),

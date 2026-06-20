@@ -9,7 +9,9 @@ Nest created the concept of a learning thermostat, which optimizes temperature t
 In this example, we'll create a custom render object that looks similar to the thermostat in the Nest app.
 
 ## The Goal
-TODO:
+The goal is to render a fully interactive thermostat dial using nothing but a custom `RenderBox` — no nested widgets, just direct `Canvas` painting, layout, hit-testing, and gesture handling. Drag the ring or tap the +/- buttons to change the target temperature below:
+
+<EmbeddedThermostat />
 
 ## What We're Faking
 The goal of this example is to demonstrate render object behavior. As such, this example fakes various pieces of information and state

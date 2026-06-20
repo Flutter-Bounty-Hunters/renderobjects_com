@@ -205,6 +205,7 @@ class CustomDocsLayout extends DocsLayout {
     yield link(href: '/docs.css', rel: 'stylesheet');
     yield script(src: '/search.js', defer: true);
     yield script(src: '/selection-toolbar.js', defer: true);
+    yield script(src: '/flutter_bootstrap.js', async: true);
     yield* analyticsHead();
   }
 }
