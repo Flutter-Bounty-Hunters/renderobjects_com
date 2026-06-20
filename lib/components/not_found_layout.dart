@@ -4,6 +4,7 @@ import 'package:jaspr_content/jaspr_content.dart';
 
 import 'analytics.dart';
 import 'favicon.dart';
+import 'site_footer.dart';
 import 'site_navbar.dart';
 
 class NotFoundLayout extends PageLayoutBase {
@@ -58,6 +59,7 @@ class NotFoundLayout extends PageLayoutBase {
           ),
         ]),
       ]),
+      const SiteFooter(),
     ]);
   }
 }

@@ -5,6 +5,7 @@ import 'package:jaspr_content/jaspr_content.dart';
 import 'analytics.dart';
 import 'favicon.dart';
 import 'renderkit_chat.dart';
+import 'site_footer.dart';
 import 'site_navbar.dart';
 
 // ─── Page layout (server-side shell) ─────────────────────────────────────────
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
       div(classes: 'rs-main', [
         const RenderKitChat(),
       ]),
+      const SiteFooter(),
     ]);
   }
 }

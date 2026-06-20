@@ -5,6 +5,7 @@ import 'package:jaspr_content/jaspr_content.dart';
 import 'analytics.dart';
 import 'favicon.dart';
 import 'hero_scene.dart';
+import 'site_footer.dart';
 import 'site_navbar.dart';
 
 Component _svgIcon(List<Component> children, {String size = '20'}) => Component.element(
@@ -547,19 +548,7 @@ class _FooterCta extends StatelessComponent {
           ]),
         ]),
       ]),
-      footer(
-        classes: 'site-footer',
-        attributes: {'data-pagefind-ignore': ''},
-        [
-          span(classes: 'footer-copy', [.text('© 2025 renderobjects.com')]),
-          div(classes: 'footer-links', [
-            a(href: '/guides', [.text('Guides')]),
-            a(href: '/examples', [.text('Examples')]),
-            a(href: '/api', [.text('API')]),
-            a(href: '/renderkit', [.text('RenderKit')]),
-          ]),
-        ],
-      ),
+      const SiteFooter(),
     ]);
   }
 }

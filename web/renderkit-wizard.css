@@ -3,8 +3,7 @@
 .rs-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
   background: var(--bg-base);
 }
 
@@ -12,7 +11,7 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  min-height: calc(100vh - 58px);
   padding-top: 58px;
 }
 

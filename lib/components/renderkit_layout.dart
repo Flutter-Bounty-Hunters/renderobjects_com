@@ -4,6 +4,7 @@ import 'package:jaspr_content/jaspr_content.dart';
 
 import 'analytics.dart';
 import 'favicon.dart';
+import 'site_footer.dart';
 import 'site_navbar.dart';
 
 Component _svgIcon(List<Component> children, {String size = '20'}) =>
@@ -60,6 +61,7 @@ class RenderKitLayout extends PageLayoutBase {
       const _RenderKitHero(),
       const _SkillsSection(),
       const _TestsSection(),
+      const SiteFooter(),
     ]);
   }
 }

@@ -14,6 +14,7 @@ import 'components/home_layout.dart';
 import 'components/not_found_layout.dart';
 import 'components/renderkit_layout.dart';
 import 'components/renderkit_wizard_layout.dart';
+import 'components/site_footer.dart';
 import 'components/site_navbar.dart';
 
 import 'main.server.options.dart';
@@ -59,6 +60,7 @@ void main() {
         // Default: full sidebar, used by any page with no layout key (e.g. about).
         CustomDocsLayout(
           siteHeader: const SiteNavbar(),
+          siteFooter: const SiteFooter(),
           sidebar: const DynamicSidebar(sections: [_guides, _useCases, _api]),
         ),
         // Section-specific layouts — matched by the `layout:` frontmatter key.
@@ -67,16 +69,19 @@ void main() {
         CustomDocsLayout(
           layoutName: 'guides',
           siteHeader: const SiteNavbar(activePage: 'guides'),
+          siteFooter: const SiteFooter(),
           sidebar: const DynamicSidebar(sections: [_guides]),
         ),
         CustomDocsLayout(
           layoutName: 'examples',
           siteHeader: const SiteNavbar(activePage: 'examples'),
+          siteFooter: const SiteFooter(),
           sidebar: const DynamicSidebar(sections: [_useCases]),
         ),
         CustomDocsLayout(
           layoutName: 'api',
           siteHeader: const SiteNavbar(activePage: 'api'),
+          siteFooter: const SiteFooter(),
           sidebar: const DynamicSidebar(sections: [_api]),
         ),
         // HomeLayout is matched by name for pages with `layout: home`.
