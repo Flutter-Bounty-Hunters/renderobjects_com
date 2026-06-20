@@ -17,7 +17,11 @@ class SiteNavbar extends StatelessComponent {
   Component build(BuildContext context) {
     return nav(classes: 'navbar', attributes: {'data-pagefind-ignore': ''}, [
       a(classes: 'navbar-brand', href: '/', [
-        _logoIcon(),
+        img(
+          src: '/images/logo.png',
+          classes: 'navbar-logo-icon',
+          alt: 'Render Objects logo',
+        ),
         span([.text('Render Objects')]),
       ]),
       div(classes: 'navbar-divider', []),
@@ -50,27 +54,6 @@ class SiteNavbar extends StatelessComponent {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-Component _logoIcon() => Component.element(
-      tag: 'svg',
-      attributes: {
-        'xmlns': 'http://www.w3.org/2000/svg',
-        'viewBox': '0 0 22 22',
-        'fill': 'none',
-        'class': 'navbar-logo-icon',
-        'aria-hidden': 'true',
-      },
-      children: [
-        Component.element(tag: 'rect', attributes: {
-          'x': '2', 'y': '7', 'width': '11', 'height': '11',
-          'rx': '2', 'fill': '#5b8dee', 'fill-opacity': '0.9',
-        }),
-        Component.element(tag: 'rect', attributes: {
-          'x': '9', 'y': '2', 'width': '11', 'height': '11',
-          'rx': '2', 'fill': '#82acf3', 'fill-opacity': '0.8',
-        }),
-      ],
-    );
 
 Component _searchIcon() => Component.element(
       tag: 'svg',

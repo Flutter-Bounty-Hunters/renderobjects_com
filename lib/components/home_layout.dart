@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
 import 'analytics.dart';
+import 'favicon.dart';
 import 'hero_scene.dart';
 import 'site_navbar.dart';
 
@@ -33,6 +34,7 @@ class HomeLayout extends PageLayoutBase {
   @override
   Iterable<Component> buildHead(Page page) sync* {
     yield* super.buildHead(page);
+    yield* faviconHead();
 
     yield link(href: 'https://fonts.googleapis.com', rel: 'preconnect');
     yield link(
@@ -102,6 +104,11 @@ class _HeroSection extends StatelessComponent {
         div(classes: 'hero-eyebrow', [
           .text('ADVANCED FLUTTER'),
         ]),
+        img(
+          src: '/images/logo_big.png',
+          classes: 'hero-logo',
+          alt: 'Render Objects logo',
+        ),
         h1(classes: 'hero-title gradient-text', [
           .text('Render Objects'),
         ]),

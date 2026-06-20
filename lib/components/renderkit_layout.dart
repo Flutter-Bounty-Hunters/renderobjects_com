@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
 import 'analytics.dart';
+import 'favicon.dart';
 import 'site_navbar.dart';
 
 Component _svgIcon(List<Component> children, {String size = '20'}) =>
@@ -36,6 +37,7 @@ class RenderKitLayout extends PageLayoutBase {
   @override
   Iterable<Component> buildHead(Page page) sync* {
     yield* super.buildHead(page);
+    yield* faviconHead();
     yield link(href: 'https://fonts.googleapis.com', rel: 'preconnect');
     yield link(
       href: 'https://fonts.gstatic.com',

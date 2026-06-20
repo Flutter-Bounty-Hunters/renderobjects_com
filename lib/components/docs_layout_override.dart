@@ -6,6 +6,7 @@ import 'package:jaspr_content/components/sidebar.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 
 import 'analytics.dart';
+import 'favicon.dart';
 
 // ─── DynamicSidebar ────────────────────────────────────────────────────────
 
@@ -189,6 +190,7 @@ class CustomDocsLayout extends DocsLayout {
   @override
   Iterable<Component> buildHead(Page page) sync* {
     yield* super.buildHead(page);
+    yield* faviconHead();
     yield link(href: 'https://fonts.googleapis.com', rel: 'preconnect');
     yield link(
       href: 'https://fonts.gstatic.com',

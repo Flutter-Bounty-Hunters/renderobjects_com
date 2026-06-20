@@ -94,7 +94,12 @@ body {
   flex-shrink: 0;
 }
 
-.navbar-logo-icon { width: 22px; height: 22px; }
+.navbar-logo-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
 .navbar-divider {
   width: 1px;
@@ -292,6 +297,13 @@ body {
   border-radius: 50%;
   background: var(--accent-light);
   flex-shrink: 0;
+}
+
+.hero-logo {
+  display: block;
+  width: 250px;
+  height: auto;
+  margin: 0 auto 1.5rem;
 }
 
 .hero-title {
