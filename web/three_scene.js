@@ -9,12 +9,15 @@ const rects = [];
 const RECT_CONFIGS = [
   // Large rect, slightly left and back
   {
-    w: 3.8, h: 2.6, d: 0.08,
-    x: -2.2, y: 0.4, z: -2.5,
+    // Square footprint to match the (535x535) thermostat screenshot's aspect
+    // ratio 1:1, so `fitTextureCover` doesn't need to crop any of it.
+    w: 3.14, h: 3.14, d: 0.08,
+    x: -3.4, y: 0.4, z: -2.5,
     rx: 0.08, ry: 0.3, rz: -0.06,
     color: 0x4C85F5,
     emissive: 0x091530,
     sensitivity: 1.0,
+    texture: 'images/nest-thermostat_paint.png',
   },
   // Medium rect, center-right and slightly forward
   {
@@ -65,15 +68,27 @@ function initScene(container) {
   scene.add(deepBlueLight);
 
   // Build the three rectangles
+  const textureLoader = new THREE.TextureLoader();
   for (const cfg of RECT_CONFIGS) {
     const geo = new RoundedBoxGeometry(cfg.w, cfg.h, cfg.d, 4, 0.12);
-    const mat = new THREE.MeshStandardMaterial({
-      color: cfg.color,
-      emissive: cfg.emissive,
-      emissiveIntensity: 0.38,
-      metalness: 0.08,
-      roughness: 0.52,
-    });
+    let mat;
+    if (cfg.texture) {
+      const tex = textureLoader.load(cfg.texture, (loaded) => fitTextureCover(loaded, cfg.w, cfg.h));
+      tex.colorSpace = THREE.SRGBColorSpace;
+      mat = new THREE.MeshStandardMaterial({
+        map: tex,
+        metalness: 0.08,
+        roughness: 0.52,
+      });
+    } else {
+      mat = new THREE.MeshStandardMaterial({
+        color: cfg.color,
+        emissive: cfg.emissive,
+        emissiveIntensity: 0.38,
+        metalness: 0.08,
+        roughness: 0.52,
+      });
+    }
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.set(cfg.x, cfg.y, cfg.z);
     mesh.rotation.set(cfg.rx, cfg.ry, cfg.rz);
@@ -115,6 +130,24 @@ function initScene(container) {
 
 function clamp(v, min, max) {
   return Math.max(min, Math.min(max, v));
+}
+
+// Crops a texture's UV rect to match the target box face's aspect ratio
+// (like CSS `object-fit: cover`), so a non-matching source image isn't
+// stretched when mapped onto the face.
+function fitTextureCover(tex, boxW, boxH) {
+  const img = tex.image;
+  if (!img || !img.width || !img.height) return;
+  const imgAspect = img.width / img.height;
+  const boxAspect = boxW / boxH;
+  if (boxAspect > imgAspect) {
+    tex.repeat.set(1, imgAspect / boxAspect);
+    tex.offset.set(0, (1 - tex.repeat.y) / 2);
+  } else {
+    tex.repeat.set(boxAspect / imgAspect, 1);
+    tex.offset.set((1 - tex.repeat.x) / 2, 0);
+  }
+  tex.needsUpdate = true;
 }
 
 function animate() {
