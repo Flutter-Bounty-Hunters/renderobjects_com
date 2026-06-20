@@ -8,6 +8,7 @@ import 'package:jaspr_content/components/code_block.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 import 'package:jaspr_content/theme.dart';
 
+import 'components/author_attribution_extension.dart';
 import 'components/docs_layout_override.dart';
 import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
@@ -51,6 +52,7 @@ void main() {
       extensions: [
         HeadingAnchorsExtension(),
         TableOfContentsExtension(),
+        AuthorAttributionExtension(),
       ],
       components: [
         Callout(),

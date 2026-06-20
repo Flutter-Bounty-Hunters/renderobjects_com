@@ -116,6 +116,44 @@ code, kbd, pre, samp,
   margin-top: 0.625rem !important;
 }
 
+/* ─── Author attribution ────────────────────────────────────── */
+
+.author-attribution {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.1rem 0.5rem 0.4rem;
+  margin-bottom: 1.5rem;
+  border: 3px dashed rgba(255, 255, 255, 0.13);
+  border-radius: 0.5rem;
+}
+.author-attribution .author-attribution-photo {
+  display: block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+.author-attribution-byline {
+  font-weight: 600;
+  color: #ececec;
+  margin-bottom: 0;
+  font-size: 0.9375rem;
+}
+.author-attribution-cta {
+  font-size: 0.9rem;
+  color: #999999;
+  margin-top: 0rem;
+  line-height: 1.4rem;
+}
+.author-attribution-cta a {
+  color: var(--accent-light, #82acf3);
+  font-weight: 500;
+}
+
 /* ─── Typography ────────────────────────────────────────────── */
 
 .content h2 { letter-spacing: -0.025em; }
