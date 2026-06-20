@@ -14,6 +14,7 @@ import 'dart:io';
 
 const _baseTag = 'deployed';
 const _redirectsFile = 'redirects.json';
+const _removedFile = 'removed.json';
 
 Future<void> main(List<String> args) async {
   final mode = args.isEmpty ? '' : args.first;
@@ -56,6 +57,18 @@ Future<Map<String, String>> _loadRedirects() async {
   if (content.trim().isEmpty) return {};
   final decoded = jsonDecode(content) as Map<String, dynamic>;
   return decoded.map((k, v) => MapEntry(k, v as String));
+}
+
+/// URLs that intentionally stopped existing with no replacement — e.g. a
+/// page that should never have been published. Listed explicitly so a
+/// missing redirect is a recorded decision, not a silently-skipped check.
+Future<Set<String>> _loadRemoved() async {
+  final file = File(_removedFile);
+  if (!await file.exists()) return {};
+  final content = await file.readAsString();
+  if (content.trim().isEmpty) return {};
+  final decoded = jsonDecode(content) as List<dynamic>;
+  return decoded.map((e) => e as String).toSet();
 }
 
 Future<void> _saveRedirects(Map<String, String> redirects) async {
@@ -110,6 +123,7 @@ Future<void> _runCheck() async {
 
   var redirects = await _loadRedirects();
   final originalRedirects = Map<String, String>.from(redirects);
+  final removed = await _loadRemoved();
   final renames = <String, String>{};
   final deletions = <String>{};
 
@@ -133,9 +147,13 @@ Future<void> _runCheck() async {
   redirects = _flatten(redirects);
 
   // A deletion is fine if it's covered by a redirect (renamed/merged into
-  // something that still resolves). Otherwise it's a URL that would start
-  // 404ing with no replacement, which needs a human decision.
-  final uncovered = deletions.where((url) => !redirects.containsKey(url)).toList()..sort();
+  // something that still resolves) or explicitly marked as intentionally
+  // removed in removed.json. Otherwise it's a URL that would start 404ing
+  // with no replacement, which needs a human decision.
+  final uncovered = deletions
+      .where((url) => !redirects.containsKey(url) && !removed.contains(url))
+      .toList()
+    ..sort();
 
   if (renames.isNotEmpty) {
     stdout.writeln('Detected ${renames.length} content move(s):');
@@ -156,8 +174,9 @@ Future<void> _runCheck() async {
       stderr.writeln('  $url');
     }
     stderr.writeln(
-      '\nEither restore the content, or add an entry to redirects.json '
-      'mapping the old URL to wherever it should now go.',
+      '\nEither restore the content, add an entry to redirects.json mapping '
+      'the old URL to wherever it should now go, or add the URL to '
+      'removed.json if it was deleted intentionally with no replacement.',
     );
     exit(1);
   }
