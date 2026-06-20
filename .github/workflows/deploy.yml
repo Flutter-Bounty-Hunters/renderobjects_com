@@ -25,9 +25,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
         with:
-          sdk: stable
+          channel: stable
 
       - uses: actions/setup-node@v4
         with:
@@ -37,7 +37,7 @@ jobs:
         run: dart pub global activate jaspr_cli
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
       # Diffs content/ against the last deployed commit (the "deployed" tag)
       # to catch moved or removed pages. Renames are folded into
