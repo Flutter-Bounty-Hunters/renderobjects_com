@@ -105,20 +105,20 @@ class _HeroSection extends StatelessComponent {
       div(id: 'hero-canvas', attributes: {'aria-hidden': 'true'}, []),
       HeroScene(),
       div(classes: 'hero-content', [
-        div(classes: 'hero-eyebrow', [
-          .text('ADVANCED FLUTTER'),
-        ]),
         img(
           src: '/images/logo_big.png',
           classes: 'hero-logo',
           alt: 'Render Objects logo',
         ),
+        div(classes: 'hero-eyebrow', [
+          .text('ADVANCED FLUTTER'),
+        ]),
         h1(classes: 'hero-title gradient-text', [
           .text('Render Objects'),
         ]),
         p(classes: 'hero-tagline', [
           .text(
-            "Learn the foundation of Flutter's rendering layer. Master the primitives that paint every pixel on screen.",
+            "Learn the foundation of Flutter's rendering layer. Master the primitives that paint every pixel on the screen.",
           ),
         ]),
         _HeroCodePanel(),
