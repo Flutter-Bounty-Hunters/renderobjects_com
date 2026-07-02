@@ -34,10 +34,34 @@ class RenderKitWizardLayout extends PageLayoutBase {
 
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/renderkit-wizard.css', rel: 'stylesheet');
+
+    // Prism.js for syntax highlighting
+    yield link(
+      href: 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css',
+      rel: 'stylesheet',
+    );
+    yield script(
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js',
+      defer: true,
+    );
+    yield script(
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-dart.min.js',
+      defer: true,
+    );
+
+    // Ensure Prism highlights code when it's ready
+    yield script(content: r'''
+window.addEventListener('load', function() {
+  if (window.Prism) {
+    Prism.highlightAllUnder(document.body);
+  }
+});
+''');
+
     yield script(src: '/search.js', defer: true);
     yield* analyticsHead();
 
-    // Auto-scroll .rs-thread to the bottom whenever new message bubbles appear.
+    // Auto-scroll code when skeleton appears
     yield script(content: r'''
 document.addEventListener('DOMContentLoaded', function () {
   var waitForThread = setInterval(function () {

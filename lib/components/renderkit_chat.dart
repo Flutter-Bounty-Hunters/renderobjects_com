@@ -36,6 +36,82 @@ const _kWelcomeMessage =
 const _kFinalBotMessage =
     "Perfect! I have everything I need. Click below to generate your render object skeleton.";
 
+// ─── Answer mapping ──────────────────────────────────────────────────────────
+
+/// Maps wizard answers to skeleton feature values.
+class _SkeletonFeatures {
+  final String children;
+  final String paint;
+  final String hitTest;
+  final String semantics;
+  final String baseline;
+
+  _SkeletonFeatures({
+    required this.children,
+    required this.paint,
+    required this.hitTest,
+    required this.semantics,
+    required this.baseline,
+  });
+
+  /// Generates the skeleton filename from features.
+  String get filename =>
+      '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.dart';
+
+  /// Generates the skeleton HTML filename (for loading from web).
+  String get htmlFilename =>
+      '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.html';
+
+  /// Maps wizard answers to skeleton features.
+  static _SkeletonFeatures fromAnswers(List<String> answers) {
+    if (answers.length < 3) {
+      throw ArgumentError('Need at least 3 answers');
+    }
+
+    // Answer 0: children type
+    final children = _mapChildrenAnswer(answers[0]);
+
+    // Answer 1: paint
+    final paint = _mapPaintAnswer(answers[1]);
+
+    // Answer 2: hit testing
+    final hitTest = _mapHitTestAnswer(answers[2], children);
+
+    // Answer 3: intrinsic size (maps to baseline)
+    final baseline = answers.length > 3 && answers[3].contains('intrinsic') ? 'true' : 'false';
+
+    // Answer 4: semantics (default false, could be true if user opts in)
+    final semantics = 'false';
+
+    return _SkeletonFeatures(
+      children: children,
+      paint: paint,
+      hitTest: hitTest,
+      semantics: semantics,
+      baseline: baseline,
+    );
+  }
+
+  static String _mapChildrenAnswer(String answer) {
+    if (answer.contains('Zero')) return 'none';
+    if (answer.contains('One')) return 'single';
+    return 'multi'; // Slotted, List, Custom model all map to multi
+  }
+
+  static String _mapPaintAnswer(String answer) {
+    if (answer.contains('No')) return 'false';
+    return 'true'; // Custom paint, Compositing, Both
+  }
+
+  static String _mapHitTestAnswer(String answer, String children) {
+    if (answer.contains('Non')) return 'none';
+    if (answer.contains('Entirely')) return children == 'none' ? 'self' : 'both';
+    if (answer.contains('Partially')) return children == 'none' ? 'self' : 'children';
+    if (answer.contains('Only Children')) return 'children';
+    return 'self';
+  }
+}
+
 // ─── Message model ────────────────────────────────────────────────────────────
 
 enum _MessageSender { bot, user }
@@ -62,6 +138,9 @@ class RenderKitChatState extends State<RenderKitChat> {
   int _currentStep = 0;
   bool _isTyping = false;
   bool _isDone = false;
+  String? _skeletonCode;
+  bool _isLoadingSkeleton = false;
+  String? _skeletonError;
 
   @override
   void initState() {
@@ -78,30 +157,37 @@ class RenderKitChatState extends State<RenderKitChat> {
 
   void _handleOptionSelected(String option) {
     if (_isTyping) return;
+
+    // Debug log
+    print('Option selected: $option');
+
     setState(() {
       _answers.add(option);
       _isTyping = true;
       _messages.add(_ChatMessage(sender: _MessageSender.user, text: option));
     });
 
-    Future.delayed(const Duration(milliseconds: 900), () {
-      final nextStep = _currentStep + 1;
-      setState(() {
-        _isTyping = false;
-        _currentStep = nextStep;
-        if (nextStep >= _kWizardSteps.length) {
-          _isDone = true;
-          _messages.add(const _ChatMessage(
-            sender: _MessageSender.bot,
-            text: _kFinalBotMessage,
-          ));
-        } else {
-          _messages.add(_ChatMessage(
-            sender: _MessageSender.bot,
-            text: _kWizardSteps[nextStep].question,
-          ));
-        }
-      });
+    // ignore: unawaited_futures
+    Future.delayed(const Duration(milliseconds: 900), _onTypingComplete);
+  }
+
+  void _onTypingComplete() {
+    final nextStep = _currentStep + 1;
+    setState(() {
+      _isTyping = false;
+      _currentStep = nextStep;
+      if (nextStep >= _kWizardSteps.length) {
+        _isDone = true;
+        _messages.add(const _ChatMessage(
+          sender: _MessageSender.bot,
+          text: _kFinalBotMessage,
+        ));
+      } else {
+        _messages.add(_ChatMessage(
+          sender: _MessageSender.bot,
+          text: _kWizardSteps[nextStep].question,
+        ));
+      }
     });
   }
 
@@ -142,38 +228,186 @@ class RenderKitChatState extends State<RenderKitChat> {
     return div(classes: 'rs-chips', [
       for (final opt in options)
         button(
+          type: ButtonType.button,
           classes: 'rs-chip',
-          onClick: () => _handleOptionSelected(opt),
+          onClick: () {
+            print('Button clicked: $opt');
+            _handleOptionSelected(opt);
+          },
           [.text(opt)],
         ),
     ]);
+  }
+
+  Future<void> _loadSkeleton() async {
+    final features = _SkeletonFeatures.fromAnswers(_answers);
+    setState(() {
+      _isLoadingSkeleton = true;
+      _skeletonError = null;
+      _skeletonCode = null;
+    });
+
+    try {
+      final skeletonCode = await _fetchSkeletonCode(features);
+      setState(() {
+        _skeletonCode = skeletonCode;
+        _isLoadingSkeleton = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingSkeleton = false;
+        _skeletonError = 'Error loading skeleton: $e';
+      });
+    }
+  }
+
+  Future<String> _fetchSkeletonCode(_SkeletonFeatures features) async {
+    try {
+      // For now, return the generated skeleton code
+      // In production, this would fetch the pre-styled HTML from the server
+      return _generateSkeletonFromFeatures(features);
+    } catch (e) {
+      print('Error fetching skeleton: $e');
+    }
+
+    return _generateSkeletonFromFeatures(features);
+  }
+
+  String _generateSkeletonFromFeatures(_SkeletonFeatures features) {
+    // Generate a basic skeleton structure based on the features
+    // This is a simplified version - the real skeleton would come from files
+    final childrenType = features.children;
+    final hasBaseClass = 'RenderBox';
+    final mixinName = _getMixinForChildren(childrenType);
+    final hasMixin = childrenType != 'none' ? ', $mixinName' : '';
+
+    return '''import 'package:flutter/rendering.dart';
+
+// TODO: Write useful Dart Docs for this custom render object.
+class MyRenderObject extends $hasBaseClass$hasMixin {
+  // TODO: Estimate your size given the constraints.
+  @override
+  Size computeDryLayout(BoxConstraints constraints) {
+    throw UnimplementedError();
+  }
+
+  // TODO: If possible, choose intrinsic widths/heights.
+  @override
+  double computeMinIntrinsicWidth(double height) => 0.0;
+
+  @override
+  double computeMaxIntrinsicWidth(double height) => 0.0;
+
+  @override
+  double computeMinIntrinsicHeight(double width) => 0.0;
+
+  @override
+  double computeMaxIntrinsicHeight(double width) => 0.0;
+
+  // TODO: Pick a size based on constraints.
+  @override
+  void performLayout() {
+    throw UnimplementedError();
+  }
+
+  ${features.paint == 'true' ? '''// TODO: Paint your content.
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void debugPaint(PaintingContext context, Offset offset) {
+    super.debugPaint(context, offset);
+    if (debugPaintSizeEnabled) {
+      // TODO: Paint useful debug shapes/lines.
+    }
+  }
+''' : ''}
+  ${features.hitTest != 'none' ? '''// TODO: Return true if hittable.
+  @override
+  bool hitTestSelf(Offset position) => false;
+''' : ''}
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    // TODO: Report important info specific to this Render Object.
+  }
+}''';
+  }
+
+  String _getMixinForChildren(String childrenType) {
+    switch (childrenType) {
+      case 'single':
+        return 'RenderObjectWithChildMixin<RenderBox>';
+      case 'multi':
+        return 'ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>>';
+      default:
+        return '';
+    }
   }
 
   Component _buildGenerateButton() {
     return div(classes: 'rs-generate-row', [
       button(
         classes: 'rs-generate-btn',
-        disabled: true,
-        [.text('Generate Skeleton')],
+        onClick: _skeletonCode == null ? () => _loadSkeleton() : null,
+        [.text(_skeletonCode == null ? 'Generate Skeleton' : 'Copy Code')],
       ),
+    ]);
+  }
+
+  Component _buildSkeletonDisplay() {
+    if (_isLoadingSkeleton) {
+      return div(classes: 'rs-skeleton-loading', [
+        p([.text('Loading skeleton...')]),
+      ]);
+    }
+
+    if (_skeletonError != null) {
+      return div(classes: 'rs-skeleton-error', [
+        p([.text(_skeletonError!)]),
+      ]);
+    }
+
+    if (_skeletonCode == null) {
+      return div([]);
+    }
+
+    return div(classes: 'rs-skeleton-display', [
+      div(classes: 'rs-skeleton-header', [
+        h3([.text('Your Render Object Skeleton')]),
+      ]),
+      div(classes: 'rs-skeleton-code', [
+        pre([
+          code(
+            attributes: {'class': 'language-dart', 'id': 'skeleton-code'},
+            [.text(_skeletonCode!)],
+          ),
+        ]),
+      ]),
     ]);
   }
 
   @override
   Component build(BuildContext context) {
+    final shouldShowOptions = !_isTyping && !_isDone;
+
     return div(classes: 'rs-chat-root', [
       div(classes: 'rs-thread', [
         for (final msg in _messages) _buildMessage(msg),
         if (_isTyping) _buildTypingIndicator(),
-        if (!_isTyping && !_isDone)
+        if (shouldShowOptions)
           div(classes: 'rs-msg-row rs-msg-row--user', [
             _buildOptions(_optionsForStep(_currentStep)),
           ]),
       ]),
-      if (_isDone)
+      if (_isDone) ...[
         div(classes: 'rs-input-area', [
           _buildGenerateButton(),
         ]),
+        _buildSkeletonDisplay(),
+      ],
     ]);
   }
 }
