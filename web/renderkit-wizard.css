@@ -214,11 +214,14 @@
 
 .rs-skeleton-display {
   margin-top: 2rem;
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
   padding: 1.5rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--bg-surface);
   animation: fade-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  width: calc(100% + 2.5rem);
 }
 
 .rs-skeleton-header {
@@ -236,9 +239,6 @@
 
 .rs-skeleton-code {
   overflow-x: auto;
-  margin: 0 -1.5rem;
-  padding: 0 1.5rem;
-  width: calc(100% + 3rem);
 }
 
 .rs-skeleton-code pre {
@@ -251,7 +251,6 @@
   line-height: 1.6;
   font-family: 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
   overflow-x: auto;
-  min-width: 100%;
 }
 
 .rs-skeleton-code code {
