@@ -1,7 +1,29 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+
+// Configuration: children=multi, paint=true, hit_test=self, semantics=false, baseline=true
+
+// TODO: Write useful Dart Docs for this custom widget.
+class MyWidget extends MultiChildRenderObjectWidget {
+  const MyWidget({super.key, super.children = const <Widget>[]});
+
+  @override
+  MyRenderObject createRenderObject(BuildContext context) {
+    return MyRenderObject();
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
+    // TODO: Pass updated properties to renderObject.
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    // TODO: Report important info that's specific to this widget (or delete this method).
+  }
+}
 
 // TODO: Write useful Dart Docs for this custom render object.
-// Configuration: children=multi, paint=true, hit_test=self, semantics=false, baseline=true
 class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>> {
   @override
   void setupParentData(RenderObject child) {
@@ -54,6 +76,12 @@ class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox
   }
 
   @override
+  bool hitTestSelf(Offset position) {
+    // TODO: Return `true` if this render object can be interacted with.
+    return false;
+  }
+
+  @override
   void paint(PaintingContext context, Offset offset) {
     // TODO: Paint your content.
     throw UnimplementedError();
@@ -66,12 +94,6 @@ class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox
     if (debugPaintSizeEnabled) {
       // TODO: Paint useful debug shapes/lines (or delete this method).
     }
-  }
-
-  @override
-  bool hitTestSelf(Offset position) {
-    // TODO: Return `true` if this render object can be interacted with.
-    return false;
   }
 
   @override

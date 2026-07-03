@@ -1,8 +1,30 @@
 <div class="rs-skeleton-code">
-  <pre><code class="language-dart"><span style="color: #b9eeff; "><span style="color: #569cd6; ">import</span><span style="color: #d4d4d4; "> </span><span style="color: #ce9178; ">&#39;package:flutter/rendering.dart&#39;</span><span style="color: #d4d4d4; ">;</span>
+  <pre><code class="language-dart"><span style="color: #b9eeff; "><span style="color: #569cd6; ">import</span><span style="color: #d4d4d4; "> </span><span style="color: #ce9178; ">&#39;package:flutter/widgets.dart&#39;</span><span style="color: #d4d4d4; ">;</span>
+
+<span style="color: #608b4e; ">// Configuration: children=multi, paint=true, hit_test=children, semantics=false, baseline=false</span>
+
+<span style="color: #608b4e; ">// TODO: Write useful Dart Docs for this custom widget.</span>
+<span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyWidget</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">MultiChildRenderObjectWidget</span> <span style="color: #5caeef; ">{</span>
+  <span style="color: #569cd6; ">const</span> <span style="color: #4ec9b0; ">MyWidget</span><span style="color: #dfb976; ">(</span><span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span>key<span style="color: #d4d4d4; ">,</span> <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span>children <span style="color: #d4d4d4; ">=</span> <span style="color: #569cd6; ">const</span> <span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">Widget</span><span style="color: #d4d4d4; ">&gt;</span><span style="color: #4fb1bc; ">[</span><span style="color: #4fb1bc; ">]</span><span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span><span style="color: #d4d4d4; ">;</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #dcdcaa; ">createRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BuildContext</span> context<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #c586c0; ">return</span> <span style="color: #4ec9b0; ">MyRenderObject</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">updateRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BuildContext</span> context<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">MyRenderObject</span> renderObject<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Pass updated properties to renderObject.</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">DiagnosticPropertiesBuilder</span> properties<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #c172d9; ">(</span>properties<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #608b4e; ">// TODO: Report important info that&#39;s specific to this widget (or delete this method).</span>
+  <span style="color: #dfb976; ">}</span>
+<span style="color: #5caeef; ">}</span>
 
 <span style="color: #608b4e; ">// TODO: Write useful Dart Docs for this custom render object.</span>
-<span style="color: #608b4e; ">// Configuration: children=multi, paint=true, hit_test=children, semantics=false, baseline=false</span>
 <span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">RenderBox</span> <span style="color: #569cd6; ">with</span> <span style="color: #4ec9b0; ">ContainerRenderObjectMixin</span><span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">RenderBox</span>, <span style="color: #4ec9b0; ">ContainerBoxParentData</span><span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">&gt;&gt;</span> <span style="color: #5caeef; ">{</span>
   <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">setupParentData</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
@@ -43,6 +65,12 @@
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">bool</span> <span style="color: #dcdcaa; ">hitTestChildren</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BoxHitTestResult</span> result<span style="color: #d4d4d4; ">,</span> <span style="color: #c172d9; ">{</span> <span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">Offset</span> position <span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Implement hit-testing delegation to children (or delete this method).</span>
+    <span style="color: #c586c0; ">return</span> <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">hitTestChildren</span><span style="color: #c172d9; ">(</span>result<span style="color: #d4d4d4; ">,</span> position<span style="color: #d4d4d4; ">:</span> position<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">paint</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">PaintingContext</span> context<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Offset</span> offset<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
     <span style="color: #608b4e; ">// TODO: Paint your content.</span>
     <span style="color: #c586c0; ">throw</span> <span style="color: #4ec9b0; ">UnimplementedError</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
@@ -55,12 +83,6 @@
     <span style="color: #c586c0; ">if</span> <span style="color: #c172d9; ">(</span>debugPaintSizeEnabled<span style="color: #c172d9; ">)</span> <span style="color: #c172d9; ">{</span>
       <span style="color: #608b4e; ">// TODO: Paint useful debug shapes/lines (or delete this method).</span>
     <span style="color: #c172d9; ">}</span>
-  <span style="color: #dfb976; ">}</span>
-
-  <span style="color: #569cd6; ">@override</span>
-  <span style="color: #4ec9b0; ">bool</span> <span style="color: #dcdcaa; ">hitTestChildren</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BoxHitTestResult</span> result<span style="color: #d4d4d4; ">,</span> <span style="color: #c172d9; ">{</span> <span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">Offset</span> position <span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
-    <span style="color: #608b4e; ">// TODO: Implement hit-testing delegation to children (or delete this method).</span>
-    <span style="color: #c586c0; ">return</span> <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">hitTestChildren</span><span style="color: #c172d9; ">(</span>result<span style="color: #d4d4d4; ">,</span> position<span style="color: #d4d4d4; ">:</span> position<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>

@@ -1,7 +1,29 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+
+// Configuration: children=multi, paint=false, hit_test=children, semantics=false, baseline=false
+
+// TODO: Write useful Dart Docs for this custom widget.
+class MyWidget extends MultiChildRenderObjectWidget {
+  const MyWidget({super.key, super.children = const <Widget>[]});
+
+  @override
+  MyRenderObject createRenderObject(BuildContext context) {
+    return MyRenderObject();
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
+    // TODO: Pass updated properties to renderObject.
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    // TODO: Report important info that's specific to this widget (or delete this method).
+  }
+}
 
 // TODO: Write useful Dart Docs for this custom render object.
-// Configuration: children=multi, paint=false, hit_test=children, semantics=false, baseline=false
 class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>> {
   @override
   void setupParentData(RenderObject child) {
