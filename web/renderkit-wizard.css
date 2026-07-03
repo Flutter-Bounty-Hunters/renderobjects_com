@@ -221,29 +221,93 @@
   padding: 0 1.25rem;
 }
 
-/* ─── Skeleton display ──────────────────────────────────────── */
+/* ─── Result page ────────────────────────────────────────────── */
 
-.rs-skeleton-display {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--bg-surface);
-  animation: fade-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+.rs-result-page {
+  width: 100%;
+  padding: 2rem 0 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fade-up 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.rs-skeleton-header {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
+.rs-result-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.rs-skeleton-header h3 {
+.rs-result-title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
 }
+
+.rs-back-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4375rem 0.875rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rs-back-btn:hover {
+  border-color: var(--border-accent);
+  color: var(--text-primary);
+}
+
+/* ─── Code wrapper + copy button ────────────────────────────── */
+
+.rs-code-wrapper {
+  position: relative;
+}
+
+.rs-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  opacity: 0;
+  padding: 0.3125rem 0.625rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.rs-code-wrapper:hover .rs-copy-btn,
+.rs-copy-btn--copied {
+  opacity: 1;
+}
+
+.rs-copy-btn:hover:not(.rs-copy-btn--copied) {
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+}
+
+.rs-copy-btn--copied {
+  color: #4ec9b0;
+  border-color: rgba(78, 201, 176, 0.3);
+  cursor: default;
+}
+
+/* ─── Skeleton code block ────────────────────────────────────── */
 
 .rs-skeleton-code {
   overflow-x: auto;
@@ -269,48 +333,11 @@
   color: var(--text-primary);
 }
 
-/* Prism.js syntax highlighting - map to website's color scheme */
-.rs-skeleton-code .token.keyword {
-  color: #c792ea !important; /* tok-kw */
-}
-
-.rs-skeleton-code .token.string {
-  color: #c3e88d !important; /* tok-str */
-}
-
-.rs-skeleton-code .token.comment {
-  color: #485d6b !important; /* tok-cmt */
-  font-style: italic;
-}
-
-.rs-skeleton-code .token.number {
-  color: #f78c6c !important; /* tok-num */
-}
-
-.rs-skeleton-code .token.function {
-  color: var(--accent-light) !important; /* tok-fn */
-}
-
-.rs-skeleton-code .token.class-name {
-  color: #82aaff !important; /* tok-cls */
-}
-
-.rs-skeleton-code .token.operator {
-  color: #c792ea !important; /* same as keyword */
-}
-
-.rs-skeleton-code .token.builtin {
-  color: #ffcb6b !important; /* tok-typ */
-}
-
-.rs-skeleton-code .token.punctuation {
-  color: var(--text-primary) !important;
-}
+/* ─── Loading / error states ─────────────────────────────────── */
 
 .rs-skeleton-loading,
 .rs-skeleton-error {
-  margin-top: 1rem;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: var(--radius-md);
   text-align: center;
 }

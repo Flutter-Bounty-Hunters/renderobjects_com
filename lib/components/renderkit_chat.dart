@@ -141,9 +141,11 @@ class RenderKitChatState extends State<RenderKitChat> {
   int _currentStep = 0;
   bool _isTyping = false;
   bool _isDone = false;
+  bool _showingResult = false;
   String? _skeletonCode;
   bool _isLoadingSkeleton = false;
   String? _skeletonError;
+  bool _isCopied = false;
 
   @override
   void initState() {
@@ -156,6 +158,15 @@ class RenderKitChatState extends State<RenderKitChat> {
       sender: _MessageSender.bot,
       text: _kWizardSteps[_currentStep].question,
     ));
+
+    // Restore result page if the URL has ?skeleton=
+    final skeletonName = getSkeletonParam();
+    if (skeletonName != null) {
+      _showingResult = true;
+      _isLoadingSkeleton = true;
+      // ignore: unawaited_futures
+      Future.microtask(() => _fetchAndInjectSkeleton(skeletonName));
+    }
   }
 
   void _handleOptionSelected(String option) {
@@ -242,22 +253,15 @@ class RenderKitChatState extends State<RenderKitChat> {
     ]);
   }
 
-  Future<void> _loadSkeleton() async {
-    final features = _SkeletonFeatures.fromAnswers(_answers);
-    setState(() {
-      _isLoadingSkeleton = true;
-      _skeletonError = null;
-      _skeletonCode = null;
-    });
-
+  Future<void> _fetchAndInjectSkeleton(String skeletonName) async {
     try {
-      final url = '/renderkit/skeletons/${features.fragmentFilename}';
+      final url = '/renderkit/skeletons/$skeletonName.fragment';
       final fetchedHtml = await fetchSkeletonHtml(url);
       setState(() {
         _skeletonCode = fetchedHtml;
         _isLoadingSkeleton = false;
       });
-      // Inject after Jaspr has updated the DOM.
+      // Inject after Jaspr has rebuilt the DOM.
       Future.delayed(Duration.zero, _injectSkeletonHtml);
     } catch (e) {
       setState(() {
@@ -267,48 +271,99 @@ class RenderKitChatState extends State<RenderKitChat> {
     }
   }
 
+  Future<void> _loadSkeleton() async {
+    final features = _SkeletonFeatures.fromAnswers(_answers);
+    final skeletonName = features.fragmentFilename.replaceAll('.fragment', '');
+    setState(() {
+      _isLoadingSkeleton = true;
+      _skeletonError = null;
+      _skeletonCode = null;
+      _isCopied = false;
+      _showingResult = true;
+    });
+    setSkeletonUrl(skeletonName);
+    await _fetchAndInjectSkeleton(skeletonName);
+  }
+
   void _injectSkeletonHtml() {
     if (_skeletonCode == null) return;
     injectSkeletonHtml('skeleton-html-target', _skeletonCode!);
   }
 
+  Future<void> _copyCode() async {
+    await copySkeletonCode();
+    setState(() { _isCopied = true; });
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() { _isCopied = false; });
+    });
+  }
+
+  void _goBack() {
+    clearSkeletonUrl();
+    setState(() {
+      _showingResult = false;
+      _skeletonCode = null;
+      _isLoadingSkeleton = false;
+      _skeletonError = null;
+      _isCopied = false;
+    });
+  }
+
   Component _buildGenerateButton() {
     return div(classes: 'rs-generate-row', [
       button(
+        type: ButtonType.button,
         classes: 'rs-generate-btn',
-        onClick: _skeletonCode == null ? () => _loadSkeleton() : null,
-        [.text(_skeletonCode == null ? 'Generate Skeleton' : 'Copy Code')],
+        onClick: () => _loadSkeleton(),
+        [.text('Generate Skeleton')],
       ),
     ]);
   }
 
-  Component _buildSkeletonDisplay() {
+  Component _buildResultPage() {
+    final Component codeArea;
     if (_isLoadingSkeleton) {
-      return div(classes: 'rs-skeleton-loading', [
+      codeArea = div(classes: 'rs-skeleton-loading', [
         p([.text('Loading skeleton...')]),
       ]);
-    }
-
-    if (_skeletonError != null) {
-      return div(classes: 'rs-skeleton-error', [
+    } else if (_skeletonError != null) {
+      codeArea = div(classes: 'rs-skeleton-error', [
         p([.text(_skeletonError!)]),
+      ]);
+    } else {
+      codeArea = div(classes: 'rs-code-wrapper', [
+        button(
+          type: ButtonType.button,
+          classes: 'rs-copy-btn${_isCopied ? ' rs-copy-btn--copied' : ''}',
+          onClick: _isCopied ? null : () => _copyCode(),
+          [.text(_isCopied ? 'Copied!' : 'Copy')],
+        ),
+        div(id: 'skeleton-html-target', []),
       ]);
     }
 
-    if (_skeletonCode == null) {
-      return div([]);
-    }
-
-    return div(classes: 'rs-skeleton-display', [
-      div(classes: 'rs-skeleton-header', [
-        h3([.text('Your Render Object Skeleton')]),
+    return div(classes: 'rs-wizard-root', [
+      div(classes: 'rs-result-page', [
+        div(classes: 'rs-result-header', [
+          button(
+            type: ButtonType.button,
+            classes: 'rs-back-btn',
+            onClick: () => _goBack(),
+            [.text('← Back')],
+          ),
+          h2(classes: 'rs-result-title', [.text('Your Render Object Skeleton')]),
+        ]),
+        codeArea,
       ]),
-      div(id: 'skeleton-html-target', []),
     ]);
   }
 
   @override
   Component build(BuildContext context) {
+    if (_showingResult) {
+      return _buildResultPage();
+    }
+
     final shouldShowOptions = !_isTyping && !_isDone;
 
     return div(classes: 'rs-wizard-root', [
@@ -326,7 +381,6 @@ class RenderKitChatState extends State<RenderKitChat> {
             _buildGenerateButton(),
           ]),
       ]),
-      if (_isDone) _buildSkeletonDisplay(),
     ]);
   }
 }

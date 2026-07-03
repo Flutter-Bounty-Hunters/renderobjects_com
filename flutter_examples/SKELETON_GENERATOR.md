@@ -42,6 +42,23 @@ flutter analyze lib/src/skeletons/
 
 All generated files must pass static analysis (no errors, though stylistic warnings about file names are expected).
 
+## Publishing Skeletons to the Website
+
+A companion script (`tool/copy_skeletons.dart`) automatically converts generated Dart skeletons into Markdown files and copies them to `web/renderkit/skeletons/`. This is integrated into the CI/CD pipeline and runs before the site build:
+
+```bash
+dart run tool/copy_skeletons.dart
+```
+
+This script:
+- Reads each skeleton `.dart` file from `flutter_examples/lib/src/skeletons/`
+- Parses the configuration comment line
+- Generates appropriate frontmatter (title, description, layout)
+- Wraps the Dart code in a fenced code block
+- Outputs Markdown to `web/renderkit/skeletons/<name>.md`
+
+The Markdown files are then available as static documentation pages on the site.
+
 ## Modifying Features
 
 To add a new axis or constraint:
@@ -49,3 +66,4 @@ To add a new axis or constraint:
 2. Edit `config/template.dart.tmpl` to add conditional blocks for the new feature
 3. If needed, update `lib/src/generator/generate_skeletons.dart` to handle new template variables
 4. Regenerate: `dart lib/src/generator/generate_skeletons.dart`
+5. Run the copy script to update the published skeletons: `dart run tool/copy_skeletons.dart`

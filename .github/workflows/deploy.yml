@@ -57,6 +57,9 @@ jobs:
           fi
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Copy and convert skeleton files
+        run: dart run tool/copy_skeletons.dart
+
       - name: Build site
         run: jaspr build
 
