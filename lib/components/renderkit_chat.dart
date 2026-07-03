@@ -124,7 +124,6 @@ class _ChatMessage {
 
 // ─── Raw HTML renderer ────────────────────────────────────────────────────────
 
-@client
 class _RawHtmlRenderer extends StatelessComponent {
   final String html;
 
