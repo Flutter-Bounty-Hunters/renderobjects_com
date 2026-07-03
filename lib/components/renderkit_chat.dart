@@ -122,6 +122,34 @@ class _ChatMessage {
   final String text;
 }
 
+// ─── Raw HTML renderer ────────────────────────────────────────────────────────
+
+@client
+class _RawHtmlRenderer extends StatelessComponent {
+  final String html;
+
+  const _RawHtmlRenderer(this.html);
+
+  @override
+  Component build(BuildContext context) {
+    // Create a unique ID for this container
+    final containerId = 'skeleton-${hashCode}';
+
+    // Render the container div and inject the HTML using a script
+    return div(
+      attributes: {
+        'id': containerId,
+        'data-skeleton-html': html,
+      },
+      [
+        script(
+          content: '(function(){var c=document.getElementById("$containerId");if(c)c.innerHTML=c.getAttribute("data-skeleton-html");})();',
+        ),
+      ],
+    );
+  }
+}
+
 // ─── Chat component (@client) ─────────────────────────────────────────────────
 
 @client
@@ -378,14 +406,7 @@ class MyRenderObject extends $hasBaseClass$hasMixin {
       div(classes: 'rs-skeleton-header', [
         h3([.text('Your Render Object Skeleton')]),
       ]),
-      div(classes: 'rs-skeleton-code', [
-        pre([
-          code(
-            attributes: {'class': 'language-dart', 'id': 'skeleton-code'},
-            [.text(_skeletonCode!)],
-          ),
-        ]),
-      ]),
+      _RawHtmlRenderer(_skeletonCode!),
     ]);
   }
 
