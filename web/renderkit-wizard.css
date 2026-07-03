@@ -29,7 +29,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0 1.25rem;
 }
 
 /* ─── Thread (scrollable) ───────────────────────────────────── */
@@ -210,18 +209,25 @@
   cursor: not-allowed;
 }
 
+/* ─── Wizard root (wider than chat) ─────────────────────────── */
+
+.rs-wizard-root {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.25rem;
+}
+
 /* ─── Skeleton display ──────────────────────────────────────── */
 
 .rs-skeleton-display {
   margin-top: 2rem;
-  margin-left: -1.25rem;
-  margin-right: -1.25rem;
   padding: 1.5rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--bg-surface);
   animation: fade-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-  width: calc(100% + 2.5rem);
 }
 
 .rs-skeleton-header {

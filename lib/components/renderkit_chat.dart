@@ -394,21 +394,22 @@ class MyRenderObject extends $hasBaseClass$hasMixin {
   Component build(BuildContext context) {
     final shouldShowOptions = !_isTyping && !_isDone;
 
-    return div(classes: 'rs-chat-root', [
-      div(classes: 'rs-thread', [
-        for (final msg in _messages) _buildMessage(msg),
-        if (_isTyping) _buildTypingIndicator(),
-        if (shouldShowOptions)
-          div(classes: 'rs-msg-row rs-msg-row--user', [
-            _buildOptions(_optionsForStep(_currentStep)),
+    return div(classes: 'rs-wizard-root', [
+      div(classes: 'rs-chat-root', [
+        div(classes: 'rs-thread', [
+          for (final msg in _messages) _buildMessage(msg),
+          if (_isTyping) _buildTypingIndicator(),
+          if (shouldShowOptions)
+            div(classes: 'rs-msg-row rs-msg-row--user', [
+              _buildOptions(_optionsForStep(_currentStep)),
+            ]),
+        ]),
+        if (_isDone)
+          div(classes: 'rs-input-area', [
+            _buildGenerateButton(),
           ]),
       ]),
-      if (_isDone) ...[
-        div(classes: 'rs-input-area', [
-          _buildGenerateButton(),
-        ]),
-        _buildSkeletonDisplay(),
-      ],
+      if (_isDone) _buildSkeletonDisplay(),
     ]);
   }
 }
