@@ -1,52 +1,52 @@
 <div class="rs-skeleton-code">
-  <pre><code class="language-dart"><span class="token keyword">import</span> <span class="token string">&#39;package:flutter/rendering.dart&#39;</span><span class="token punctuation">;</span>
+  <pre><code class="language-dart"><span style="color: #b9eeff; "><span style="color: #569cd6; ">import</span><span style="color: #d4d4d4; "> </span><span style="color: #ce9178; ">&#39;package:flutter/rendering.dart&#39;</span><span style="color: #d4d4d4; ">;</span>
 
-<span class="token comment">// TODO: Write useful Dart Docs for this custom render object.</span>
-<span class="token comment">// Configuration: children=multi, paint=false, hit_test=none, semantics=false, baseline=false</span>
-<span class="token keyword">class</span> <span class="token class-name">MyRenderObject</span> <span class="token keyword">extends</span> <span class="token class-name">RenderBox</span> <span class="token keyword">with</span> <span class="token class-name">ContainerRenderObjectMixin</span><span class="token operator">&lt;</span><span class="token class-name">RenderBox</span><span class="token punctuation">,</span> <span class="token class-name">ContainerBoxParentData</span><span class="token operator">&lt;</span><span class="token class-name">RenderBox</span><span class="token operator">&gt;&gt;</span> <span class="token punctuation">{</span>
-  @override
-  <span class="token keyword">void</span> <span class="token function">setupParentData</span><span class="token punctuation">(</span><span class="token class-name">RenderObject</span> child<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// TODO: Ensure child.parentData is the correct type for your container.</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setupParentData</span><span class="token punctuation">(</span>child<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
+<span style="color: #608b4e; ">// TODO: Write useful Dart Docs for this custom render object.</span>
+<span style="color: #608b4e; ">// Configuration: children=multi, paint=false, hit_test=none, semantics=false, baseline=false</span>
+<span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">RenderBox</span> <span style="color: #569cd6; ">with</span> <span style="color: #4ec9b0; ">ContainerRenderObjectMixin</span><span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">RenderBox</span>, <span style="color: #4ec9b0; ">ContainerBoxParentData</span><span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">&gt;&gt;</span> <span style="color: #5caeef; ">{</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">setupParentData</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Ensure child.parentData is the correct type for your container.</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">setupParentData</span><span style="color: #c172d9; ">(</span>child<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
 
-  <span class="token comment">// TODO: Estimate your size given the `constraints`.</span>
-  @override
-  <span class="token class-name">Size</span> <span class="token function">computeDryLayout</span><span class="token punctuation">(</span><span class="token class-name">BoxConstraints</span> constraints<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">throw</span> <span class="token function">UnimplementedError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
+  <span style="color: #608b4e; ">// TODO: Estimate your size given the `constraints`.</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">Size</span> <span style="color: #dcdcaa; ">computeDryLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BoxConstraints</span> constraints<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #c586c0; ">throw</span> <span style="color: #4ec9b0; ">UnimplementedError</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
 
-  <span class="token comment">// TODO: If possible, choose intrinsic widths/heights. By doing so, you expand the variety of places where</span>
-  <span class="token comment">//       this render object can be used (otherwise, delete these methods).</span>
-  @override
-  <span class="token builtin">double</span> <span class="token function">computeMinIntrinsicWidth</span><span class="token punctuation">(</span><span class="token builtin">double</span> height<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+  <span style="color: #608b4e; ">// TODO: If possible, choose intrinsic widths/heights. By doing so, you expand the variety of places where</span>
+  <span style="color: #608b4e; ">//       this render object can be used (otherwise, delete these methods).</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMinIntrinsicWidth</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> height<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
 
-  @override
-  <span class="token builtin">double</span> <span class="token function">computeMaxIntrinsicWidth</span><span class="token punctuation">(</span><span class="token builtin">double</span> height<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMaxIntrinsicWidth</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> height<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
 
-  @override
-  <span class="token builtin">double</span> <span class="token function">computeMinIntrinsicHeight</span><span class="token punctuation">(</span><span class="token builtin">double</span> width<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMinIntrinsicHeight</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> width<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
 
-  @override
-  <span class="token builtin">double</span> <span class="token function">computeMaxIntrinsicHeight</span><span class="token punctuation">(</span><span class="token builtin">double</span> width<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMaxIntrinsicHeight</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> width<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
 
-  @override
-  <span class="token keyword">void</span> <span class="token function">performLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">// TODO: Pick a size based on `constraints`.</span>
-    <span class="token comment">// TODO: Layout your children.</span>
-    <span class="token class-name">RenderBox</span><span class="token punctuation">?</span> child <span class="token operator">=</span> firstChild<span class="token punctuation">;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>child <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      child<span class="token punctuation">.</span><span class="token function">layout</span><span class="token punctuation">(</span>constraints<span class="token punctuation">,</span> parentUsesSize<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      child <span class="token operator">=</span> <span class="token function">childAfter</span><span class="token punctuation">(</span>child<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    size <span class="token operator">=</span> constraints<span class="token punctuation">.</span>biggest<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">performLayout</span><span style="color: #dfb976; ">(</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Pick a size based on `constraints`.</span>
+    <span style="color: #608b4e; ">// TODO: Layout your children.</span>
+    <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> child <span style="color: #d4d4d4; ">=</span> firstChild<span style="color: #d4d4d4; ">;</span>
+    <span style="color: #c586c0; ">while</span> <span style="color: #c172d9; ">(</span>child <span style="color: #d4d4d4; ">!=</span> <span style="color: #569cd6; ">null</span><span style="color: #c172d9; ">)</span> <span style="color: #c172d9; ">{</span>
+      child<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">layout</span><span style="color: #4fb1bc; ">(</span>constraints<span style="color: #d4d4d4; ">,</span> parentUsesSize<span style="color: #d4d4d4; ">:</span> <span style="color: #569cd6; ">true</span><span style="color: #4fb1bc; ">)</span><span style="color: #d4d4d4; ">;</span>
+      child <span style="color: #d4d4d4; ">=</span> <span style="color: #dcdcaa; ">childAfter</span><span style="color: #4fb1bc; ">(</span>child<span style="color: #4fb1bc; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #c172d9; ">}</span>
+    size <span style="color: #d4d4d4; ">=</span> constraints<span style="color: #d4d4d4; ">.</span>biggest<span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
 
-  @override
-  <span class="token keyword">void</span> <span class="token function">debugFillProperties</span><span class="token punctuation">(</span><span class="token class-name">DiagnosticPropertiesBuilder</span> properties<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">debugFillProperties</span><span class="token punctuation">(</span>properties<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment">// TODO: Report important info that&#39;s specific to this Render Object (or delete this method).</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">DiagnosticPropertiesBuilder</span> properties<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #c172d9; ">(</span>properties<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #608b4e; ">// TODO: Report important info that&#39;s specific to this Render Object (or delete this method).</span>
+  <span style="color: #dfb976; ">}</span>
+<span style="color: #5caeef; ">}</span>
+</span></code></pre>
 </div>

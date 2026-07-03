@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
+import 'package:syntax_highlight_lite/syntax_highlight_lite.dart';
 
 Future<void> main() async {
   final srcDir = Directory('flutter_examples/lib/src/skeletons');
@@ -12,6 +13,10 @@ Future<void> main() async {
 
   destDir.createSync(recursive: true);
 
+  // Initialize highlighter
+  await Highlighter.initialize(['dart']);
+  final highlighter = Highlighter(language: 'dart', theme: await HighlighterTheme.loadDarkTheme());
+
   var count = 0;
   await for (final file in srcDir.list()) {
     if (file is File && file.path.endsWith('.dart')) {
@@ -19,7 +24,7 @@ Future<void> main() async {
       final filename = path.basenameWithoutExtension(file.path);
       final config = _parseConfig(dartCode);
 
-      final html = _dartToHtml(filename, config, dartCode);
+      final html = _dartToHtml(filename, config, dartCode, highlighter);
       final outputFile = File(path.join(destDir.path, '$filename.html'));
 
       outputFile.writeAsStringSync(html);
@@ -50,174 +55,48 @@ Map<String, String> _parseConfig(String dartCode) {
   return config;
 }
 
-String _dartToHtml(String filename, Map<String, String> config, String dartCode) {
-  final highlightedCode = _highlightDartCode(dartCode);
+String _dartToHtml(String filename, Map<String, String> config, String dartCode, Highlighter highlighter) {
+  final highlightedSpan = highlighter.highlight(dartCode);
+  final highlightedHtml = _textSpanToHtml(highlightedSpan);
 
   return '''<div class="rs-skeleton-code">
-  <pre><code class="language-dart">$highlightedCode</code></pre>
+  <pre><code class="language-dart">$highlightedHtml</code></pre>
 </div>
 ''';
 }
 
-String _highlightDartCode(String code) {
-  final dartKeywords = {
-    'abstract', 'as', 'assert', 'async', 'await', 'break', 'case', 'catch',
-    'class', 'const', 'continue', 'covariant', 'default', 'deferred', 'do',
-    'dynamic', 'else', 'enum', 'export', 'extends', 'extension', 'external',
-    'factory', 'false', 'final', 'finally', 'for', 'function', 'get', 'hide',
-    'if', 'implements', 'import', 'in', 'interface', 'is', 'late', 'library',
-    'mixin', 'new', 'null', 'on', 'operator', 'part', 'required', 'rethrow',
-    'return', 'sealed', 'set', 'show', 'static', 'super', 'switch', 'sync',
-    'this', 'throw', 'true', 'try', 'typedef', 'var', 'void', 'when', 'while',
-    'with', 'yield'
-  };
+String _textSpanToHtml(TextSpan textSpan) {
+  final buffer = StringBuffer();
 
-  final dartBuiltins = {
-    'int', 'double', 'bool', 'String', 'List', 'Map', 'Set', 'Iterable',
-    'Future', 'Stream', 'Duration', 'DateTime', 'Exception', 'Error',
-    'Object', 'Type', 'Symbol', 'Uri', 'Pattern', 'Match', 'Range',
-    'Stopwatch', 'Random', 'Zone', 'Completer', 'Timer'
-  };
-
-  var result = '';
-  var i = 0;
-
-  while (i < code.length) {
-    // Line comments
-    if (i + 1 < code.length && code[i] == '/' && code[i + 1] == '/') {  // ignore: curly_braces_in_flow_control_structures
-      final endOfLine = code.indexOf('\n', i);
-      final commentEnd = endOfLine == -1 ? code.length : endOfLine;
-      final comment = code.substring(i, commentEnd);
-      result += '<span class="token comment">${_escapeHtml(comment)}</span>';
-      i = commentEnd;
-      continue;
+  void visit(TextSpan span) {
+    if (span.style case final style?) {
+      final color = _colorToHex(style.foreground);
+      final fontWeight = style.bold ? 'font-weight: bold; ' : '';
+      final fontStyle = style.italic ? 'font-style: italic; ' : '';
+      buffer.write('<span style="color: $color; $fontWeight$fontStyle">');
     }
 
-    // Block comments
-    if (i + 1 < code.length && code[i] == '/' && code[i + 1] == '*') {
-      final endOfComment = code.indexOf('*/', i + 2);
-      final commentEnd = endOfComment == -1 ? code.length : endOfComment + 2;
-      final comment = code.substring(i, commentEnd);
-      result += '<span class="token comment">${_escapeHtml(comment)}</span>';
-      i = commentEnd;
-      continue;
+    if (span.text != null) {
+      buffer.write(_escapeHtml(span.text!));
     }
 
-    // String literals (double quotes)
-    if (code[i] == '"') {
-      var j = i + 1;
-      while (j < code.length && code[j] != '"') {
-        if (code[j] == '\\' && j + 1 < code.length) j += 2;
-        else j++;
-      }
-      j = j < code.length ? j + 1 : j;
-      final str = code.substring(i, j);
-      result += '<span class="token string">${_escapeHtml(str)}</span>';
-      i = j;
-      continue;
+    for (final child in span.children) {
+      visit(child);
     }
 
-    // String literals (single quotes)
-    if (code[i] == "'") {
-      var j = i + 1;
-      while (j < code.length && code[j] != "'") {
-        if (code[j] == '\\' && j + 1 < code.length) j += 2;
-        else j++;
-      }
-      j = j < code.length ? j + 1 : j;
-      final str = code.substring(i, j);
-      result += '<span class="token string">${_escapeHtml(str)}</span>';
-      i = j;
-      continue;
+    if (span.style != null) {
+      buffer.write('</span>');
     }
-
-    // Numbers
-    if (_isDigit(code[i]) || (code[i] == '.' && i + 1 < code.length && _isDigit(code[i + 1]))) {
-      var j = i;
-      while (j < code.length && (_isDigit(code[j]) || code[j] == '.')) j++;
-      final num = code.substring(i, j);
-      result += '<span class="token number">${_escapeHtml(num)}</span>';
-      i = j;
-      continue;
-    }
-
-    // Identifiers and keywords/builtins
-    if (_isIdentifierStart(code[i])) {
-      var j = i;
-      while (j < code.length && _isIdentifierPart(code[j])) j++;
-      final identifier = code.substring(i, j);
-
-      if (dartKeywords.contains(identifier)) {
-        result += '<span class="token keyword">${_escapeHtml(identifier)}</span>';
-      } else if (dartBuiltins.contains(identifier)) {
-        result += '<span class="token builtin">${_escapeHtml(identifier)}</span>';
-      } else if (i + 1 < code.length && code[j] == '(') {
-        result += '<span class="token function">${_escapeHtml(identifier)}</span>';
-      } else if (_isCapitalized(identifier)) {
-        result += '<span class="token class-name">${_escapeHtml(identifier)}</span>';
-      } else {
-        result += _escapeHtml(identifier);
-      }
-
-      i = j;
-      continue;
-    }
-
-    // Operators
-    if (_isOperatorChar(code[i])) {
-      var j = i + 1;
-      // Multi-character operators
-      if (i + 1 < code.length) {
-        final twoChar = code.substring(i, i + 2);
-        if (['==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '&&', '||',
-             '<<', '>>', '??', '=>', '++', '--'].contains(twoChar)) {
-          result += '<span class="token operator">${_escapeHtml(twoChar)}</span>';
-          i += 2;
-          continue;
-        }
-      }
-      result += '<span class="token operator">${_escapeHtml(code[i])}</span>';
-      i++;
-      continue;
-    }
-
-    // Punctuation
-    if ('(){}[].,;:?'.contains(code[i])) {
-      result += '<span class="token punctuation">${_escapeHtml(code[i])}</span>';
-      i++;
-      continue;
-    }
-
-    // Whitespace and other characters
-    if (code[i] == '\n') {
-      result += '\n';
-    } else if (code[i] == ' ' || code[i] == '\t') {
-      result += code[i];
-    } else {
-      result += _escapeHtml(code[i]);
-    }
-    i++;
   }
 
-  return result;
+  visit(textSpan);
+  return buffer.toString();
 }
 
-bool _isDigit(String char) => char.codeUnitAt(0) >= 48 && char.codeUnitAt(0) <= 57;
-
-bool _isIdentifierStart(String char) {
-  final code = char.codeUnitAt(0);
-  return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || code == 95;
+String _colorToHex(Color color) {
+  final argb = color.argb;
+  return '#${(argb & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}';
 }
-
-bool _isIdentifierPart(String char) {
-  final code = char.codeUnitAt(0);
-  return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) ||
-         code == 95 || (code >= 48 && code <= 57);
-}
-
-bool _isOperatorChar(String char) => '+-*/%<>=!&|^~'.contains(char);
-
-bool _isCapitalized(String str) => str.isNotEmpty && str[0] == str[0].toUpperCase();
 
 String _escapeHtml(String text) {
   return text
@@ -226,38 +105,4 @@ String _escapeHtml(String text) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
-}
-
-String _titleCase(String filename) {
-  final parts = filename.split('_');
-  return parts
-      .map((part) {
-        if (part.contains('-')) {
-          return part.split('-').map((p) => _capitalize(p)).join('-');
-        }
-        return _capitalize(part);
-      })
-      .join(' ');
-}
-
-String _capitalize(String s) => s.isEmpty ? '' : s[0].toUpperCase() + s.substring(1);
-
-String _buildDescription(String childrenType, bool paint, String hitTest, bool semantics, bool baseline) {
-  final parts = <String>[];
-
-  switch (childrenType) {
-    case 'none':
-      parts.add('Leaf render object');
-    case 'single':
-      parts.add('Single-child render object');
-    case 'multi':
-      parts.add('Multi-child container render object');
-  }
-
-  if (paint) parts.add('with custom painting');
-  if (hitTest != 'none') parts.add('with hit testing ($hitTest)');
-  if (semantics) parts.add('with semantics');
-  if (baseline) parts.add('with baseline support');
-
-  return parts.join(' ');
 }
