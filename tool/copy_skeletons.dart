@@ -24,7 +24,7 @@ Future<void> main() async {
       final config = _parseConfig(dartCode);
 
       final html = _dartToHtml(filename, config, dartCode, highlighter);
-      final outputFile = File('${destDir.path}/$filename.html');
+      final outputFile = File('${destDir.path}/$filename.fragment');
 
       outputFile.writeAsStringSync(html);
       count++;

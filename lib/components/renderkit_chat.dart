@@ -61,9 +61,9 @@ class _SkeletonFeatures {
   String get filename =>
       '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.dart';
 
-  /// Generates the skeleton HTML filename (for loading from web).
-  String get htmlFilename =>
-      '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.html';
+  /// Generates the skeleton fragment filename (for loading from web).
+  String get fragmentFilename =>
+      '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.fragment';
 
   /// Maps wizard answers to skeleton features.
   static _SkeletonFeatures fromAnswers(List<String> answers) {
@@ -251,7 +251,7 @@ class RenderKitChatState extends State<RenderKitChat> {
     });
 
     try {
-      final url = '/renderkit/skeletons/${features.htmlFilename}';
+      final url = '/renderkit/skeletons/${features.fragmentFilename}';
       final fetchedHtml = await fetchSkeletonHtml(url);
       setState(() {
         _skeletonCode = fetchedHtml;
