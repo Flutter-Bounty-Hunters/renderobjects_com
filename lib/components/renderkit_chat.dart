@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import 'skeleton_loader_stub.dart'
+    if (dart.library.html) 'skeleton_loader_web.dart';
+
 // ─── Wizard script ────────────────────────────────────────────────────────────
 
 const List<({String question, List<String> options})> _kWizardSteps = [
@@ -248,11 +251,14 @@ class RenderKitChatState extends State<RenderKitChat> {
     });
 
     try {
-      final skeletonCode = await _fetchSkeletonCode(features);
+      final url = '/renderkit/skeletons/${features.htmlFilename}';
+      final fetchedHtml = await fetchSkeletonHtml(url);
       setState(() {
-        _skeletonCode = skeletonCode;
+        _skeletonCode = fetchedHtml;
         _isLoadingSkeleton = false;
       });
+      // Inject after Jaspr has updated the DOM.
+      Future.delayed(Duration.zero, _injectSkeletonHtml);
     } catch (e) {
       setState(() {
         _isLoadingSkeleton = false;
@@ -261,90 +267,9 @@ class RenderKitChatState extends State<RenderKitChat> {
     }
   }
 
-  Future<String> _fetchSkeletonCode(_SkeletonFeatures features) async {
-    try {
-      // For now, return the generated skeleton code
-      // In production, this would fetch the pre-styled HTML from the server
-      return _generateSkeletonFromFeatures(features);
-    } catch (e) {
-      print('Error fetching skeleton: $e');
-    }
-
-    return _generateSkeletonFromFeatures(features);
-  }
-
-  String _generateSkeletonFromFeatures(_SkeletonFeatures features) {
-    // Generate a basic skeleton structure based on the features
-    // This is a simplified version - the real skeleton would come from files
-    final childrenType = features.children;
-    final hasBaseClass = 'RenderBox';
-    final mixinName = _getMixinForChildren(childrenType);
-    final hasMixin = childrenType != 'none' ? ', $mixinName' : '';
-
-    return '''import 'package:flutter/rendering.dart';
-
-// TODO: Write useful Dart Docs for this custom render object.
-class MyRenderObject extends $hasBaseClass$hasMixin {
-  // TODO: Estimate your size given the constraints.
-  @override
-  Size computeDryLayout(BoxConstraints constraints) {
-    throw UnimplementedError();
-  }
-
-  // TODO: If possible, choose intrinsic widths/heights.
-  @override
-  double computeMinIntrinsicWidth(double height) => 0.0;
-
-  @override
-  double computeMaxIntrinsicWidth(double height) => 0.0;
-
-  @override
-  double computeMinIntrinsicHeight(double width) => 0.0;
-
-  @override
-  double computeMaxIntrinsicHeight(double width) => 0.0;
-
-  // TODO: Pick a size based on constraints.
-  @override
-  void performLayout() {
-    throw UnimplementedError();
-  }
-
-  ${features.paint == 'true' ? '''// TODO: Paint your content.
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    throw UnimplementedError();
-  }
-
-  @override
-  void debugPaint(PaintingContext context, Offset offset) {
-    super.debugPaint(context, offset);
-    if (debugPaintSizeEnabled) {
-      // TODO: Paint useful debug shapes/lines.
-    }
-  }
-''' : ''}
-  ${features.hitTest != 'none' ? '''// TODO: Return true if hittable.
-  @override
-  bool hitTestSelf(Offset position) => false;
-''' : ''}
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    // TODO: Report important info specific to this Render Object.
-  }
-}''';
-  }
-
-  String _getMixinForChildren(String childrenType) {
-    switch (childrenType) {
-      case 'single':
-        return 'RenderObjectWithChildMixin<RenderBox>';
-      case 'multi':
-        return 'ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>>';
-      default:
-        return '';
-    }
+  void _injectSkeletonHtml() {
+    if (_skeletonCode == null) return;
+    injectSkeletonHtml('skeleton-html-target', _skeletonCode!);
   }
 
   Component _buildGenerateButton() {
@@ -378,15 +303,7 @@ class MyRenderObject extends $hasBaseClass$hasMixin {
       div(classes: 'rs-skeleton-header', [
         h3([.text('Your Render Object Skeleton')]),
       ]),
-      div(classes: 'rs-skeleton-code', [
-        pre([
-          code(
-            attributes: {'class': 'language-dart', 'id': 'skeleton-code'},
-            [.text(_skeletonCode!)],
-          ),
-        ]),
-      ]),
-      script(content: 'if (window.Prism) { Prism.highlightAllUnder(document.getElementById("skeleton-code").parentElement); }'),
+      div(id: 'skeleton-html-target', []),
     ]);
   }
 
