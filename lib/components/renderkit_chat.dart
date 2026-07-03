@@ -22,6 +22,10 @@ const List<({String question, List<String> options})> _kWizardSteps = [
     options: ['Entirely hittable', 'Partially hittable', 'Non-hittable'],
   ),
   (
+    question: 'Will your render object recognize and handle any gestures, internally?',
+    options: ['Yes', 'No'],
+  ),
+  (
     question:
         'Does this render object always require specified constraints, or does it have an intrinsic size (a natural size when width and height are infinite)?',
     options: ['Always requires specified constraints', 'Has an intrinsic size'],
@@ -48,6 +52,7 @@ class _SkeletonFeatures {
   final String hitTest;
   final String semantics;
   final String baseline;
+  final String gestures;
 
   _SkeletonFeatures({
     required this.children,
@@ -55,15 +60,20 @@ class _SkeletonFeatures {
     required this.hitTest,
     required this.semantics,
     required this.baseline,
+    required this.gestures,
   });
 
   /// Generates the skeleton filename from features.
-  String get filename =>
-      '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.dart';
+  String get filename {
+    final base = '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}';
+    return gestures == 'true' ? '${base}_gest-true.dart' : '$base.dart';
+  }
 
   /// Generates the skeleton fragment filename (for loading from web).
-  String get fragmentFilename =>
-      '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}.fragment';
+  String get fragmentFilename {
+    final base = '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}';
+    return gestures == 'true' ? '${base}_gest-true.fragment' : '$base.fragment';
+  }
 
   /// Maps wizard answers to skeleton features.
   static _SkeletonFeatures fromAnswers(List<String> answers) {
@@ -80,10 +90,13 @@ class _SkeletonFeatures {
     // Answer 2: hit testing
     final hitTest = _mapHitTestAnswer(answers[2], children);
 
-    // Answer 3: intrinsic size (maps to baseline)
-    final baseline = answers.length > 3 && answers[3].contains('intrinsic') ? 'true' : 'false';
+    // Answer 3: gestures (Yes/No)
+    final gestures = answers.length > 3 && answers[3] == 'Yes' ? 'true' : 'false';
 
-    // Answer 4: semantics (default false, could be true if user opts in)
+    // Answer 4: intrinsic size (maps to baseline)
+    final baseline = answers.length > 4 && answers[4].contains('intrinsic') ? 'true' : 'false';
+
+    // Answer 5: build during layout (not currently reflected in skeleton variant)
     final semantics = 'false';
 
     return _SkeletonFeatures(
@@ -92,6 +105,7 @@ class _SkeletonFeatures {
       hitTest: hitTest,
       semantics: semantics,
       baseline: baseline,
+      gestures: gestures,
     );
   }
 

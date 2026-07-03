@@ -1,0 +1,88 @@
+<div class="rs-skeleton-code">
+  <pre><code class="language-dart"><span style="color: #b9eeff; "><span style="color: #569cd6; ">import</span><span style="color: #d4d4d4; "> </span><span style="color: #ce9178; ">&#39;package:flutter/widgets.dart&#39;</span><span style="color: #d4d4d4; ">;</span>
+
+<span style="color: #608b4e; ">// Configuration: children=none, paint=true, hit_test=self, semantics=false, baseline=false, gestures=true</span>
+
+<span style="color: #608b4e; ">// TODO: Write useful Dart Docs for this custom widget.</span>
+<span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyWidget</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">LeafRenderObjectWidget</span> <span style="color: #5caeef; ">{</span>
+  <span style="color: #569cd6; ">const</span> <span style="color: #4ec9b0; ">MyWidget</span><span style="color: #dfb976; ">(</span><span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span>key<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span><span style="color: #d4d4d4; ">;</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #dcdcaa; ">createRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BuildContext</span> context<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #c586c0; ">return</span> <span style="color: #4ec9b0; ">MyRenderObject</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">updateRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BuildContext</span> context<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">MyRenderObject</span> renderObject<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Pass updated properties to renderObject.</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">DiagnosticPropertiesBuilder</span> properties<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #c172d9; ">(</span>properties<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #608b4e; ">// TODO: Report important info that&#39;s specific to this widget (or delete this method).</span>
+  <span style="color: #dfb976; ">}</span>
+<span style="color: #5caeef; ">}</span>
+
+<span style="color: #608b4e; ">// TODO: Write useful Dart Docs for this custom render object.</span>
+<span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">RenderBox</span> <span style="color: #5caeef; ">{</span>
+  <span style="color: #608b4e; ">// TODO: Estimate your size given the `constraints`.</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">Size</span> <span style="color: #dcdcaa; ">computeDryLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BoxConstraints</span> constraints<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #c586c0; ">throw</span> <span style="color: #4ec9b0; ">UnimplementedError</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #608b4e; ">// TODO: If possible, choose intrinsic widths/heights. By doing so, you expand the variety of places where</span>
+  <span style="color: #608b4e; ">//       this render object can be used (otherwise, delete these methods).</span>
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMinIntrinsicWidth</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> height<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMaxIntrinsicWidth</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> height<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMinIntrinsicHeight</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> width<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">double</span> <span style="color: #dcdcaa; ">computeMaxIntrinsicHeight</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">double</span> width<span style="color: #dfb976; ">)</span> <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #b5cea8; ">0.0</span><span style="color: #d4d4d4; ">;</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">performLayout</span><span style="color: #dfb976; ">(</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Pick a size based on `constraints`.</span>
+    <span style="color: #c586c0; ">throw</span> <span style="color: #4ec9b0; ">UnimplementedError</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #4ec9b0; ">bool</span> <span style="color: #dcdcaa; ">hitTestSelf</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">Offset</span> position<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Return `true` if this render object can be interacted with.</span>
+    <span style="color: #c586c0; ">return</span> <span style="color: #569cd6; ">false</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">handleEvent</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">PointerEvent</span> event<span style="color: #d4d4d4; ">,</span> <span style="color: #569cd6; ">covariant</span> <span style="color: #4ec9b0; ">BoxHitTestEntry</span> entry<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Handle pointer events (e.g., pass them to a gesture recognizer).</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">paint</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">PaintingContext</span> context<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Offset</span> offset<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #608b4e; ">// TODO: Paint your content.</span>
+    <span style="color: #c586c0; ">throw</span> <span style="color: #4ec9b0; ">UnimplementedError</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">debugPaint</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">PaintingContext</span> context<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Offset</span> offset<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">debugPaint</span><span style="color: #c172d9; ">(</span>context<span style="color: #d4d4d4; ">,</span> offset<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+
+    <span style="color: #c586c0; ">if</span> <span style="color: #c172d9; ">(</span>debugPaintSizeEnabled<span style="color: #c172d9; ">)</span> <span style="color: #c172d9; ">{</span>
+      <span style="color: #608b4e; ">// TODO: Paint useful debug shapes/lines (or delete this method).</span>
+    <span style="color: #c172d9; ">}</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">DiagnosticPropertiesBuilder</span> properties<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">debugFillProperties</span><span style="color: #c172d9; ">(</span>properties<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #608b4e; ">// TODO: Report important info that&#39;s specific to this Render Object (or delete this method).</span>
+  <span style="color: #dfb976; ">}</span>
+<span style="color: #5caeef; ">}</span>
+</span></code></pre>
+</div>
