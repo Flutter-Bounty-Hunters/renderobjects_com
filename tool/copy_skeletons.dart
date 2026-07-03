@@ -84,7 +84,7 @@ String _highlightDartCode(String code) {
 
   while (i < code.length) {
     // Line comments
-    if (i + 1 < code.length && code[i] == '/' && code[i + 1] == '/') {
+    if (i + 1 < code.length && code[i] == '/' && code[i + 1] == '/') {  // ignore: curly_braces_in_flow_control_structures
       final endOfLine = code.indexOf('\n', i);
       final commentEnd = endOfLine == -1 ? code.length : endOfLine;
       final comment = code.substring(i, commentEnd);
@@ -182,7 +182,7 @@ String _highlightDartCode(String code) {
     }
 
     // Punctuation
-    if ('(){}\[\].,;:?'.contains(code[i])) {
+    if ('(){}[].,;:?'.contains(code[i])) {
       result += '<span class="token punctuation">${_escapeHtml(code[i])}</span>';
       i++;
       continue;
