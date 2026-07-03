@@ -1,0 +1,80 @@
+<div class="rs-skeleton-code">
+  <pre><code class="language-dart"><span class="token keyword">import</span> <span class="token string">&#39;package:flutter/rendering.dart&#39;</span><span class="token punctuation">;</span>
+
+<span class="token comment">// TODO: Write useful Dart Docs for this custom render object.</span>
+<span class="token comment">// Configuration: children=single, paint=true, hit_test=self, semantics=false, baseline=true</span>
+<span class="token keyword">class</span> <span class="token class-name">MyRenderObject</span> <span class="token keyword">extends</span> <span class="token class-name">RenderBox</span> <span class="token keyword">with</span> <span class="token class-name">RenderObjectWithChildMixin</span><span class="token operator">&lt;</span><span class="token class-name">RenderBox</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// TODO: Estimate your size given the `constraints`.</span>
+  @override
+  <span class="token class-name">Size</span> <span class="token function">computeDryLayout</span><span class="token punctuation">(</span><span class="token class-name">BoxConstraints</span> constraints<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">throw</span> <span class="token function">UnimplementedError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// TODO: If possible, choose intrinsic widths/heights. By doing so, you expand the variety of places where</span>
+  <span class="token comment">//       this render object can be used (otherwise, delete these methods).</span>
+  @override
+  <span class="token builtin">double</span> <span class="token function">computeMinIntrinsicWidth</span><span class="token punctuation">(</span><span class="token builtin">double</span> height<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+
+  @override
+  <span class="token builtin">double</span> <span class="token function">computeMaxIntrinsicWidth</span><span class="token punctuation">(</span><span class="token builtin">double</span> height<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+
+  @override
+  <span class="token builtin">double</span> <span class="token function">computeMinIntrinsicHeight</span><span class="token punctuation">(</span><span class="token builtin">double</span> width<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+
+  @override
+  <span class="token builtin">double</span> <span class="token function">computeMaxIntrinsicHeight</span><span class="token punctuation">(</span><span class="token builtin">double</span> width<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+
+  @override
+  <span class="token keyword">void</span> <span class="token function">performLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// TODO: Pick a size based on `constraints`.</span>
+    <span class="token comment">// TODO: Layout your single child.</span>
+    <span class="token keyword">final</span> child <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>child<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>child <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      child<span class="token punctuation">.</span><span class="token function">layout</span><span class="token punctuation">(</span>constraints<span class="token punctuation">,</span> parentUsesSize<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      size <span class="token operator">=</span> child<span class="token punctuation">.</span>size<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      size <span class="token operator">=</span> constraints<span class="token punctuation">.</span>biggest<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  @override
+  <span class="token builtin">double</span><span class="token punctuation">?</span> <span class="token function">computeDryBaseline</span><span class="token punctuation">(</span><span class="token class-name">BoxConstraints</span> constraints<span class="token punctuation">,</span> <span class="token class-name">TextBaseline</span> baseline<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// TODO: If you&#39;re painting text, report the expected baseline position (or delete this method).</span>
+    <span class="token keyword">return</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">computeDryBaseline</span><span class="token punctuation">(</span>constraints<span class="token punctuation">,</span> baseline<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  @override
+  <span class="token builtin">double</span><span class="token punctuation">?</span> <span class="token function">computeDistanceToActualBaseline</span><span class="token punctuation">(</span><span class="token class-name">TextBaseline</span> baseline<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// TODO: If you&#39;re painting text, report the baseline position (or delete this method).</span>
+    <span class="token keyword">return</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">computeDistanceToActualBaseline</span><span class="token punctuation">(</span>baseline<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  @override
+  <span class="token keyword">void</span> <span class="token function">paint</span><span class="token punctuation">(</span><span class="token class-name">PaintingContext</span> context<span class="token punctuation">,</span> <span class="token class-name">Offset</span> offset<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// TODO: Paint your content.</span>
+    <span class="token keyword">throw</span> <span class="token function">UnimplementedError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  @override
+  <span class="token keyword">void</span> <span class="token function">debugPaint</span><span class="token punctuation">(</span><span class="token class-name">PaintingContext</span> context<span class="token punctuation">,</span> <span class="token class-name">Offset</span> offset<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">debugPaint</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>debugPaintSizeEnabled<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// TODO: Paint useful debug shapes/lines (or delete this method).</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  @override
+  <span class="token builtin">bool</span> <span class="token function">hitTestSelf</span><span class="token punctuation">(</span><span class="token class-name">Offset</span> position<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// TODO: Return `true` if this render object can be interacted with.</span>
+    <span class="token keyword">return</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  @override
+  <span class="token keyword">void</span> <span class="token function">debugFillProperties</span><span class="token punctuation">(</span><span class="token class-name">DiagnosticPropertiesBuilder</span> properties<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">debugFillProperties</span><span class="token punctuation">(</span>properties<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// TODO: Report important info that&#39;s specific to this Render Object (or delete this method).</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div>
