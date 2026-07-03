@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:path/path.dart' as path;
 import 'package:syntax_highlight_lite/syntax_highlight_lite.dart';
 
 Future<void> main() async {
@@ -21,11 +20,11 @@ Future<void> main() async {
   await for (final file in srcDir.list()) {
     if (file is File && file.path.endsWith('.dart')) {
       final dartCode = file.readAsStringSync();
-      final filename = path.basenameWithoutExtension(file.path);
+      final filename = _basenameWithoutExtension(file.path);
       final config = _parseConfig(dartCode);
 
       final html = _dartToHtml(filename, config, dartCode, highlighter);
-      final outputFile = File(path.join(destDir.path, '$filename.html'));
+      final outputFile = File('${destDir.path}/$filename.html');
 
       outputFile.writeAsStringSync(html);
       count++;
@@ -34,6 +33,12 @@ Future<void> main() async {
 
   print('✓ Copied and converted $count skeleton(s) to HTML');
   print('  Output: ${destDir.path}');
+}
+
+String _basenameWithoutExtension(String path) {
+  final basename = path.split('/').last;
+  final dotIndex = basename.lastIndexOf('.');
+  return dotIndex > 0 ? basename.substring(0, dotIndex) : basename;
 }
 
 Map<String, String> _parseConfig(String dartCode) {
