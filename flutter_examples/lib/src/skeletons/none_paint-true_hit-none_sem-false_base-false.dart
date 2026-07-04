@@ -1,6 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-// Configuration: children=none, paint=true, hit_test=none, semantics=false, baseline=false
 
 // TODO: Write useful Dart Docs for this custom widget.
 class MyWidget extends LeafRenderObjectWidget {
@@ -13,7 +12,7 @@ class MyWidget extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
-    // TODO: Pass updated properties to renderObject.
+    // TODO: Pass updated properties to renderObject (or delete if there are no properties).
   }
 
   @override
@@ -30,20 +29,6 @@ class MyRenderObject extends RenderBox {
   Size computeDryLayout(BoxConstraints constraints) {
     throw UnimplementedError();
   }
-
-  // TODO: If possible, choose intrinsic widths/heights. By doing so, you expand the variety of places where
-  //       this render object can be used (otherwise, delete these methods).
-  @override
-  double computeMinIntrinsicWidth(double height) => 0.0;
-
-  @override
-  double computeMaxIntrinsicWidth(double height) => 0.0;
-
-  @override
-  double computeMinIntrinsicHeight(double width) => 0.0;
-
-  @override
-  double computeMaxIntrinsicHeight(double width) => 0.0;
 
   @override
   void performLayout() {

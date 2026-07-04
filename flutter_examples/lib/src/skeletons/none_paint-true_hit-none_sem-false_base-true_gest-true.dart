@@ -1,6 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-// Configuration: children=none, paint=true, hit_test=none, semantics=false, baseline=true, gestures=true
 
 // TODO: Write useful Dart Docs for this custom widget.
 class MyWidget extends LeafRenderObjectWidget {
@@ -13,7 +12,7 @@ class MyWidget extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
-    // TODO: Pass updated properties to renderObject.
+    // TODO: Pass updated properties to renderObject (or delete if there are no properties).
   }
 
   @override

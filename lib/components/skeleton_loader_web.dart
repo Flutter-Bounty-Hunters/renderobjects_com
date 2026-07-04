@@ -13,9 +13,26 @@ String? getSkeletonParam() {
   return Uri.splitQueryString(search.substring(1))['skeleton'];
 }
 
-void setSkeletonUrl(String skeletonName) {
-  html.window.history
-      .replaceState(null, '', '${html.window.location.pathname}?skeleton=$skeletonName');
+String? getWidgetNameParam() {
+  final search = html.window.location.search;
+  if (search == null || search.isEmpty) return null;
+  return Uri.splitQueryString(search.substring(1))['widget'];
+}
+
+String? getRenderObjectNameParam() {
+  final search = html.window.location.search;
+  if (search == null || search.isEmpty) return null;
+  return Uri.splitQueryString(search.substring(1))['ro'];
+}
+
+void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = ''}) {
+  final params = <String, String>{'skeleton': skeletonName};
+  if (widgetName.isNotEmpty) params['widget'] = widgetName;
+  if (renderObjectName.isNotEmpty) params['ro'] = renderObjectName;
+  final query = params.entries
+      .map((e) => '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}')
+      .join('&');
+  html.window.history.replaceState(null, '', '${html.window.location.pathname}?$query');
 }
 
 void clearSkeletonUrl() {
@@ -49,5 +66,11 @@ void setupNameInputEnterKey(String id, void Function(String) callback) {
       event.preventDefault();
       callback(el.value?.trim() ?? '');
     }
+  });
+}
+
+void scrollToBottom(String elementId) {
+  html.window.requestAnimationFrame((_) {
+    html.window.scrollTo(0, html.document.body?.scrollHeight ?? 0);
   });
 }

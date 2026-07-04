@@ -1,6 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-// Configuration: children=single, paint=false, hit_test=self, semantics=false, baseline=true
 
 // TODO: Write useful Dart Docs for this custom widget.
 class MyWidget extends SingleChildRenderObjectWidget {
@@ -13,7 +12,7 @@ class MyWidget extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
-    // TODO: Pass updated properties to renderObject.
+    // TODO: Pass updated properties to renderObject (or delete if there are no properties).
   }
 
   @override
@@ -74,6 +73,11 @@ class MyRenderObject extends RenderBox with RenderObjectWithChildMixin<RenderBox
   bool hitTestSelf(Offset position) {
     // TODO: Return `true` if this render object can be interacted with.
     return false;
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) context.paintChild(child!, offset);
   }
 
   @override

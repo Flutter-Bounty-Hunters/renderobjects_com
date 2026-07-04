@@ -29,30 +29,16 @@
   align-self: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 0 1.25rem;
 }
 
 /* ─── Thread (scrollable) ───────────────────────────────────── */
 
 .rs-thread {
-  flex: 1;
-  overflow-y: auto;
-  padding: 2rem 0 1rem;
+  padding: 2rem 0 4rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.rs-thread::-webkit-scrollbar {
-  width: 4px;
-}
-
-.rs-thread::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: var(--radius-full);
 }
 
 /* ─── Message rows ──────────────────────────────────────────── */

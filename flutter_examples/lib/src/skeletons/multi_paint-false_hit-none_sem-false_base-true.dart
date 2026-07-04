@@ -1,6 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-// Configuration: children=multi, paint=false, hit_test=none, semantics=false, baseline=true
 
 // TODO: Write useful Dart Docs for this custom widget.
 class MyWidget extends MultiChildRenderObjectWidget {
@@ -13,7 +12,7 @@ class MyWidget extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
-    // TODO: Pass updated properties to renderObject.
+    // TODO: Pass updated properties to renderObject (or delete if there are no properties).
   }
 
   @override
@@ -24,10 +23,10 @@ class MyWidget extends MultiChildRenderObjectWidget {
 }
 
 // TODO: Write useful Dart Docs for this custom render object.
-class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>> {
+class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>>, RenderBoxContainerDefaultsMixin<RenderBox, ContainerBoxParentData<RenderBox>> {
   @override
   void setupParentData(RenderObject child) {
-    // TODO: Ensure child.parentData is the correct type for your container.
+    // TODO: Replace with creation of custom parent data, or delete if BoxParentData is what you want
     super.setupParentData(child);
   }
 
@@ -73,6 +72,11 @@ class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox
   double? computeDistanceToActualBaseline(TextBaseline baseline) {
     // TODO: If you're painting text, report the baseline position (or delete this method).
     return super.computeDistanceToActualBaseline(baseline);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    defaultPaint(context, offset);
   }
 
   @override

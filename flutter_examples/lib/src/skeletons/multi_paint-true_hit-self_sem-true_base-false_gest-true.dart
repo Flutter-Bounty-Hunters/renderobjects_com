@@ -1,6 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-// Configuration: children=multi, paint=true, hit_test=self, semantics=true, baseline=false, gestures=true
 
 // TODO: Write useful Dart Docs for this custom widget.
 class MyWidget extends MultiChildRenderObjectWidget {
@@ -13,7 +12,7 @@ class MyWidget extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
-    // TODO: Pass updated properties to renderObject.
+    // TODO: Pass updated properties to renderObject (or delete if there are no properties).
   }
 
   @override
@@ -27,7 +26,7 @@ class MyWidget extends MultiChildRenderObjectWidget {
 class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox, ContainerBoxParentData<RenderBox>> {
   @override
   void setupParentData(RenderObject child) {
-    // TODO: Ensure child.parentData is the correct type for your container.
+    // TODO: Replace with creation of custom parent data, or delete if BoxParentData is what you want
     super.setupParentData(child);
   }
 
@@ -36,20 +35,6 @@ class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox
   Size computeDryLayout(BoxConstraints constraints) {
     throw UnimplementedError();
   }
-
-  // TODO: If possible, choose intrinsic widths/heights. By doing so, you expand the variety of places where
-  //       this render object can be used (otherwise, delete these methods).
-  @override
-  double computeMinIntrinsicWidth(double height) => 0.0;
-
-  @override
-  double computeMaxIntrinsicWidth(double height) => 0.0;
-
-  @override
-  double computeMinIntrinsicHeight(double width) => 0.0;
-
-  @override
-  double computeMaxIntrinsicHeight(double width) => 0.0;
 
   @override
   void performLayout() {

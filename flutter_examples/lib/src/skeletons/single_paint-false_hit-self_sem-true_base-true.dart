@@ -1,6 +1,5 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-// Configuration: children=single, paint=false, hit_test=self, semantics=true, baseline=true
 
 // TODO: Write useful Dart Docs for this custom widget.
 class MyWidget extends SingleChildRenderObjectWidget {
@@ -13,7 +12,7 @@ class MyWidget extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, MyRenderObject renderObject) {
-    // TODO: Pass updated properties to renderObject.
+    // TODO: Pass updated properties to renderObject (or delete if there are no properties).
   }
 
   @override
@@ -80,6 +79,11 @@ class MyRenderObject extends RenderBox with RenderObjectWithChildMixin<RenderBox
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
     super.describeSemanticsConfiguration(config);
     // TODO: Describe additional semantic meaning of this render object (or delete this method).
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) context.paintChild(child!, offset);
   }
 
   @override

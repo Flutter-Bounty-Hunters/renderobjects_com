@@ -223,6 +223,8 @@ class RenderKitChatState extends State<RenderKitChat> {
 
     final skeletonName = getSkeletonParam();
     if (skeletonName != null) {
+      _widgetName = getWidgetNameParam() ?? '';
+      _renderObjectName = getRenderObjectNameParam() ?? '';
       _showingResult = true;
       _isLoadingSkeleton = true;
       // ignore: unawaited_futures
@@ -391,13 +393,18 @@ class RenderKitChatState extends State<RenderKitChat> {
       _isTyping = true;
       _messages.add(_ChatMessage(sender: _MessageSender.user, text: option));
     });
+    _scrollThread();
     // ignore: unawaited_futures
     Future.delayed(
         const Duration(milliseconds: 900), _onQuestionTypingComplete);
   }
 
   void _onQuestionTypingComplete() {
-    final nextStep = _currentStep + 1;
+    var nextStep = _currentStep + 1;
+    // Advance past any steps that should be skipped given current answers.
+    while (nextStep < _kWizardSteps.length && _shouldSkipStep(nextStep)) {
+      nextStep++;
+    }
     setState(() {
       _isTyping = false;
       _currentStep = nextStep;
@@ -414,6 +421,15 @@ class RenderKitChatState extends State<RenderKitChat> {
         ));
       }
     });
+    _scrollThread();
+  }
+
+  bool _shouldSkipStep(int step) {
+    // "Build during layout" (step 5) is only relevant when there are children.
+    if (step == 5 && _answers.isNotEmpty && _answers[0] == 'Zero (leaf)') {
+      return true;
+    }
+    return false;
   }
 
   List<String> _optionsForStep(int step) {
@@ -431,12 +447,16 @@ class RenderKitChatState extends State<RenderKitChat> {
       _isTyping = true;
       _messages.add(_ChatMessage(sender: _MessageSender.user, text: userText));
     });
+    _scrollThread();
     // ignore: unawaited_futures
     Future.delayed(const Duration(milliseconds: 900), () {
       setState(() => _isTyping = false);
       onDone();
+      _scrollThread();
     });
   }
+
+  void _scrollThread() => scrollToBottom('wizard-thread');
 
   // ─── Skeleton load + inject ───────────────────────────────────
 
@@ -467,7 +487,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       _isCopied = false;
       _showingResult = true;
     });
-    setSkeletonUrl(skeletonName);
+    setSkeletonUrl(skeletonName, widgetName: _widgetName, renderObjectName: _renderObjectName);
     await _fetchAndInjectSkeleton(skeletonName);
   }
 
@@ -709,7 +729,7 @@ class RenderKitChatState extends State<RenderKitChat> {
 
     return div(classes: 'rs-wizard-root', [
       div(classes: 'rs-chat-root', [
-        div(classes: 'rs-thread', [
+        div(id: 'wizard-thread', classes: 'rs-thread', [
           for (final msg in _messages) _buildMessage(msg),
           if (_isTyping) _buildTypingIndicator(),
           if (inputRow != null) inputRow,
