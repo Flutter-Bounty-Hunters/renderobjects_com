@@ -3,7 +3,8 @@ void injectSkeletonHtml(String elementId, String html) {}
 String? getSkeletonParam() => null;
 String? getWidgetNameParam() => null;
 String? getRenderObjectNameParam() => null;
-void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = ''}) {}
+String? getElementNameParam() => null;
+void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = '', String elementName = ''}) {}
 void clearSkeletonUrl() {}
 Future<void> copySkeletonCode() async {}
 String getNameInputValue(String id) => '';

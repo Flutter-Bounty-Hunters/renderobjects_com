@@ -25,10 +25,17 @@ String? getRenderObjectNameParam() {
   return Uri.splitQueryString(search.substring(1))['ro'];
 }
 
-void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = ''}) {
+String? getElementNameParam() {
+  final search = html.window.location.search;
+  if (search == null || search.isEmpty) return null;
+  return Uri.splitQueryString(search.substring(1))['element'];
+}
+
+void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = '', String elementName = ''}) {
   final params = <String, String>{'skeleton': skeletonName};
   if (widgetName.isNotEmpty) params['widget'] = widgetName;
   if (renderObjectName.isNotEmpty) params['ro'] = renderObjectName;
+  if (elementName.isNotEmpty) params['element'] = elementName;
   final query = params.entries
       .map((e) => '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}')
       .join('&');

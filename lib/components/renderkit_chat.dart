@@ -14,6 +14,9 @@ enum _WizardPhase {
   renderObjectSuggestion,
   renderObjectName,
   confirmRenderObjectCasing,
+  elementNameSuggestion,
+  elementName,
+  confirmElementCasing,
   questions,
 }
 
@@ -57,28 +60,41 @@ String _capitalizeFirst(String name) =>
 // ─── Wizard questions ─────────────────────────────────────────────────────────
 
 const List<({String question, List<String> options})> _kWizardSteps = [
+  // Step 0: children count
   (
     question: 'How many children will this render object have?',
     options: ['Zero (leaf)', 'One', 'Slotted', 'List', 'Custom model'],
   ),
+  // Step 1: virtualization — only shown for List / Custom model
+  (
+    question:
+        'Should your render object only build children when they\'re visible? '
+        '(e.g., the way a list view only builds what\'s visible)',
+    options: ['Yes', 'No'],
+  ),
+  // Step 2: paint
   (
     question: 'Do you need custom paint or compositing?',
     options: ['Custom paint', 'Compositing', 'Both', 'No — use default'],
   ),
+  // Step 3: hit testing
   (
     question: 'What is the desired hit testing behavior?',
     options: ['Entirely hittable', 'Partially hittable', 'Non-hittable'],
   ),
+  // Step 4: gestures
   (
     question:
         'Will your render object recognize and handle any gestures, internally?',
     options: ['Yes', 'No'],
   ),
+  // Step 5: intrinsic size
   (
     question:
         'Does this render object always require specified constraints, or does it have an intrinsic size (a natural size when width and height are infinite)?',
     options: ['Always requires specified constraints', 'Has an intrinsic size'],
   ),
+  // Step 6: build during layout — skipped for leaf and for virtualized
   (
     question:
         'Does this render object need to run build during layout (like LayoutBuilder)?',
@@ -101,6 +117,7 @@ class _SkeletonFeatures {
   final String semantics;
   final String baseline;
   final String gestures;
+  final String virtual;
 
   _SkeletonFeatures({
     required this.children,
@@ -109,31 +126,46 @@ class _SkeletonFeatures {
     required this.semantics,
     required this.baseline,
     required this.gestures,
+    this.virtual = 'false',
   });
 
-  String get filename {
-    final base =
-        '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}';
-    return gestures == 'true' ? '${base}_gest-true.dart' : '$base.dart';
+  String _base() {
+    final core =
+        '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-$baseline';
+    if (virtual == 'list') return '${core}_virt-list';
+    if (virtual == 'custom') return '${core}_virt-custom';
+    return core;
   }
 
-  String get fragmentFilename {
-    final base =
-        '${children}_paint-${paint}_hit-${hitTest}_sem-${semantics}_base-${baseline}';
-    return gestures == 'true'
-        ? '${base}_gest-true.fragment'
-        : '$base.fragment';
-  }
+  String get filename =>
+      gestures == 'true' ? '${_base()}_gest-true.dart' : '${_base()}.dart';
+
+  String get fragmentFilename =>
+      gestures == 'true' ? '${_base()}_gest-true.fragment' : '${_base()}.fragment';
 
   static _SkeletonFeatures fromAnswers(List<String> answers) {
     if (answers.length < 3) throw ArgumentError('Need at least 3 answers');
-    final children = _mapChildrenAnswer(answers[0]);
-    final paint = _mapPaintAnswer(answers[1]);
-    final hitTest = _mapHitTestAnswer(answers[2], children);
+    final childrenAnswer = answers[0];
+    final children = _mapChildrenAnswer(childrenAnswer);
+
+    // The virtualization question (step 1) is only asked for List / Custom model.
+    final hasVirtStep =
+        childrenAnswer.contains('List') || childrenAnswer.contains('Custom');
+    String virtual = 'false';
+    if (hasVirtStep && answers.length > 1 && answers[1] == 'Yes') {
+      virtual = childrenAnswer.contains('Custom') ? 'custom' : 'list';
+    }
+    // All subsequent answers are shifted by 1 when the virt step was shown.
+    final o = hasVirtStep ? 1 : 0;
+
+    final paint = _mapPaintAnswer(answers[1 + o]);
+    final hitTest = _mapHitTestAnswer(answers[2 + o], children);
     final gestures =
-        answers.length > 3 && answers[3] == 'Yes' ? 'true' : 'false';
+        answers.length > (3 + o) && answers[3 + o] == 'Yes' ? 'true' : 'false';
     final baseline =
-        answers.length > 4 && answers[4].contains('intrinsic') ? 'true' : 'false';
+        answers.length > (4 + o) && answers[4 + o].contains('intrinsic')
+            ? 'true'
+            : 'false';
     const semantics = 'false';
     return _SkeletonFeatures(
       children: children,
@@ -142,6 +174,7 @@ class _SkeletonFeatures {
       semantics: semantics,
       baseline: baseline,
       gestures: gestures,
+      virtual: virtual,
     );
   }
 
@@ -190,6 +223,7 @@ class RenderKitChatState extends State<RenderKitChat> {
   _WizardPhase _phase = _WizardPhase.widgetName;
   String _widgetName = '';
   String _renderObjectName = '';
+  String _elementName = '';
   String? _pendingName;
   String? _nameInputError;
 
@@ -225,6 +259,7 @@ class RenderKitChatState extends State<RenderKitChat> {
     if (skeletonName != null) {
       _widgetName = getWidgetNameParam() ?? '';
       _renderObjectName = getRenderObjectNameParam() ?? '';
+      _elementName = getElementNameParam() ?? '';
       _showingResult = true;
       _isLoadingSkeleton = true;
       // ignore: unawaited_futures
@@ -239,7 +274,8 @@ class RenderKitChatState extends State<RenderKitChat> {
   void _setupNameInput() {
     setupNameInputEnterKey('wizard-name-input', (value) {
       if (_phase == _WizardPhase.widgetName ||
-          _phase == _WizardPhase.renderObjectName) {
+          _phase == _WizardPhase.renderObjectName ||
+          _phase == _WizardPhase.elementName) {
         _onNameSubmit(value);
       }
     });
@@ -254,6 +290,9 @@ class RenderKitChatState extends State<RenderKitChat> {
         break;
       case _WizardPhase.renderObjectName:
         _submitRenderObjectName(name);
+        break;
+      case _WizardPhase.elementName:
+        _submitElementName(name);
         break;
       default:
         break;
@@ -372,6 +411,89 @@ class RenderKitChatState extends State<RenderKitChat> {
     _botReply(choice, _transitionToQuestions);
   }
 
+  // ─── Element name flow ────────────────────────────────────────
+
+  void _onElementSuggestion(String choice) {
+    if (choice.startsWith('Yes')) {
+      setState(() => _elementName = '${_widgetName}Element');
+      _botReply(choice, _transitionFromElementNaming);
+    } else {
+      _botReply(choice, () {
+        setState(() {
+          _phase = _WizardPhase.elementName;
+          _messages.add(const _ChatMessage(
+            sender: _MessageSender.bot,
+            text: 'What would you like to name your element class?',
+          ));
+        });
+        Future.delayed(Duration.zero, _setupNameInput);
+      });
+    }
+  }
+
+  void _submitElementName(String name) {
+    final error = _validateClassName(name);
+    if (error != null) {
+      setState(() => _nameInputError = error);
+      return;
+    }
+    if (!_isUpperCamelCase(name)) {
+      final corrected = _capitalizeFirst(name);
+      setState(() {
+        _nameInputError = null;
+        _pendingName = name;
+      });
+      _botReply(name, () {
+        setState(() {
+          _phase = _WizardPhase.confirmElementCasing;
+          _messages.add(_ChatMessage(
+            sender: _MessageSender.bot,
+            text: "Dart class names conventionally start with an uppercase "
+                "letter. Did you mean '$corrected'?",
+          ));
+        });
+      });
+    } else {
+      setState(() {
+        _nameInputError = null;
+        _elementName = name;
+      });
+      _botReply(name, _transitionFromElementNaming);
+    }
+  }
+
+  void _onElementCasingChoice(String choice) {
+    final corrected = _capitalizeFirst(_pendingName ?? '');
+    setState(() {
+      _elementName =
+          choice.startsWith('Use') ? corrected : (_pendingName ?? '');
+    });
+    _botReply(choice, _transitionFromElementNaming);
+  }
+
+  void _transitionFromElementNaming() {
+    var nextStep = 2;
+    while (nextStep < _kWizardSteps.length && _shouldSkipStep(nextStep)) {
+      nextStep++;
+    }
+    setState(() {
+      _phase = _WizardPhase.questions;
+      _currentStep = nextStep;
+      if (nextStep >= _kWizardSteps.length) {
+        _isDone = true;
+        _messages.add(const _ChatMessage(
+          sender: _MessageSender.bot,
+          text: _kFinalBotMessage,
+        ));
+      } else {
+        _messages.add(_ChatMessage(
+          sender: _MessageSender.bot,
+          text: _kWizardSteps[nextStep].question,
+        ));
+      }
+    });
+  }
+
   // ─── Transition to questions ──────────────────────────────────
 
   void _transitionToQuestions() {
@@ -400,6 +522,23 @@ class RenderKitChatState extends State<RenderKitChat> {
   }
 
   void _onQuestionTypingComplete() {
+    // After the virtualization question is answered "Yes", collect an element
+    // name before continuing with the remaining questions.
+    if (_currentStep == 1 && _isVirtualized()) {
+      final suggested = '${_widgetName}Element';
+      setState(() {
+        _isTyping = false;
+        _phase = _WizardPhase.elementNameSuggestion;
+        _messages.add(_ChatMessage(
+          sender: _MessageSender.bot,
+          text: "What should we call your element class? "
+              "How about '$suggested'?",
+        ));
+      });
+      _scrollThread();
+      return;
+    }
+
     var nextStep = _currentStep + 1;
     // Advance past any steps that should be skipped given current answers.
     while (nextStep < _kWizardSteps.length && _shouldSkipStep(nextStep)) {
@@ -425,16 +564,33 @@ class RenderKitChatState extends State<RenderKitChat> {
   }
 
   bool _shouldSkipStep(int step) {
-    // "Build during layout" (step 5) is only relevant when there are children.
-    if (step == 5 && _answers.isNotEmpty && _answers[0] == 'Zero (leaf)') {
-      return true;
+    // Virtualization question (step 1) only for List or Custom model.
+    if (step == 1) {
+      if (_answers.isEmpty) return true;
+      final a = _answers[0];
+      return !(a.contains('List') || a.contains('Custom'));
+    }
+    // "Build during layout" (step 6) is skipped for leaf children or when
+    // virtualization is chosen (build-during-layout is implicit for virtualized).
+    if (step == 6) {
+      if (_answers.isNotEmpty && _answers[0] == 'Zero (leaf)') return true;
+      if (_isVirtualized()) return true;
+      return false;
     }
     return false;
   }
 
+  bool _isVirtualized() {
+    if (_answers.isEmpty) return false;
+    final a0 = _answers[0];
+    if (!(a0.contains('List') || a0.contains('Custom'))) return false;
+    return _answers.length > 1 && _answers[1] == 'Yes';
+  }
+
   List<String> _optionsForStep(int step) {
     final base = _kWizardSteps[step].options;
-    if (step == 2 && _answers.isNotEmpty && _answers[0] != 'Zero (leaf)') {
+    // Hit testing (step 3) gains an extra option for non-leaf children.
+    if (step == 3 && _answers.isNotEmpty && _answers[0] != 'Zero (leaf)') {
       return [...base, 'Only Children Hittable'];
     }
     return base;
@@ -487,7 +643,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       _isCopied = false;
       _showingResult = true;
     });
-    setSkeletonUrl(skeletonName, widgetName: _widgetName, renderObjectName: _renderObjectName);
+    setSkeletonUrl(skeletonName, widgetName: _widgetName, renderObjectName: _renderObjectName, elementName: _elementName);
     await _fetchAndInjectSkeleton(skeletonName);
   }
 
@@ -495,8 +651,12 @@ class RenderKitChatState extends State<RenderKitChat> {
     if (_skeletonCode == null) return;
     var html = _skeletonCode!;
     // Substitute placeholder class names with the user's chosen names.
+    // Replace longer/more-specific names first to avoid partial matches.
     if (_renderObjectName.isNotEmpty) {
       html = html.replaceAll('MyRenderObject', _renderObjectName);
+    }
+    if (_elementName.isNotEmpty) {
+      html = html.replaceAll('MyElement', _elementName);
     }
     if (_widgetName.isNotEmpty) {
       html = html.replaceAll('MyWidget', _widgetName);
@@ -525,6 +685,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       _phase = _WizardPhase.widgetName;
       _widgetName = '';
       _renderObjectName = '';
+      _elementName = '';
       _pendingName = null;
       _nameInputError = null;
       _answers.clear();
@@ -587,10 +748,12 @@ class RenderKitChatState extends State<RenderKitChat> {
   }
 
   Component _buildNameInputRow() {
-    final isWidget = _phase == _WizardPhase.widgetName;
-    final placeholder = isWidget
-        ? 'e.g. MyWidget'
-        : 'e.g. Render${_widgetName.isNotEmpty ? _widgetName : "MyWidget"}';
+    final placeholder = switch (_phase) {
+      _WizardPhase.widgetName => 'e.g. MyWidget',
+      _WizardPhase.elementName =>
+        'e.g. ${_widgetName.isNotEmpty ? _widgetName : "My"}Element',
+      _ => 'e.g. Render${_widgetName.isNotEmpty ? _widgetName : "MyWidget"}',
+    };
     return div(classes: 'rs-msg-row rs-msg-row--user', [
       div(classes: 'rs-name-input-wrap', [
         if (_nameInputError != null)
@@ -691,6 +854,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       switch (_phase) {
         case _WizardPhase.widgetName:
         case _WizardPhase.renderObjectName:
+        case _WizardPhase.elementName:
           inputRow = _buildNameInputRow();
           break;
         case _WizardPhase.confirmWidgetCasing:
@@ -712,6 +876,22 @@ class RenderKitChatState extends State<RenderKitChat> {
         case _WizardPhase.confirmRenderObjectCasing:
           inputRow = div(classes: 'rs-msg-row rs-msg-row--user', [
             _buildOptions(casingOpts, onSelect: _onROCasingChoice),
+          ]);
+          break;
+        case _WizardPhase.elementNameSuggestion:
+          inputRow = div(classes: 'rs-msg-row rs-msg-row--user', [
+            _buildOptions(
+              [
+                "Yes, use '${_widgetName}Element'",
+                "I'll choose a different name",
+              ],
+              onSelect: _onElementSuggestion,
+            ),
+          ]);
+          break;
+        case _WizardPhase.confirmElementCasing:
+          inputRow = div(classes: 'rs-msg-row rs-msg-row--user', [
+            _buildOptions(casingOpts, onSelect: _onElementCasingChoice),
           ]);
           break;
         case _WizardPhase.questions:

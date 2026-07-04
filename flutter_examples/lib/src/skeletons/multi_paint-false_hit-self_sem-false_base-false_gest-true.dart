@@ -30,9 +30,12 @@ class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox
     super.setupParentData(child);
   }
 
-  // TODO: Estimate your size given the `constraints`.
   @override
   Size computeDryLayout(BoxConstraints constraints) {
+    // TODO: Compute and return the size this render object would take given [constraints],
+    //       without performing actual layout. For any children, call child.getDryLayout()
+    //       rather than child.layout(). If your size can't be determined without a real
+    //       layout pass, delete this method — the base class handles that case gracefully.
     throw UnimplementedError();
   }
 

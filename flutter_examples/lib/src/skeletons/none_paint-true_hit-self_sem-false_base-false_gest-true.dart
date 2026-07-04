@@ -24,9 +24,12 @@ class MyWidget extends LeafRenderObjectWidget {
 
 // TODO: Write useful Dart Docs for this custom render object.
 class MyRenderObject extends RenderBox {
-  // TODO: Estimate your size given the `constraints`.
   @override
   Size computeDryLayout(BoxConstraints constraints) {
+    // TODO: Compute and return the size this render object would take given [constraints],
+    //       without performing actual layout. For any children, call child.getDryLayout()
+    //       rather than child.layout(). If your size can't be determined without a real
+    //       layout pass, delete this method — the base class handles that case gracefully.
     throw UnimplementedError();
   }
 
