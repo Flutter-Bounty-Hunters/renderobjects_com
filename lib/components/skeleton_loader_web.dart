@@ -30,3 +30,24 @@ Future<void> copySkeletonCode() async {
     await html.window.navigator.clipboard?.writeText(text);
   } catch (_) {}
 }
+
+String getNameInputValue(String id) {
+  final el = html.document.getElementById(id) as html.InputElement?;
+  return el?.value?.trim() ?? '';
+}
+
+void focusNameInput(String id) {
+  final el = html.document.getElementById(id) as html.InputElement?;
+  el?.focus();
+}
+
+void setupNameInputEnterKey(String id, void Function(String) callback) {
+  final el = html.document.getElementById(id) as html.InputElement?;
+  if (el == null) return;
+  el.onKeyDown.listen((event) {
+    if (event.key == 'Enter') {
+      event.preventDefault();
+      callback(el.value?.trim() ?? '');
+    }
+  });
+}
