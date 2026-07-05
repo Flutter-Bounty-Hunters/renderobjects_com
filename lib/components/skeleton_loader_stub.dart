@@ -4,7 +4,8 @@ String? getSkeletonParam() => null;
 String? getWidgetNameParam() => null;
 String? getRenderObjectNameParam() => null;
 String? getElementNameParam() => null;
-void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = '', String elementName = ''}) {}
+String? getParentDataNameParam() => null;
+void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = '', String elementName = '', String parentDataName = ''}) {}
 void clearSkeletonUrl() {}
 Future<void> copySkeletonCode() async {}
 String getNameInputValue(String id) => '';

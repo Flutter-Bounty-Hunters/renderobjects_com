@@ -340,7 +340,7 @@ class _UseCasesSectionWrapper extends StatelessComponent {
             title: 'Nest Thermostat',
             description:
                 "A render object that looks similar to a Nest thermostat. A child-less render object with a complicating painting and paint-aware hit detection.",
-            href: '/examples/custom-scrolling',
+            href: '/examples/nest-thermostat',
           ),
           _UseCaseCard(
             accent: '#5b8dee',

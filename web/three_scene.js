@@ -21,12 +21,13 @@ const RECT_CONFIGS = [
   },
   // Medium rect, center-right and slightly forward
   {
-    w: 2.8, h: 1.9, d: 0.08,
+    w: 2.2, h: 2.13, d: 0.08,
     x: 2.6, y: -0.5, z: -1.0,
     rx: -0.06, ry: -0.35, rz: 0.04,
     color: 0x2D5ED4,
     emissive: 0x060b1c,
     sensitivity: 0.75,
+    texture: 'images/apple-watch-app-grid_paint.png',
   },
   // Smaller rect, far right and behind
   {

@@ -31,11 +31,18 @@ String? getElementNameParam() {
   return Uri.splitQueryString(search.substring(1))['element'];
 }
 
-void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = '', String elementName = ''}) {
+String? getParentDataNameParam() {
+  final search = html.window.location.search;
+  if (search == null || search.isEmpty) return null;
+  return Uri.splitQueryString(search.substring(1))['pd'];
+}
+
+void setSkeletonUrl(String skeletonName, {String widgetName = '', String renderObjectName = '', String elementName = '', String parentDataName = ''}) {
   final params = <String, String>{'skeleton': skeletonName};
   if (widgetName.isNotEmpty) params['widget'] = widgetName;
   if (renderObjectName.isNotEmpty) params['ro'] = renderObjectName;
   if (elementName.isNotEmpty) params['element'] = elementName;
+  if (parentDataName.isNotEmpty) params['pd'] = parentDataName;
   final query = params.entries
       .map((e) => '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}')
       .join('&');

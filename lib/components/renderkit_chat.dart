@@ -17,6 +17,9 @@ enum _WizardPhase {
   elementNameSuggestion,
   elementName,
   confirmElementCasing,
+  parentDataNameSuggestion,
+  parentDataName,
+  confirmParentDataCasing,
   questions,
 }
 
@@ -51,11 +54,19 @@ String? _validateClassName(String name) {
   return null;
 }
 
-bool _isUpperCamelCase(String name) =>
-    name.isNotEmpty && RegExp(r'^[A-Z]').hasMatch(name);
+bool _isUpperCamelCase(String name) {
+  if (name.isEmpty) return false;
+  final effective = name.startsWith('_') ? name.substring(1) : name;
+  return effective.isNotEmpty && RegExp(r'^[A-Z]').hasMatch(effective);
+}
 
-String _capitalizeFirst(String name) =>
-    name.isEmpty ? name : name[0].toUpperCase() + name.substring(1);
+String _capitalizeFirst(String name) {
+  if (name.isEmpty) return name;
+  if (name.startsWith('_') && name.length > 1) {
+    return '_${name[1].toUpperCase()}${name.substring(2)}';
+  }
+  return '${name[0].toUpperCase()}${name.substring(1)}';
+}
 
 // ─── Wizard questions ─────────────────────────────────────────────────────────
 
@@ -224,6 +235,7 @@ class RenderKitChatState extends State<RenderKitChat> {
   String _widgetName = '';
   String _renderObjectName = '';
   String _elementName = '';
+  String _parentDataName = '';
   String? _pendingName;
   String? _nameInputError;
 
@@ -260,6 +272,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       _widgetName = getWidgetNameParam() ?? '';
       _renderObjectName = getRenderObjectNameParam() ?? '';
       _elementName = getElementNameParam() ?? '';
+      _parentDataName = getParentDataNameParam() ?? '';
       _showingResult = true;
       _isLoadingSkeleton = true;
       // ignore: unawaited_futures
@@ -275,7 +288,8 @@ class RenderKitChatState extends State<RenderKitChat> {
     setupNameInputEnterKey('wizard-name-input', (value) {
       if (_phase == _WizardPhase.widgetName ||
           _phase == _WizardPhase.renderObjectName ||
-          _phase == _WizardPhase.elementName) {
+          _phase == _WizardPhase.elementName ||
+          _phase == _WizardPhase.parentDataName) {
         _onNameSubmit(value);
       }
     });
@@ -293,6 +307,9 @@ class RenderKitChatState extends State<RenderKitChat> {
         break;
       case _WizardPhase.elementName:
         _submitElementName(name);
+        break;
+      case _WizardPhase.parentDataName:
+        _submitParentDataName(name);
         break;
       default:
         break;
@@ -472,6 +489,78 @@ class RenderKitChatState extends State<RenderKitChat> {
   }
 
   void _transitionFromElementNaming() {
+    final suggested = '${_widgetName}ParentData';
+    setState(() {
+      _phase = _WizardPhase.parentDataNameSuggestion;
+      _messages.add(_ChatMessage(
+        sender: _MessageSender.bot,
+        text: "Your virtualized children need a custom parent data class to "
+            "track each child's position. Flutter has parent data classes like "
+            "'StackParentData'. How about '$suggested'?",
+      ));
+    });
+    _scrollThread();
+  }
+
+  void _onParentDataSuggestion(String choice) {
+    if (choice.startsWith('Yes')) {
+      setState(() => _parentDataName = '${_widgetName}ParentData');
+      _botReply(choice, _transitionFromParentDataNaming);
+    } else {
+      _botReply(choice, () {
+        setState(() {
+          _phase = _WizardPhase.parentDataName;
+          _messages.add(const _ChatMessage(
+            sender: _MessageSender.bot,
+            text: 'What would you like to name your parent data class?',
+          ));
+        });
+        Future.delayed(Duration.zero, _setupNameInput);
+      });
+    }
+  }
+
+  void _submitParentDataName(String name) {
+    final error = _validateClassName(name);
+    if (error != null) {
+      setState(() => _nameInputError = error);
+      return;
+    }
+    if (!_isUpperCamelCase(name)) {
+      final corrected = _capitalizeFirst(name);
+      setState(() {
+        _nameInputError = null;
+        _pendingName = name;
+      });
+      _botReply(name, () {
+        setState(() {
+          _phase = _WizardPhase.confirmParentDataCasing;
+          _messages.add(_ChatMessage(
+            sender: _MessageSender.bot,
+            text: "Dart class names conventionally start with an uppercase "
+                "letter. Did you mean '$corrected'?",
+          ));
+        });
+      });
+    } else {
+      setState(() {
+        _nameInputError = null;
+        _parentDataName = name;
+      });
+      _botReply(name, _transitionFromParentDataNaming);
+    }
+  }
+
+  void _onParentDataCasingChoice(String choice) {
+    final corrected = _capitalizeFirst(_pendingName ?? '');
+    setState(() {
+      _parentDataName =
+          choice.startsWith('Use') ? corrected : (_pendingName ?? '');
+    });
+    _botReply(choice, _transitionFromParentDataNaming);
+  }
+
+  void _transitionFromParentDataNaming() {
     var nextStep = 2;
     while (nextStep < _kWizardSteps.length && _shouldSkipStep(nextStep)) {
       nextStep++;
@@ -643,7 +732,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       _isCopied = false;
       _showingResult = true;
     });
-    setSkeletonUrl(skeletonName, widgetName: _widgetName, renderObjectName: _renderObjectName, elementName: _elementName);
+    setSkeletonUrl(skeletonName, widgetName: _widgetName, renderObjectName: _renderObjectName, elementName: _elementName, parentDataName: _parentDataName);
     await _fetchAndInjectSkeleton(skeletonName);
   }
 
@@ -657,6 +746,9 @@ class RenderKitChatState extends State<RenderKitChat> {
     }
     if (_elementName.isNotEmpty) {
       html = html.replaceAll('MyElement', _elementName);
+    }
+    if (_parentDataName.isNotEmpty) {
+      html = html.replaceAll('MyParentData', _parentDataName);
     }
     if (_widgetName.isNotEmpty) {
       html = html.replaceAll('MyWidget', _widgetName);
@@ -686,6 +778,7 @@ class RenderKitChatState extends State<RenderKitChat> {
       _widgetName = '';
       _renderObjectName = '';
       _elementName = '';
+      _parentDataName = '';
       _pendingName = null;
       _nameInputError = null;
       _answers.clear();
@@ -752,6 +845,8 @@ class RenderKitChatState extends State<RenderKitChat> {
       _WizardPhase.widgetName => 'e.g. MyWidget',
       _WizardPhase.elementName =>
         'e.g. ${_widgetName.isNotEmpty ? _widgetName : "My"}Element',
+      _WizardPhase.parentDataName =>
+        'e.g. ${_widgetName.isNotEmpty ? _widgetName : "My"}ParentData',
       _ => 'e.g. Render${_widgetName.isNotEmpty ? _widgetName : "MyWidget"}',
     };
     return div(classes: 'rs-msg-row rs-msg-row--user', [
@@ -855,6 +950,7 @@ class RenderKitChatState extends State<RenderKitChat> {
         case _WizardPhase.widgetName:
         case _WizardPhase.renderObjectName:
         case _WizardPhase.elementName:
+        case _WizardPhase.parentDataName:
           inputRow = _buildNameInputRow();
           break;
         case _WizardPhase.confirmWidgetCasing:
@@ -892,6 +988,22 @@ class RenderKitChatState extends State<RenderKitChat> {
         case _WizardPhase.confirmElementCasing:
           inputRow = div(classes: 'rs-msg-row rs-msg-row--user', [
             _buildOptions(casingOpts, onSelect: _onElementCasingChoice),
+          ]);
+          break;
+        case _WizardPhase.parentDataNameSuggestion:
+          inputRow = div(classes: 'rs-msg-row rs-msg-row--user', [
+            _buildOptions(
+              [
+                "Yes, use '${_widgetName}ParentData'",
+                "I'll choose a different name",
+              ],
+              onSelect: _onParentDataSuggestion,
+            ),
+          ]);
+          break;
+        case _WizardPhase.confirmParentDataCasing:
+          inputRow = div(classes: 'rs-msg-row rs-msg-row--user', [
+            _buildOptions(casingOpts, onSelect: _onParentDataCasingChoice),
           ]);
           break;
         case _WizardPhase.questions:

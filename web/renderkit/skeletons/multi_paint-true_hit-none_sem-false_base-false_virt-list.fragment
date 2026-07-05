@@ -18,7 +18,7 @@
 
   <span style="color: #569cd6; ">@override</span>
   <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #dcdcaa; ">createRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">BuildContext</span> context<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
-    <span style="color: #c586c0; ">return</span> <span style="color: #4ec9b0; ">MyRenderObject</span><span style="color: #c172d9; ">(</span>childManager<span style="color: #d4d4d4; ">:</span> context <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">_LazyChildDelegate</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #c586c0; ">return</span> <span style="color: #4ec9b0; ">MyRenderObject</span><span style="color: #c172d9; ">(</span>childManager<span style="color: #d4d4d4; ">:</span> context <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">LazyChildDelegate</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>
@@ -34,7 +34,7 @@
   <span style="color: #dfb976; ">}</span>
 <span style="color: #5caeef; ">}</span>
 
-<span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyElement</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">RenderObjectElement</span> <span style="color: #569cd6; ">implements</span> <span style="color: #4ec9b0; ">_LazyChildDelegate</span> <span style="color: #5caeef; ">{</span>
+<span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyElement</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">RenderObjectElement</span> <span style="color: #569cd6; ">implements</span> <span style="color: #4ec9b0; ">LazyChildDelegate</span> <span style="color: #5caeef; ">{</span>
   <span style="color: #4ec9b0; ">MyElement</span><span style="color: #dfb976; ">(</span><span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span>widget<span style="color: #dfb976; ">)</span><span style="color: #d4d4d4; ">;</span>
 
   <span style="color: #569cd6; ">final</span> <span style="color: #4ec9b0; ">Map</span><span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">int</span>, <span style="color: #4ec9b0; ">Element</span><span style="color: #d4d4d4; ">&gt;</span> _childElements <span style="color: #d4d4d4; ">=</span> <span style="color: #dfb976; ">{</span><span style="color: #dfb976; ">}</span><span style="color: #d4d4d4; ">;</span>
@@ -46,34 +46,12 @@
   <span style="color: #4ec9b0; ">int</span><span style="color: #d4d4d4; ">?</span> <span style="color: #569cd6; ">get</span> childCount <span style="color: #d4d4d4; ">=&gt;</span> <span style="color: #dfb976; ">(</span>widget <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">MyWidget</span><span style="color: #dfb976; ">)</span><span style="color: #d4d4d4; ">.</span>childCount<span style="color: #d4d4d4; ">;</span>
 
   <span style="color: #569cd6; ">@override</span>
-  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">insertRenderObjectChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> slot<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
-    renderObject<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">insert</span><span style="color: #c172d9; ">(</span>child <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">,</span> after<span style="color: #d4d4d4; ">:</span> slot <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-  <span style="color: #dfb976; ">}</span>
-
-  <span style="color: #569cd6; ">@override</span>
-  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">moveRenderObjectChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> oldSlot<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> newSlot<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
-    renderObject<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">move</span><span style="color: #c172d9; ">(</span>child <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">,</span> after<span style="color: #d4d4d4; ">:</span> newSlot <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-  <span style="color: #dfb976; ">}</span>
-
-  <span style="color: #569cd6; ">@override</span>
-  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">forgetChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">Element</span> child<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
-    <span style="color: #569cd6; ">final</span> index <span style="color: #d4d4d4; ">=</span> <span style="color: #c172d9; ">(</span>child<span style="color: #d4d4d4; ">.</span>renderObject<span style="color: #d4d4d4; ">!</span><span style="color: #d4d4d4; ">.</span>parentData<span style="color: #d4d4d4; ">!</span> <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">MyParentData</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">.</span>index<span style="color: #d4d4d4; ">;</span>
-    _childElements<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">remove</span><span style="color: #c172d9; ">(</span>index<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">forgetChild</span><span style="color: #c172d9; ">(</span>child<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-  <span style="color: #dfb976; ">}</span>
-
-  <span style="color: #569cd6; ">@override</span>
-  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">removeRenderObjectChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> slot<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
-    renderObject<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">remove</span><span style="color: #c172d9; ">(</span>child <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-  <span style="color: #dfb976; ">}</span>
-
-  <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">didStartLayout</span><span style="color: #dfb976; ">(</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
     <span style="color: #608b4e; ">// TODO: Take an action when the render object starts layout, or leave as a no-op.</span>
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>
-  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">createChildDuringLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">int</span> index<span style="color: #d4d4d4; ">,</span> <span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> after<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">createOrUpdateChildDuringLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">int</span> index<span style="color: #d4d4d4; ">,</span> <span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> after<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
     owner<span style="color: #d4d4d4; ">!</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">buildScope</span><span style="color: #c172d9; ">(</span><span style="color: #569cd6; ">this</span><span style="color: #d4d4d4; ">,</span> <span style="color: #4fb1bc; ">(</span><span style="color: #4fb1bc; ">)</span> <span style="color: #4fb1bc; ">{</span>
       <span style="color: #569cd6; ">final</span> newChild <span style="color: #d4d4d4; ">=</span> <span style="color: #dcdcaa; ">updateChild</span><span style="color: #97c26c; ">(</span>
         _childElements<span style="color: #abb2c0; ">[</span>index<span style="color: #abb2c0; ">]</span><span style="color: #d4d4d4; ">,</span>
@@ -89,12 +67,34 @@
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">insertRenderObjectChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> slot<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    renderObject<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">insert</span><span style="color: #c172d9; ">(</span>child <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">,</span> after<span style="color: #d4d4d4; ">:</span> slot <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">moveRenderObjectChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> oldSlot<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> newSlot<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    renderObject<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">move</span><span style="color: #c172d9; ">(</span>child <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">,</span> after<span style="color: #d4d4d4; ">:</span> newSlot <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">removeChildDuringLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderBox</span> child<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
     <span style="color: #569cd6; ">final</span> index <span style="color: #d4d4d4; ">=</span> <span style="color: #c172d9; ">(</span>child<span style="color: #d4d4d4; ">.</span>parentData<span style="color: #d4d4d4; ">!</span> <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">MyParentData</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">.</span>index<span style="color: #d4d4d4; ">!</span><span style="color: #d4d4d4; ">;</span>
     owner<span style="color: #d4d4d4; ">!</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">buildScope</span><span style="color: #c172d9; ">(</span><span style="color: #569cd6; ">this</span><span style="color: #d4d4d4; ">,</span> <span style="color: #4fb1bc; ">(</span><span style="color: #4fb1bc; ">)</span> <span style="color: #4fb1bc; ">{</span>
       <span style="color: #dcdcaa; ">updateChild</span><span style="color: #97c26c; ">(</span>_childElements<span style="color: #abb2c0; ">[</span>index<span style="color: #abb2c0; ">]</span><span style="color: #d4d4d4; ">,</span> <span style="color: #569cd6; ">null</span><span style="color: #d4d4d4; ">,</span> index<span style="color: #97c26c; ">)</span><span style="color: #d4d4d4; ">;</span>
     <span style="color: #4fb1bc; ">}</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
     _childElements<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">remove</span><span style="color: #c172d9; ">(</span>index<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">forgetChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">Element</span> child<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    <span style="color: #569cd6; ">final</span> index <span style="color: #d4d4d4; ">=</span> <span style="color: #c172d9; ">(</span>child<span style="color: #d4d4d4; ">.</span>renderObject<span style="color: #d4d4d4; ">!</span><span style="color: #d4d4d4; ">.</span>parentData<span style="color: #d4d4d4; ">!</span> <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">MyParentData</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">.</span>index<span style="color: #d4d4d4; ">;</span>
+    _childElements<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">remove</span><span style="color: #c172d9; ">(</span>index<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+    <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">forgetChild</span><span style="color: #c172d9; ">(</span>child<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+  <span style="color: #dfb976; ">}</span>
+
+  <span style="color: #569cd6; ">@override</span>
+  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">removeRenderObjectChild</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #d4d4d4; ">,</span> <span style="color: #4ec9b0; ">Object</span><span style="color: #d4d4d4; ">?</span> slot<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
+    renderObject<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">remove</span><span style="color: #c172d9; ">(</span>child <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>
@@ -111,10 +111,10 @@
 <span style="color: #608b4e; ">// TODO: Write useful Dart Docs for this custom render object.</span>
 <span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">MyRenderObject</span> <span style="color: #569cd6; ">extends</span> <span style="color: #4ec9b0; ">RenderBox</span>
     <span style="color: #569cd6; ">with</span> <span style="color: #4ec9b0; ">ContainerRenderObjectMixin</span><span style="color: #d4d4d4; ">&lt;</span><span style="color: #4ec9b0; ">RenderBox</span>, <span style="color: #4ec9b0; ">MyParentData</span><span style="color: #d4d4d4; ">&gt;</span> <span style="color: #5caeef; ">{</span>
-  <span style="color: #4ec9b0; ">MyRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">_LazyChildDelegate</span> childManager<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span>
+  <span style="color: #4ec9b0; ">MyRenderObject</span><span style="color: #dfb976; ">(</span><span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">LazyChildDelegate</span> childManager<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span>
       <span style="color: #d4d4d4; ">:</span> _lazyChildDelegate <span style="color: #d4d4d4; ">=</span> childManager<span style="color: #d4d4d4; ">;</span>
 
-  <span style="color: #569cd6; ">final</span> <span style="color: #4ec9b0; ">_LazyChildDelegate</span> _lazyChildDelegate<span style="color: #d4d4d4; ">;</span>
+  <span style="color: #569cd6; ">final</span> <span style="color: #4ec9b0; ">LazyChildDelegate</span> _lazyChildDelegate<span style="color: #d4d4d4; ">;</span>
 
   <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">setupParentData</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">RenderObject</span> child<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
@@ -126,12 +126,41 @@
   <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">performLayout</span><span style="color: #dfb976; ">(</span><span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
     _lazyChildDelegate<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">didStartLayout</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-    <span style="color: #608b4e; ">// TODO: Determine which child indices are visible given the current</span>
-    <span style="color: #608b4e; ">//       scroll offset and viewport extent.</span>
-    <span style="color: #608b4e; ">// TODO: For each visible index, call _lazyChildDelegate.createChildDuringLayout(index, after: precedingChild)</span>
-    <span style="color: #608b4e; ">//       if that child is not already live.</span>
-    <span style="color: #608b4e; ">// TODO: Lay out each live child.</span>
-    <span style="color: #608b4e; ">// TODO: Remove off-screen children via _lazyChildDelegate.removeChildDuringLayout(child).</span>
+
+    <span style="color: #608b4e; ">// TODO: Compute the range of visible child indices based on the current</span>
+    <span style="color: #608b4e; ">//       scroll offset and viewport dimensions.</span>
+    <span style="color: #569cd6; ">final</span> firstVisibleIndex <span style="color: #d4d4d4; ">=</span> <span style="color: #b5cea8; ">0</span><span style="color: #d4d4d4; ">;</span> <span style="color: #608b4e; ">// TODO</span>
+    <span style="color: #569cd6; ">final</span> lastVisibleIndex <span style="color: #d4d4d4; ">=</span> <span style="color: #b5cea8; ">0</span><span style="color: #d4d4d4; ">;</span>  <span style="color: #608b4e; ">// TODO</span>
+
+    <span style="color: #608b4e; ">// We need to run build during layout. This normally isn&#39;t allowed by the framework. We call this method to tell</span>
+    <span style="color: #608b4e; ">// Flutter that we&#39;re intentionally running build during layout to avoid an error.</span>
+    <span style="color: #dcdcaa; ">invokeLayoutCallback</span><span style="color: #c172d9; ">(</span><span style="color: #4fb1bc; ">(</span>_<span style="color: #4fb1bc; ">)</span> <span style="color: #4fb1bc; ">{</span>
+      <span style="color: #608b4e; ">// Build all visible children and lay them out.</span>
+      <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> precedingChild<span style="color: #d4d4d4; ">;</span>
+      <span style="color: #c586c0; ">for</span> <span style="color: #97c26c; ">(</span><span style="color: #569cd6; ">var</span> index <span style="color: #d4d4d4; ">=</span> firstVisibleIndex<span style="color: #d4d4d4; ">;</span> index <span style="color: #d4d4d4; ">&lt;=</span> lastVisibleIndex<span style="color: #d4d4d4; ">;</span> index<span style="color: #d4d4d4; ">++</span><span style="color: #97c26c; ">)</span> <span style="color: #97c26c; ">{</span>
+        <span style="color: #608b4e; ">// Ask the Element to run a widget build for us during layout, which adds this widget&#39;s render object to our child list.</span>
+        _lazyChildDelegate<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">createOrUpdateChildDuringLayout</span><span style="color: #abb2c0; ">(</span>index<span style="color: #d4d4d4; ">,</span> after<span style="color: #d4d4d4; ">:</span> precedingChild<span style="color: #abb2c0; ">)</span><span style="color: #d4d4d4; ">;</span>
+        <span style="color: #569cd6; ">final</span> child <span style="color: #d4d4d4; ">=</span> precedingChild <span style="color: #d4d4d4; ">==</span> <span style="color: #569cd6; ">null</span> <span style="color: #d4d4d4; ">?</span> firstChild <span style="color: #d4d4d4; ">:</span> <span style="color: #dcdcaa; ">childAfter</span><span style="color: #abb2c0; ">(</span>precedingChild<span style="color: #abb2c0; ">)</span><span style="color: #d4d4d4; ">;</span>
+        <span style="color: #c586c0; ">if</span> <span style="color: #abb2c0; ">(</span>child <span style="color: #d4d4d4; ">!=</span> <span style="color: #569cd6; ">null</span><span style="color: #abb2c0; ">)</span> <span style="color: #abb2c0; ">{</span>
+          <span style="color: #608b4e; ">// TODO: Lay out child and record its position in MyParentData.</span>
+          <span style="color: #608b4e; ">//       e.g. child.layout(constraints, parentUsesSize: true);</span>
+          precedingChild <span style="color: #d4d4d4; ">=</span> child<span style="color: #d4d4d4; ">;</span>
+        <span style="color: #abb2c0; ">}</span>
+      <span style="color: #97c26c; ">}</span>
+
+      <span style="color: #608b4e; ">// Remove any previously-live children that are no longer visible.</span>
+      <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> child <span style="color: #d4d4d4; ">=</span> firstChild<span style="color: #d4d4d4; ">;</span>
+      <span style="color: #c586c0; ">while</span> <span style="color: #97c26c; ">(</span>child <span style="color: #d4d4d4; ">!=</span> <span style="color: #569cd6; ">null</span><span style="color: #97c26c; ">)</span> <span style="color: #97c26c; ">{</span>
+        <span style="color: #569cd6; ">final</span> index <span style="color: #d4d4d4; ">=</span> <span style="color: #abb2c0; ">(</span>child<span style="color: #d4d4d4; ">.</span>parentData <span style="color: #569cd6; ">as</span> <span style="color: #4ec9b0; ">MyParentData</span><span style="color: #abb2c0; ">)</span><span style="color: #d4d4d4; ">.</span>index<span style="color: #d4d4d4; ">!</span><span style="color: #d4d4d4; ">;</span>
+        <span style="color: #569cd6; ">final</span> next <span style="color: #d4d4d4; ">=</span> <span style="color: #dcdcaa; ">childAfter</span><span style="color: #abb2c0; ">(</span>child<span style="color: #abb2c0; ">)</span><span style="color: #d4d4d4; ">;</span>
+        <span style="color: #c586c0; ">if</span> <span style="color: #abb2c0; ">(</span>index <span style="color: #d4d4d4; ">&lt;</span> firstVisibleIndex <span style="color: #d4d4d4; ">||</span> index <span style="color: #d4d4d4; ">&gt;</span> lastVisibleIndex<span style="color: #abb2c0; ">)</span> <span style="color: #abb2c0; ">{</span>
+          <span style="color: #608b4e; ">// Ask the Element to remove this child&#39;s widget subtree during layout, which removes it from our child list.</span>
+          _lazyChildDelegate<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">removeChildDuringLayout</span><span style="color: #5caeef; ">(</span>child<span style="color: #5caeef; ">)</span><span style="color: #d4d4d4; ">;</span>
+        <span style="color: #abb2c0; ">}</span>
+        child <span style="color: #d4d4d4; ">=</span> next<span style="color: #d4d4d4; ">;</span>
+      <span style="color: #97c26c; ">}</span>
+    <span style="color: #4fb1bc; ">}</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
+
     _lazyChildDelegate<span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">didFinishLayout</span><span style="color: #c172d9; ">(</span><span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
     size <span style="color: #d4d4d4; ">=</span> constraints<span style="color: #d4d4d4; ">.</span>biggest<span style="color: #d4d4d4; ">;</span>
   <span style="color: #dfb976; ">}</span>
@@ -169,14 +198,14 @@
 /// This interface is typically implemented by a custom </span><span style="color: #608b4e; ">`Element`</span><span style="color: #608b4e; ">, and then that </span><span style="color: #608b4e; ">`Element`</span><span style="color: #608b4e; ">
 /// is passed into the </span><span style="color: #608b4e; ">`RenderObject`</span><span style="color: #608b4e; ">. This prevents the </span><span style="color: #608b4e; ">`RenderObject`</span><span style="color: #608b4e; "> from calling all
 /// sorts of unrelated methods on </span><span style="color: #608b4e; ">`Element`</span><span style="color: #608b4e; "> that might corrupt the trees.
-</span><span style="color: #569cd6; ">abstract</span> <span style="color: #569cd6; ">interface</span> <span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">_LazyChildDelegate</span> <span style="color: #5caeef; ">{</span>
+</span><span style="color: #569cd6; ">abstract</span> <span style="color: #569cd6; ">interface</span> <span style="color: #569cd6; ">class</span> <span style="color: #4ec9b0; ">LazyChildDelegate</span> <span style="color: #5caeef; ">{</span>
   <span style="color: #608b4e; ">/// Called by the render object to determine how many children exist in the data source,
   /// or null if the count is unknown; the element should return the widget&#39;s childCount.
 </span>  <span style="color: #4ec9b0; ">int</span><span style="color: #d4d4d4; ">?</span> <span style="color: #569cd6; ">get</span> childCount<span style="color: #d4d4d4; ">;</span>
 
   <span style="color: #608b4e; ">/// Called by the render object when a child at </span><span style="color: #608b4e; ">[index]</span><span style="color: #608b4e; "> needs to become visible; the element
   /// should build and insert that child into the tree after </span><span style="color: #608b4e; ">[after]</span><span style="color: #608b4e; ">.
-</span>  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">createChildDuringLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">int</span> index<span style="color: #d4d4d4; ">,</span> <span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> after<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span><span style="color: #d4d4d4; ">;</span>
+</span>  <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">createOrUpdateChildDuringLayout</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">int</span> index<span style="color: #d4d4d4; ">,</span> <span style="color: #c172d9; ">{</span><span style="color: #569cd6; ">required</span> <span style="color: #4ec9b0; ">RenderBox</span><span style="color: #d4d4d4; ">?</span> after<span style="color: #c172d9; ">}</span><span style="color: #dfb976; ">)</span><span style="color: #d4d4d4; ">;</span>
 
   <span style="color: #608b4e; ">/// Called by the render object when </span><span style="color: #608b4e; ">[child]</span><span style="color: #608b4e; "> is no longer visible; the element should
   /// unmount and remove that child from the tree.
