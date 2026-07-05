@@ -360,17 +360,11 @@ class _UseCasesSectionWrapper extends StatelessComponent {
           ),
           _UseCaseCard(
             accent: '#a5c4fb',
-            icon: _svgIcon([
-              _p('M3 17 L17 17'),
-              _p('M3 17 L3 3'),
-              _p('M6 17 L6 11'),
-              _p('M9 17 L9 7'),
-              _p('M12 17 L12 13'),
-              _p('M15 17 L15 5'),
-            ]),
-            title: 'Data Visualization',
-            description: 'Charts, graphs, and heatmaps that render at 60fps with full gesture and hit-test support.',
-            href: '/examples/data-visualization',
+            iconImagePath: 'examples/apple-watch-app-grid_paint.png',
+            title: 'Apple Watch App Grid',
+            description:
+                'A render object that looks similar to the Apple Watch app grid. Virtualized child app icons, in an infinitely scrollable honeycomb grid with fisheye distortion. The user can drag, fling, and tap.',
+            href: '/examples/apple-watch-app-grid',
           ),
         ]),
         div(
@@ -410,9 +404,7 @@ class _UseCaseCard extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final iconContent = iconImagePath != null
-        ? img(src: context.resolveAsset(iconImagePath!), alt: title)
-        : icon!;
+    final iconContent = iconImagePath != null ? img(src: context.resolveAsset(iconImagePath!), alt: title) : icon!;
     final iconClasses = iconImagePath != null ? 'card-icon card-icon-image' : 'card-icon';
     return a(classes: 'card reveal', href: href, [
       div(classes: iconClasses, attributes: {'style': 'background:${accent}18;color:$accent'}, [iconContent]),
