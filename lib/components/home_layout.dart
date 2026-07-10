@@ -199,7 +199,7 @@ class _StatsBar extends StatelessComponent {
     return div(classes: 'stats-bar', [
       _stat('20', 'guides'),
       _stat('16', 'api docs'),
-      _stat('5', 'examples'),
+      _stat('3', 'examples'),
       _stat('1', 'render kit'),
     ]);
   }
@@ -344,19 +344,11 @@ class _UseCasesSectionWrapper extends StatelessComponent {
           ),
           _UseCaseCard(
             accent: '#5b8dee',
-            icon: _svgIcon([
-              _p('M10 10 L4 4'),
-              _p('M10 10 L16 4'),
-              _p('M10 10 L18 10'),
-              _p('M10 10 L16 16'),
-              _p('M10 10 L4 16'),
-              _p('M10 10 L2 10'),
-              Component.element(tag: 'circle', attributes: {'cx': '10', 'cy': '10', 'r': '2'}),
-            ]),
-            title: 'Particle Effects',
+            iconImagePath: 'examples/message-attachment.png',
+            title: 'Message Attachment',
             description:
-                'Render thousands of animated particles per frame, bypassing the widget tree overhead entirely.',
-            href: '/examples/particle-effects',
+                'A render object that shows a file attachment in a message, with a removal button, and a clipped gap between the button and the thumbnail.',
+            href: '/examples/message-attachment',
           ),
           _UseCaseCard(
             accent: '#a5c4fb',
@@ -424,7 +416,7 @@ class _ApiSection extends StatelessComponent {
   Component build(BuildContext context) {
     return div(classes: 'section', [
       div(classes: 'section-label', [.text('API Reference')]),
-      h2(classes: 'section-heading', [.text('Surgical Help')]),
+      h2(classes: 'section-heading', [.text('Docs for Every Method')]),
       p(classes: 'section-subheading', [
         .text(
           'Get help implementing specific render object methods with our API docs.',
@@ -528,9 +520,9 @@ class _FooterCta extends StatelessComponent {
       div(classes: 'footer-cta-section', [
         div(classes: 'footer-cta-inner', [
           div(classes: 'section-label', [.text('Tooling')]),
-          h2(classes: 'section-heading', [.text('Build better render objects')]),
+          h2(classes: 'section-heading', [.text('Build Better Render Objects')]),
           p(classes: 'section-subheading', [
-            .text('An AI-powered toolkit designed specifically for Flutter render object development.'),
+            .text('A toolkit to supercharge your use of AI to write custom render objects.'),
           ]),
           div(classes: 'footer-products-grid', [
             _ProductCard(
@@ -542,13 +534,11 @@ class _FooterCta extends StatelessComponent {
                 _p('M11.5 11.5 L16 11.5 L16 16 L11.5 16 Z'),
               ]),
               title: 'RenderKit',
-              description:
-                  'Describe the render object you need — by voice or text — and RenderKit generates a production-ready skeleton, complete with the tests and inspectors to verify it works.',
+              description: 'Tools to build better render objects with AI.',
               features: const [
-                'Voice-first, AI-guided code generation',
-                'Automated test suite for your render objects',
-                'Layout constraint visualizer and paint call inspector',
-                'Export to any Flutter project',
+                'Generate a starting skeleton of code',
+                'Supercharge your LLM with custom render object skills',
+                'Run standard tests to validate your AI render object code',
               ],
               buttonText: 'Explore RenderKit',
               buttonHref: '/renderkit',

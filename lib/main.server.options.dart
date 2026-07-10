@@ -11,6 +11,10 @@ import 'package:jaspr_content/components/callout.dart' as _callout;
 import 'package:jaspr_content/components/code_block.dart' as _code_block;
 import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     as _sidebar_toggle_button;
+import 'package:renderobjects/components/embedded_apple_watch_app_grid.dart'
+    as _embedded_apple_watch_app_grid;
+import 'package:renderobjects/components/embedded_message_attachment.dart'
+    as _embedded_message_attachment;
 import 'package:renderobjects/components/embedded_thermostat.dart'
     as _embedded_thermostat;
 import 'package:renderobjects/components/hero_scene.dart' as _hero_scene;
@@ -44,6 +48,14 @@ ServerOptions get defaultServerOptions => ServerOptions(
         ClientTarget<_sidebar_toggle_button.SidebarToggleButton>(
           'jaspr_content:sidebar_toggle_button',
         ),
+    _embedded_apple_watch_app_grid.EmbeddedAppleWatchAppGrid:
+        ClientTarget<_embedded_apple_watch_app_grid.EmbeddedAppleWatchAppGrid>(
+          'embedded_apple_watch_app_grid',
+        ),
+    _embedded_message_attachment.EmbeddedMessageAttachment:
+        ClientTarget<_embedded_message_attachment.EmbeddedMessageAttachment>(
+          'embedded_message_attachment',
+        ),
     _embedded_thermostat.EmbeddedThermostat:
         ClientTarget<_embedded_thermostat.EmbeddedThermostat>(
           'embedded_thermostat',
@@ -56,6 +68,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
   styles: () => [
     ..._callout.Callout.styles,
     ..._code_block.CodeBlock.styles,
+    ..._embedded_apple_watch_app_grid.EmbeddedAppleWatchAppGrid.styles,
+    ..._embedded_message_attachment.EmbeddedMessageAttachment.styles,
     ..._embedded_thermostat.EmbeddedThermostat.styles,
   ],
 );

@@ -95,7 +95,12 @@ class MyRenderObject extends RenderBox with ContainerRenderObjectMixin<RenderBox
   @override
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
     super.describeSemanticsConfiguration(config);
-    // TODO: Describe additional semantic meaning of this render object (or delete this method).
+    // TODO: Publish semantic information about this render object. Common examples:
+    //         config.label = 'screen reader label';
+    //         config.value = 'current value (e.g., for a slider)';
+    //         config.hint = 'what happens when activated';
+    //         config.isButton = true;
+    //         config.onTap = () { /* ... */ };
   }
 
   @override

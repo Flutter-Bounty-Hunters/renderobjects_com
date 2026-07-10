@@ -178,7 +178,12 @@
   <span style="color: #569cd6; ">@override</span>
   <span style="color: #569cd6; ">void</span> <span style="color: #dcdcaa; ">describeSemanticsConfiguration</span><span style="color: #dfb976; ">(</span><span style="color: #4ec9b0; ">SemanticsConfiguration</span> config<span style="color: #dfb976; ">)</span> <span style="color: #dfb976; ">{</span>
     <span style="color: #569cd6; ">super</span><span style="color: #d4d4d4; ">.</span><span style="color: #dcdcaa; ">describeSemanticsConfiguration</span><span style="color: #c172d9; ">(</span>config<span style="color: #c172d9; ">)</span><span style="color: #d4d4d4; ">;</span>
-    <span style="color: #608b4e; ">// TODO: Describe additional semantic meaning of this render object (or delete this method).</span>
+    <span style="color: #608b4e; ">// TODO: Publish semantic information about this render object. Common examples:</span>
+    <span style="color: #608b4e; ">//         config.label = &#39;screen reader label&#39;;</span>
+    <span style="color: #608b4e; ">//         config.value = &#39;current value (e.g., for a slider)&#39;;</span>
+    <span style="color: #608b4e; ">//         config.hint = &#39;what happens when activated&#39;;</span>
+    <span style="color: #608b4e; ">//         config.isButton = true;</span>
+    <span style="color: #608b4e; ">//         config.onTap = () { /* ... */ };</span>
   <span style="color: #dfb976; ">}</span>
 
   <span style="color: #569cd6; ">@override</span>

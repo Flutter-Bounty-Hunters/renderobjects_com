@@ -93,19 +93,26 @@ const List<({String question, List<String> options})> _kWizardSteps = [
     question: 'What is the desired hit testing behavior?',
     options: ['Entirely hittable', 'Partially hittable', 'Non-hittable'],
   ),
-  // Step 4: gestures
+  // Step 4: semantics
+  (
+    question:
+        'Will your render object publish semantic information? '
+        '(e.g., label, value, hint, scrolling, tap activation)',
+    options: ['Yes', 'No'],
+  ),
+  // Step 5: gestures
   (
     question:
         'Will your render object recognize and handle any gestures, internally?',
     options: ['Yes', 'No'],
   ),
-  // Step 5: intrinsic size
+  // Step 6: intrinsic size
   (
     question:
         'Does this render object always require specified constraints, or does it have an intrinsic size (a natural size when width and height are infinite)?',
     options: ['Always requires specified constraints', 'Has an intrinsic size'],
   ),
-  // Step 6: build during layout — skipped for leaf and for virtualized
+  // Step 7: build during layout — skipped for leaf and for virtualized
   (
     question:
         'Does this render object need to run build during layout (like LayoutBuilder)?',
@@ -171,13 +178,14 @@ class _SkeletonFeatures {
 
     final paint = _mapPaintAnswer(answers[1 + o]);
     final hitTest = _mapHitTestAnswer(answers[2 + o], children);
-    final gestures =
+    final semantics =
         answers.length > (3 + o) && answers[3 + o] == 'Yes' ? 'true' : 'false';
+    final gestures =
+        answers.length > (4 + o) && answers[4 + o] == 'Yes' ? 'true' : 'false';
     final baseline =
-        answers.length > (4 + o) && answers[4 + o].contains('intrinsic')
+        answers.length > (5 + o) && answers[5 + o].contains('intrinsic')
             ? 'true'
             : 'false';
-    const semantics = 'false';
     return _SkeletonFeatures(
       children: children,
       paint: paint,
@@ -659,9 +667,9 @@ class RenderKitChatState extends State<RenderKitChat> {
       final a = _answers[0];
       return !(a.contains('List') || a.contains('Custom'));
     }
-    // "Build during layout" (step 6) is skipped for leaf children or when
+    // "Build during layout" (step 7) is skipped for leaf children or when
     // virtualization is chosen (build-during-layout is implicit for virtualized).
-    if (step == 6) {
+    if (step == 7) {
       if (_answers.isNotEmpty && _answers[0] == 'Zero (leaf)') return true;
       if (_isVirtualized()) return true;
       return false;

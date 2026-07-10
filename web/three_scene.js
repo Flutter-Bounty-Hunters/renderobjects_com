@@ -31,12 +31,14 @@ const RECT_CONFIGS = [
   },
   // Smaller rect, far right and behind
   {
-    w: 2.0, h: 1.4, d: 0.08,
+    // 271×246 px image (ratio ≈ 1.102), so h = 2.0 / 1.102 ≈ 1.81
+    w: 2.0, h: 1.81, d: 0.08,
     x: 3.8, y: 1.8, z: -3.5,
     rx: 0.12, ry: -0.5, rz: -0.08,
     color: 0x5E91F6,
     emissive: 0x091530,
     sensitivity: 1.25,
+    texture: 'images/message-attachment.png',
   },
 ];
 
