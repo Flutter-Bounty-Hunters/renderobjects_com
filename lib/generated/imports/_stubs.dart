@@ -6,6 +6,10 @@
 
 // ignore_for_file: directives_ordering, non_constant_identifier_names
 
+dynamic AppleWatchAppGridApp;
+typedef AppleWatchAppGridAppOrStubbed = dynamic;
+dynamic MessageAttachmentApp;
+typedef MessageAttachmentAppOrStubbed = dynamic;
 dynamic MyApp;
 typedef MyAppOrStubbed = dynamic;
 dynamic CounterWidget;

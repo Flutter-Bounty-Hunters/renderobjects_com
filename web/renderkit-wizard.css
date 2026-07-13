@@ -26,32 +26,19 @@
 .rs-chat-root {
   width: 100%;
   max-width: 720px;
+  align-self: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 0 1.25rem;
 }
 
 /* ─── Thread (scrollable) ───────────────────────────────────── */
 
 .rs-thread {
-  flex: 1;
-  overflow-y: auto;
-  padding: 2rem 0 1rem;
+  padding: 2rem 0 4rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.rs-thread::-webkit-scrollbar {
-  width: 4px;
-}
-
-.rs-thread::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: var(--radius-full);
 }
 
 /* ─── Message rows ──────────────────────────────────────────── */
@@ -209,3 +196,225 @@
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* ─── Wizard root (wider than chat) ─────────────────────────── */
+
+.rs-wizard-root {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.25rem;
+}
+
+/* ─── Result page ────────────────────────────────────────────── */
+
+.rs-result-page {
+  width: 100%;
+  padding: 2rem 0 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fade-up 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.rs-result-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rs-result-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.rs-back-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4375rem 0.875rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rs-back-btn:hover {
+  border-color: var(--border-accent);
+  color: var(--text-primary);
+}
+
+/* ─── Code wrapper + copy button ────────────────────────────── */
+
+.rs-code-wrapper {
+  position: relative;
+}
+
+.rs-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  opacity: 0;
+  padding: 0.3125rem 0.625rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.rs-code-wrapper:hover .rs-copy-btn,
+.rs-copy-btn--copied {
+  opacity: 1;
+}
+
+.rs-copy-btn:hover:not(.rs-copy-btn--copied) {
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+}
+
+.rs-copy-btn--copied {
+  color: #4ec9b0;
+  border-color: rgba(78, 201, 176, 0.3);
+  cursor: default;
+}
+
+/* ─── Skeleton code block ────────────────────────────────────── */
+
+.rs-skeleton-code {
+  overflow-x: auto;
+}
+
+.rs-skeleton-code pre {
+  margin: 0;
+  padding: 1rem;
+  background: var(--bg-code);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  font-family: 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
+  overflow-x: auto;
+}
+
+.rs-skeleton-code code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+/* ─── Loading / error states ─────────────────────────────────── */
+
+.rs-skeleton-loading,
+.rs-skeleton-error {
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.rs-skeleton-loading {
+  background: rgba(91, 141, 238, 0.08);
+  border: 1px solid rgba(91, 141, 238, 0.2);
+  color: var(--text-secondary);
+}
+
+.rs-skeleton-error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+}
+
+.rs-skeleton-loading p,
+.rs-skeleton-error p {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+/* ─── Name input ─────────────────────────────────────────────── */
+
+.rs-name-input-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.375rem;
+}
+
+.rs-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rs-name-field {
+  width: 220px;
+  padding: 0.4375rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  caret-color: var(--accent);
+}
+
+.rs-name-field::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.rs-name-field:focus {
+  border-color: var(--border-accent);
+}
+
+.rs-name-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  color: #ffffff;
+  background: var(--accent);
+  border: 1px solid rgba(91, 141, 238, 0.3);
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.rs-name-submit-btn:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 12px rgba(91, 141, 238, 0.28);
+}
+
+.rs-name-error {
+  font-size: 0.8125rem;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: var(--radius-md);
+  padding: 0.375rem 0.75rem;
+  max-width: 340px;
+  text-align: right;
+  animation: fade-up 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+

@@ -1,0 +1,34 @@
+axes:
+  children:
+    values: [none, single, multi]
+    description: "Number of children: none (leaf), single (RenderObjectWithChildMixin), multi (ContainerRenderObjectMixin)"
+  paint:
+    values: [true, false]
+    description: "Whether the render object paints content"
+  hit_test:
+    values: [none, self, children, both]
+    description: "Hit testing: none (ignores input), self (only this), children (delegates), both (self + children)"
+  semantics:
+    values: [true, false]
+    description: "Whether to describe semantic configuration"
+  baseline:
+    values: [true, false]
+    description: "Whether to handle text baseline"
+
+constraints:
+  # Leaf render objects cannot hit-test children
+  - if: { children: none }
+    disallow: { hit_test: [children, both] }
+  # A leaf with no paint is a no-op skeleton; skip it
+  - if: { children: none, paint: false }
+    skip: true
+  # Single-child cannot hit-test children or both
+  - if: { children: single }
+    disallow: { hit_test: [children, both] }
+  # Only multi-child can use the "both" hit-test strategy
+  - if: { children: none }
+    disallow: { hit_test: [both] }
+  - if: { children: single }
+    disallow: { hit_test: [both] }
+
+output_name: "{children}_paint-{paint}_hit-{hit_test}_sem-{semantics}_base-{baseline}.dart"

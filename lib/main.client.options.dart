@@ -10,6 +10,10 @@ import 'package:jaspr_content/components/_internal/code_block_copy_button.dart'
     deferred as _code_block_copy_button;
 import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     deferred as _sidebar_toggle_button;
+import 'package:renderobjects/components/embedded_apple_watch_app_grid.dart'
+    deferred as _embedded_apple_watch_app_grid;
+import 'package:renderobjects/components/embedded_message_attachment.dart'
+    deferred as _embedded_message_attachment;
 import 'package:renderobjects/components/embedded_thermostat.dart'
     deferred as _embedded_thermostat;
 import 'package:renderobjects/components/hero_scene.dart'
@@ -42,6 +46,14 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'jaspr_content:sidebar_toggle_button': ClientLoader(
       (p) => _sidebar_toggle_button.SidebarToggleButton(),
       loader: _sidebar_toggle_button.loadLibrary,
+    ),
+    'embedded_apple_watch_app_grid': ClientLoader(
+      (p) => _embedded_apple_watch_app_grid.EmbeddedAppleWatchAppGrid(),
+      loader: _embedded_apple_watch_app_grid.loadLibrary,
+    ),
+    'embedded_message_attachment': ClientLoader(
+      (p) => _embedded_message_attachment.EmbeddedMessageAttachment(),
+      loader: _embedded_message_attachment.loadLibrary,
     ),
     'embedded_thermostat': ClientLoader(
       (p) => _embedded_thermostat.EmbeddedThermostat(),

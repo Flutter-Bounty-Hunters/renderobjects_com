@@ -10,6 +10,8 @@ import 'package:jaspr_content/theme.dart';
 
 import 'components/author_attribution_extension.dart';
 import 'components/docs_layout_override.dart';
+import 'components/embedded_apple_watch_app_grid.dart';
+import 'components/embedded_message_attachment.dart';
 import 'components/embedded_thermostat.dart';
 import 'components/hero_scene.dart';
 import 'components/home_layout.dart';
@@ -78,6 +80,14 @@ void main() {
           CustomComponent(
             pattern: RegExp(r'EmbeddedThermostat'),
             builder: (name, attributes, child) => const EmbeddedThermostat(),
+          ),
+          CustomComponent(
+            pattern: RegExp(r'EmbeddedMessageAttachment'),
+            builder: (name, attributes, child) => const EmbeddedMessageAttachment(),
+          ),
+          CustomComponent(
+            pattern: RegExp(r'EmbeddedAppleWatchAppGrid'),
+            builder: (name, attributes, child) => const EmbeddedAppleWatchAppGrid(),
           ),
         ],
         layouts: [

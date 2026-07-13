@@ -34,10 +34,11 @@ class RenderKitWizardLayout extends PageLayoutBase {
 
     yield link(href: '/styles.css', rel: 'stylesheet');
     yield link(href: '/renderkit-wizard.css', rel: 'stylesheet');
+
     yield script(src: '/search.js', defer: true);
     yield* analyticsHead();
 
-    // Auto-scroll .rs-thread to the bottom whenever new message bubbles appear.
+    // Auto-scroll code when skeleton appears
     yield script(content: r'''
 document.addEventListener('DOMContentLoaded', function () {
   var waitForThread = setInterval(function () {
