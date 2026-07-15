@@ -7,26 +7,6 @@ import 'favicon.dart';
 import 'site_footer.dart';
 import 'site_navbar.dart';
 
-Component _svgIcon(List<Component> children, {String size = '20'}) =>
-    Component.element(
-      tag: 'svg',
-      attributes: {
-        'viewBox': '0 0 $size $size',
-        'fill': 'none',
-        'stroke': 'currentColor',
-        'stroke-width': '1.5',
-        'stroke-linecap': 'round',
-        'stroke-linejoin': 'round',
-        'width': size,
-        'height': size,
-        'aria-hidden': 'true',
-      },
-      children: children,
-    );
-
-Component _p(String d) =>
-    Component.element(tag: 'path', attributes: {'d': d});
-
 // ─── Page layout (server-side shell) ───────────────────────────────────────
 
 class RenderKitLayout extends PageLayoutBase {
@@ -75,13 +55,13 @@ class _RenderKitHero extends StatelessComponent {
   Component build(BuildContext context) {
     return div(classes: 'section', [
       div(attributes: {'style': 'max-width:680px'}, [
-        div(classes: 'section-label', [.text('RenderKit')]),
+        div(classes: 'section-label', [.text('Code Skeleton')]),
         h1(classes: 'section-heading', [
           .text('Generate a custom render object'),
         ]),
         p(classes: 'section-subheading', [
           .text(
-              "Answer a few questions about the render object you need — children, paint, hit testing, sizing — and RenderKit produces a Flutter skeleton tailored to your answers, backed by AI skills trained on render object patterns and a battery of tests to validate what you build."),
+              "Answer a few questions about the render object you need — children, paint, hit testing, sizing — and RenderKit produces a Flutter skeleton tailored to your needs."),
         ]),
         div(attributes: {'style': 'margin-top:1.5rem'}, [
           a(classes: 'btn-primary btn-renderkit', href: '/renderkit/wizard', [
@@ -103,48 +83,20 @@ class _SkillsSection extends StatelessComponent {
     return div(classes: 'section', [
       div(classes: 'section-label', [.text('Skills')]),
       h2(classes: 'section-heading', [
-        .text('AI skills trained on render objects'),
+        .text('AI skills to write render objects'),
       ]),
       p(classes: 'section-subheading', [
         .text(
-            "RenderKit's skills understand the render object lifecycle, not just Flutter syntax — so the code it generates follows the conventions real render objects need."),
+            "LLMs produce chaotic results. Get the consistency that your code needs for readability by using skills made specifically for writing render objects."),
       ]),
-      div(classes: 'cards-grid cards-grid-3', [
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M4 7 L10 3 L16 7 L16 13 L10 17 L4 13 Z'),
-            _p('M4 7 L10 11 L16 7'),
-            _p('M10 11 L10 17'),
-          ]),
-          iconBg: 'rgba(91,141,238,0.10)',
-          iconColor: '#82acf3',
-          title: 'Skeleton generation',
-          description:
-              'Turns your answers about children, paint, and hit testing into a working RenderBox or RenderSliver subclass.',
-        ),
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M3 10 L7 6 L7 14 Z'),
-            _p('M17 10 L13 6 L13 14 Z'),
-            _p('M7 10 L13 10'),
-          ]),
-          iconBg: 'rgba(91,141,238,0.08)',
-          iconColor: '#a5c4fb',
-          title: 'Constraint reasoning',
-          description:
-              'Knows when a render object needs specified constraints versus an intrinsic size, and lays out performLayout accordingly.',
-        ),
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M4 4 L16 4 L16 16 L4 16 Z'),
-            _p('M4 9 L16 9'),
-            _p('M9 9 L9 16'),
-          ]),
-          iconBg: 'rgba(91,141,238,0.06)',
-          iconColor: '#c3d9fc',
-          title: 'Paint & compositing guidance',
-          description:
-              'Flags when a render object needs a compositing layer, and generates the matching paint and hit-test overrides.',
+      div(attributes: {'style': 'margin-top:1.5rem'}, [
+        a(
+          classes: 'btn-primary btn-renderkit',
+          href:
+              'https://github.com/Flutter-Bounty-Hunters/render_kit/tree/main/skills',
+          target: Target.blank,
+          attributes: {'rel': 'noopener noreferrer'},
+          [.text('Browse the skills')],
         ),
       ]),
     ]);
@@ -161,87 +113,21 @@ class _TestsSection extends StatelessComponent {
     return div(classes: 'section', [
       div(classes: 'section-label', [.text('Validation')]),
       h2(classes: 'section-heading', [
-        .text('A battery of tests for what you build')
+        .text('A battery of tests for your render objects')
       ]),
       p(classes: 'section-subheading', [
         .text(
-            'Every generated render object comes with a matching test suite, so you can confirm it behaves correctly before it ships.'),
+            'Keep your render objects in compliance with the Flutter framework\'s expectations by running pre-built tests.'),
       ]),
-      div(classes: 'cards-grid cards-grid-4', [
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M3 4 L17 4'),
-            _p('M3 8 L17 8'),
-            _p('M3 12 L13 12'),
-          ]),
-          iconBg: 'rgba(91,141,238,0.10)',
-          iconColor: '#82acf3',
-          title: 'Layout tests',
-          description:
-              'Verifies constraint handling, intrinsic sizing, and dry layout against the inputs you specified.',
-        ),
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M4 16 L8 6 L12 12 L16 4'),
-          ]),
-          iconBg: 'rgba(91,141,238,0.08)',
-          iconColor: '#a5c4fb',
-          title: 'Paint tests',
-          description:
-              'Golden-image comparisons and a paint call inspector to catch unexpected canvas operations.',
-        ),
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M10 3 L10 17'),
-            _p('M3 10 L17 10'),
-            Component.element(
-                tag: 'circle', attributes: {'cx': '10', 'cy': '10', 'r': '3'}),
-          ]),
-          iconBg: 'rgba(91,141,238,0.06)',
-          iconColor: '#c3d9fc',
-          title: 'Hit-testing tests',
-          description:
-              'Confirms the render object reports hits exactly where you said it should be hittable — and nowhere else.',
-        ),
-        _RenderKitCard(
-          icon: _svgIcon([
-            _p('M5 10 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0'),
-            _p('M10 7 L10 10 L12.5 12'),
-          ]),
-          iconBg: 'rgba(91,141,238,0.04)',
-          iconColor: '#dde9fd',
-          title: 'Semantics tests',
-          description:
-              'Checks that the semantics tree your render object describes is complete and accessible.',
+      div(attributes: {'style': 'margin-top:1.5rem'}, [
+        a(
+          classes: 'btn-primary btn-renderkit',
+          href: 'https://pub.dev/packages/render_proof',
+          target: Target.blank,
+          attributes: {'rel': 'noopener noreferrer'},
+          [.text('Render Proof')],
         ),
       ]),
-    ]);
-  }
-}
-
-class _RenderKitCard extends StatelessComponent {
-  final Component icon;
-  final String iconBg;
-  final String iconColor;
-  final String title;
-  final String description;
-
-  const _RenderKitCard({
-    required this.icon,
-    required this.iconBg,
-    required this.iconColor,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  Component build(BuildContext context) {
-    return div(classes: 'card', [
-      div(classes: 'card-icon',
-          attributes: {'style': 'background:$iconBg;color:$iconColor'},
-          [icon]),
-      div(classes: 'card-title', [.text(title)]),
-      p(classes: 'card-description', [.text(description)]),
     ]);
   }
 }
