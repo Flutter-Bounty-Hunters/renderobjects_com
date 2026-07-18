@@ -82,6 +82,23 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
+/* Sidebar hamburger (jaspr_content SidebarToggleButton). The library controls
+   its display (hidden by default; shown at ≤1024px when a sidebar exists); we
+   only restyle it to sit flush in the dark navbar. */
+.navbar .sidebar-toggle-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.navbar .sidebar-toggle-button:hover {
+  color: var(--text-primary);
+}
+
 .navbar-brand {
   display: flex;
   align-items: center;

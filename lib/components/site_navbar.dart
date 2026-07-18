@@ -1,5 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:jaspr_content/components/sidebar_toggle_button.dart';
 
 // ─── Shared site navbar ───────────────────────────────────────────────────────
 //
@@ -16,6 +17,11 @@ class SiteNavbar extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return nav(classes: 'navbar', attributes: {'data-pagefind-ignore': ''}, [
+      // Hamburger that opens the docs sidebar on phone/tablet screens. It stays
+      // hidden unless an ancestor carries `data-has-sidebar` (added by
+      // DocsLayout) and the viewport is ≤1024px, so it only shows on the
+      // guides/API/examples pages where a sidebar nav menu exists.
+      const SidebarToggleButton(),
       a(classes: 'navbar-brand', href: '/', [
         img(
           src: '/images/logo.png',
